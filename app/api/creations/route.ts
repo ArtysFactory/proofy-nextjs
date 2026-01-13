@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
-import { getDB } from '@/lib/db';
+import { query } from '@/lib/db';
 
 async function verifyToken(request: NextRequest) {
     const authHeader = request.headers.get('Authorization');
@@ -28,21 +28,20 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
         }
 
-        const db = getDB();
-        const creations = await db
-            .prepare(`
-        SELECT id, publicId, title, fileHash, projectType, status, createdAt, txHash, blockNumber
-        FROM creations
-        WHERE userId = ?
-        ORDER BY createdAt DESC
-      `)
-            .bind(payload.userId)
-            .all();
+        const creations = await query(
+            `SELECT id, public_id as "publicId", title, file_hash as "fileHash", 
+                    project_type as "projectType", status, created_at as "createdAt", 
+                    tx_hash as "txHash", block_number as "blockNumber"
+             FROM creations
+             WHERE user_id = $1
+             ORDER BY created_at DESC`,
+            [payload.userId]
+        );
 
-        return NextResponse.json({ creations: creations.results || [] });
+        return NextResponse.json({ creations: creations || [] });
     } catch (error: any) {
         console.error('Get creations error:', error);
-        return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
+        return NextResponse.json({ error: 'Erreur serveur', details: error.message }, { status: 500 });
     }
 }
 
@@ -68,18 +67,14 @@ export async function POST(request: NextRequest) {
         // Generate unique public ID
         const publicId = generatePublicId();
 
-        const db = getDB();
-
         // Insert creation
-        await db
-            .prepare(`
-        INSERT INTO creations (
-          userId, publicId, title, description, fileHash, projectType, 
-          authors, status, createdAt, updatedAt
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', datetime('now'), datetime('now'))
-      `)
-            .bind(
+        await query(
+            `INSERT INTO creations (
+                user_id, public_id, title, description, file_hash, project_type, 
+                authors, status, created_at, updated_at
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', NOW(), NOW())`,
+            [
                 payload.userId,
                 publicId,
                 title,
@@ -87,8 +82,8 @@ export async function POST(request: NextRequest) {
                 fileHash,
                 projectType,
                 authors || ''
-            )
-            .run();
+            ]
+        );
 
         // TODO: Trigger blockchain anchoring in background
         // For now, we'll return success and the anchoring can happen async
@@ -103,7 +98,7 @@ export async function POST(request: NextRequest) {
         );
     } catch (error: any) {
         console.error('Create proof error:', error);
-        return NextResponse.json({ error: 'Erreur lors de la création' }, { status: 500 });
+        return NextResponse.json({ error: 'Erreur lors de la création', details: error.message }, { status: 500 });
     }
 }
 

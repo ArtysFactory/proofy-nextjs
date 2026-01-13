@@ -1,39 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDB } from '@/lib/db';
+import { query } from '@/lib/db';
 
-interface Params {
-    params: {
-        id: string;
-    };
-}
-
-export async function GET(request: NextRequest, { params }: Params) {
+export async function GET(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     try {
-        const { id } = params;
+        const { id } = await params;
 
-        const db = getDB();
-        const creation = await db
-            .prepare(`
-        SELECT 
-          c.id, c.publicId, c.title, c.description, c.fileHash, 
-          c.projectType, c.authors, c.status, c.createdAt, 
-          c.txHash, c.blockNumber,
-          u.firstName, u.lastName, u.email
-        FROM creations c
-        JOIN users u ON c.userId = u.id
-        WHERE c.publicId = ?
-      `)
-            .bind(id)
-            .first();
+        const results = await query(
+            `SELECT 
+                c.id, c.public_id as "publicId", c.title, c.description, 
+                c.file_hash as "fileHash", c.project_type as "projectType", 
+                c.authors, c.status, c.created_at as "createdAt", 
+                c.tx_hash as "txHash", c.block_number as "blockNumber",
+                u.first_name as "firstName", u.last_name as "lastName", u.email
+             FROM creations c
+             JOIN users u ON c.user_id = u.id
+             WHERE c.public_id = $1`,
+            [id]
+        );
 
-        if (!creation) {
+        if (results.length === 0) {
             return NextResponse.json({ error: 'Preuve introuvable' }, { status: 404 });
         }
 
-        return NextResponse.json({ creation });
+        return NextResponse.json({ creation: results[0] });
     } catch (error: any) {
         console.error('Get proof error:', error);
-        return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
+        return NextResponse.json({ error: 'Erreur serveur', details: error.message }, { status: 500 });
     }
 }
 

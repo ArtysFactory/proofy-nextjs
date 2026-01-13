@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SignJWT } from 'jose';
-import { getDB } from '@/lib/db';
+import { query } from '@/lib/db';
 
 // Helper to hash password using Web Crypto API
 async function hashPassword(password: string): Promise<string> {
@@ -33,21 +33,21 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Email et mot de passe requis' }, { status: 400 });
         }
 
-        const db = getDB();
-
         // Find user
-        const user = (await db
-            .prepare('SELECT id, firstName, lastName, email, passwordHash FROM users WHERE email = ?')
-            .bind(email.toLowerCase().trim())
-            .first()) as any;
+        const users = await query(
+            'SELECT id, first_name, last_name, email, password_hash FROM users WHERE email = $1',
+            [email.toLowerCase().trim()]
+        );
 
-        if (!user) {
+        if (users.length === 0) {
             return NextResponse.json({ error: 'Email ou mot de passe incorrect' }, { status: 401 });
         }
 
+        const user = users[0] as any;
+
         // Verify password
         const passwordHash = await hashPassword(password);
-        if (passwordHash !== user.passwordHash) {
+        if (passwordHash !== user.password_hash) {
             return NextResponse.json({ error: 'Email ou mot de passe incorrect' }, { status: 401 });
         }
 
@@ -60,14 +60,14 @@ export async function POST(request: NextRequest) {
             token,
             user: {
                 id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                firstName: user.first_name,
+                lastName: user.last_name,
                 email: user.email,
             },
         });
     } catch (error: any) {
         console.error('Login error:', error);
-        return NextResponse.json({ error: 'Erreur lors de la connexion' }, { status: 500 });
+        return NextResponse.json({ error: 'Erreur lors de la connexion', details: error.message }, { status: 500 });
     }
 }
 

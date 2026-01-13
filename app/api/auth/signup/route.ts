@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDB } from '@/lib/db';
+import { query } from '@/lib/db';
 
 // Helper to hash password using Web Crypto API
 async function hashPassword(password: string): Promise<string> {
@@ -32,15 +32,13 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Email invalide' }, { status: 400 });
         }
 
-        const db = getDB();
-
         // Check if email already exists
-        const existingUser = await db
-            .prepare('SELECT id FROM users WHERE email = ?')
-            .bind(email.toLowerCase())
-            .first();
+        const existingUsers = await query(
+            'SELECT id FROM users WHERE email = $1',
+            [email.toLowerCase().trim()]
+        );
 
-        if (existingUser) {
+        if (existingUsers.length > 0) {
             return NextResponse.json({ error: 'Cet email est déjà utilisé' }, { status: 400 });
         }
 
@@ -48,19 +46,17 @@ export async function POST(request: NextRequest) {
         const passwordHash = await hashPassword(password);
 
         // Create user
-        const result = await db
-            .prepare(`
-        INSERT INTO users (firstName, lastName, country, email, passwordHash, emailVerified, createdAt, updatedAt)
-        VALUES (?, ?, ?, ?, ?, 0, datetime('now'), datetime('now'))
-      `)
-            .bind(
+        await query(
+            `INSERT INTO users (first_name, last_name, country, email, password_hash, email_verified, created_at, updated_at)
+             VALUES ($1, $2, $3, $4, $5, false, NOW(), NOW())`,
+            [
                 firstName.trim(),
                 lastName.trim(),
                 country,
                 email.toLowerCase().trim(),
                 passwordHash
-            )
-            .run();
+            ]
+        );
 
         return NextResponse.json(
             {
