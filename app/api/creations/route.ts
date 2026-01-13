@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import { neon } from '@neondatabase/serverless';
+import { anchorToBlockchain, simulateAnchor, PROOFY_REGISTRY_ADDRESS } from '@/lib/blockchain';
 
 async function verifyToken(request: NextRequest) {
     const authHeader = request.headers.get('Authorization');
@@ -36,9 +37,23 @@ export async function GET(request: NextRequest) {
         const sql = neon(databaseUrl);
 
         const creations = await sql`
-            SELECT id, public_id as "publicId", title, file_hash as "fileHash", 
-                   project_type as "projectType", status, created_at as "createdAt", 
-                   tx_hash as "txHash", block_number as "blockNumber"
+            SELECT 
+                id, 
+                public_id as "publicId", 
+                title, 
+                short_description as "shortDescription",
+                file_hash as "fileHash", 
+                file_name as "fileName",
+                file_size as "fileSize",
+                file_type as "fileType",
+                project_type as "projectType", 
+                made_by as "madeBy",
+                status, 
+                created_at as "createdAt", 
+                tx_hash as "txHash", 
+                block_number as "blockNumber",
+                chain,
+                contract_address as "contractAddress"
             FROM creations
             WHERE user_id = ${payload.userId}
             ORDER BY created_at DESC
@@ -51,7 +66,7 @@ export async function GET(request: NextRequest) {
     }
 }
 
-// POST /api/creations - Create new proof
+// POST /api/creations - Create new proof with blockchain anchoring
 export async function POST(request: NextRequest) {
     try {
         const payload = await verifyToken(request);
@@ -60,7 +75,32 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { title, description, fileHash, projectType, authors } = body;
+        
+        // Extract all fields from request
+        const {
+            title,
+            shortDescription,
+            fileHash,
+            fileName,
+            fileSize,
+            fileType,
+            projectType,
+            madeBy,
+            aiHumanRatio,
+            aiTools,
+            humanContribution,
+            mainPrompt,
+            mainPromptPrivate,
+            depositorType,
+            companyInfo,
+            publicPseudo,
+            coAuthors,
+            musicProducers,
+            musicLabels,
+            musicOthers,
+            declaredOwnership,
+            acceptedAITerms,
+        } = body;
 
         // Validation
         if (!title || !fileHash || !projectType) {
@@ -80,20 +120,144 @@ export async function POST(request: NextRequest) {
         // Generate unique public ID
         const publicId = generatePublicId();
 
-        // Insert creation
-        await sql`
+        // Perform blockchain anchoring
+        let blockchainResult;
+        const privateKey = process.env.POLYGON_PRIVATE_KEY;
+        const rpcUrl = process.env.POLYGON_RPC_URL || 'https://polygon-rpc.com';
+
+        if (privateKey && privateKey.length > 0) {
+            // Real blockchain anchoring
+            console.log(`[Creation] Anchoring to Polygon Mainnet...`);
+            blockchainResult = await anchorToBlockchain(
+                fileHash,
+                publicId,
+                projectType,
+                privateKey,
+                rpcUrl
+            );
+        } else {
+            // Simulation mode
+            console.log(`[Creation] No POLYGON_PRIVATE_KEY - using simulation mode`);
+            blockchainResult = await simulateAnchor(fileHash, publicId, projectType);
+        }
+
+        // Determine status and chain info
+        const status = blockchainResult.success ? 'confirmed' : 'pending';
+        const chain = blockchainResult.simulated ? 'polygon_mainnet_simulated' : 'polygon_mainnet';
+
+        // Insert creation with all fields
+        const result = await sql`
             INSERT INTO creations (
-                user_id, public_id, title, description, file_hash, project_type, 
-                authors, status, created_at, updated_at
+                user_id, 
+                public_id, 
+                title, 
+                short_description,
+                description,
+                file_hash, 
+                file_name,
+                file_size,
+                file_type,
+                project_type, 
+                made_by,
+                ai_human_ratio,
+                ai_tools,
+                human_contribution,
+                main_prompt,
+                main_prompt_private,
+                depositor_type,
+                company_info,
+                public_pseudo,
+                co_authors,
+                music_producers,
+                music_labels,
+                music_others,
+                declared_ownership,
+                accepted_ai_terms,
+                status,
+                chain,
+                tx_hash,
+                block_number,
+                contract_address,
+                on_chain_timestamp,
+                created_at, 
+                updated_at
             )
-            VALUES (${payload.userId}, ${publicId}, ${title}, ${description || ''}, ${fileHash}, ${projectType}, ${authors || ''}, 'pending', NOW(), NOW())
+            VALUES (
+                ${payload.userId}, 
+                ${publicId}, 
+                ${title.trim()}, 
+                ${shortDescription?.trim() || null},
+                ${shortDescription?.trim() || null},
+                ${fileHash}, 
+                ${fileName || null},
+                ${fileSize || null},
+                ${fileType || null},
+                ${projectType}, 
+                ${madeBy || 'human'},
+                ${aiHumanRatio || 0},
+                ${aiTools || null},
+                ${humanContribution || null},
+                ${mainPrompt || null},
+                ${mainPromptPrivate || false},
+                ${depositorType || 'individual'},
+                ${companyInfo ? JSON.stringify(companyInfo) : null},
+                ${publicPseudo || null},
+                ${coAuthors ? JSON.stringify(coAuthors) : null},
+                ${musicProducers ? JSON.stringify(musicProducers) : null},
+                ${musicLabels ? JSON.stringify(musicLabels) : null},
+                ${musicOthers ? JSON.stringify(musicOthers) : null},
+                ${declaredOwnership || false},
+                ${acceptedAITerms || false},
+                ${status},
+                ${chain},
+                ${blockchainResult.txHash || null},
+                ${blockchainResult.blockNumber || null},
+                ${blockchainResult.success ? PROOFY_REGISTRY_ADDRESS : null},
+                ${blockchainResult.timestamp ? new Date(blockchainResult.timestamp).toISOString() : null},
+                NOW(), 
+                NOW()
+            )
+            RETURNING id, public_id as "publicId"
         `;
+
+        // If blockchain was successful, also create transaction record
+        if (blockchainResult.success && blockchainResult.txHash) {
+            const creationId = result[0]?.id;
+            if (creationId) {
+                await sql`
+                    INSERT INTO transactions (
+                        creation_id,
+                        tx_hash,
+                        chain,
+                        block_number,
+                        status,
+                        on_chain_timestamp,
+                        created_at
+                    )
+                    VALUES (
+                        ${creationId},
+                        ${blockchainResult.txHash},
+                        ${chain},
+                        ${blockchainResult.blockNumber || null},
+                        'confirmed',
+                        ${blockchainResult.timestamp ? new Date(blockchainResult.timestamp).toISOString() : null},
+                        NOW()
+                    )
+                `;
+            }
+        }
 
         return NextResponse.json(
             {
                 success: true,
                 publicId,
-                message: 'Création enregistrée avec succès',
+                txHash: blockchainResult.txHash,
+                blockNumber: blockchainResult.blockNumber,
+                explorerUrl: blockchainResult.explorerUrl,
+                simulated: blockchainResult.simulated,
+                message: blockchainResult.success 
+                    ? 'Création ancrée sur la blockchain avec succès'
+                    : 'Création enregistrée (ancrage blockchain en attente)',
             },
             { status: 201 }
         );
