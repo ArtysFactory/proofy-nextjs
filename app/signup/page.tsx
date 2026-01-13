@@ -53,14 +53,35 @@ export default function SignupPage() {
                 }),
             });
 
-            const data = await response.json();
+            const signupData = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Erreur lors de l\'inscription');
+                throw new Error(signupData.error || 'Erreur lors de l\'inscription');
             }
 
-            // Success - redirect to login
-            router.push('/login?message=account-created');
+            // Auto-login after successful signup
+            const loginResponse = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password,
+                }),
+            });
+
+            const loginData = await loginResponse.json();
+
+            if (loginResponse.ok && loginData.token) {
+                // Store token and user in localStorage
+                localStorage.setItem('token', loginData.token);
+                localStorage.setItem('user', JSON.stringify(loginData.user));
+                
+                // Redirect to dashboard
+                router.push('/dashboard');
+            } else {
+                // Fallback to login page if auto-login fails
+                router.push('/login?message=account-created');
+            }
         } catch (err: any) {
             setError(err.message);
         } finally {
