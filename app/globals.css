@@ -244,3 +244,220 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(191, 242, 39, 0.5);
 }
+
+/* ============================================
+   AURORA BACKGROUND SYSTEM
+   ============================================ */
+
+.aurora-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 50% 50%, #2a2559 0%, #0b0124 70%);
+  overflow: hidden;
+}
+
+.aurora-stars {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(191, 242, 39, 0.3), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(191, 242, 39, 0.4), transparent),
+    radial-gradient(2px 2px at 130px 80px, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(1px 1px at 160px 120px, rgba(191, 242, 39, 0.35), transparent);
+  background-repeat: repeat;
+  background-size: 200px 150px;
+  animation: twinkle 8s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.aurora-layer {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    rgba(42, 37, 89, 0.15) 0deg,
+    rgba(191, 242, 39, 0.08) 90deg,
+    rgba(42, 37, 89, 0.15) 180deg,
+    rgba(138, 89, 255, 0.08) 270deg,
+    rgba(42, 37, 89, 0.15) 360deg
+  );
+  filter: blur(60px);
+  animation: aurora-rotate 30s linear infinite;
+}
+
+.aurora-layer-2 {
+  animation-direction: reverse;
+  animation-duration: 40s;
+  opacity: 0.5;
+}
+
+@keyframes aurora-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   GLASS CARD EFFECT
+   ============================================ */
+
+.glass-card {
+  background: rgba(42, 37, 89, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(191, 242, 39, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(191, 242, 39, 0.25);
+  box-shadow: 0 8px 32px rgba(191, 242, 39, 0.1);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn-aurora {
+  background: linear-gradient(135deg, #bff227 0%, #9dcc1e 100%);
+  color: #0b0124;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-aurora::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #d4ff4d 0%, #bff227 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-aurora:hover::before {
+  opacity: 1;
+}
+
+.btn-aurora:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(191, 242, 39, 0.4);
+}
+
+.btn-aurora > * {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-premium {
+  background: linear-gradient(135deg, #bff227 0%, #9dcc1e 50%, #bff227 100%);
+  background-size: 200% 200%;
+  animation: premium-gradient 3s ease infinite;
+  color: #0b0124;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+@keyframes premium-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.btn-premium:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(191, 242, 39, 0.5);
+}
+
+/* ============================================
+   INPUTS
+   ============================================ */
+
+.input-aurora {
+  background: rgba(42, 37, 89, 0.5);
+  border: 1px solid rgba(191, 242, 39, 0.2);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.input-aurora::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input-aurora:focus {
+  outline: none;
+  border-color: #bff227;
+  box-shadow: 0 0 0 3px rgba(191, 242, 39, 0.2);
+  background: rgba(42, 37, 89, 0.7);
+}
+
+/* ============================================
+   HERO BADGE
+   ============================================ */
+
+.hero-badge {
+  background: rgba(42, 37, 89, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(191, 242, 39, 0.2);
+}
+
+/* ============================================
+   LOADER
+   ============================================ */
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(191, 242, 39, 0.2);
+  border-top-color: #bff227;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   ADDITIONAL UTILITIES
+   ============================================ */
+
+/* Glow effects */
+.glow-sm {
+  box-shadow: 0 0 20px rgba(191, 242, 39, 0.3);
+}
+
+.glow-md {
+  box-shadow: 0 0 40px rgba(191, 242, 39, 0.4);
+}
+
+.glow-lg {
+  box-shadow: 0 0 60px rgba(191, 242, 39, 0.5);
+}
+
+/* Text glow */
+.text-glow {
+  text-shadow: 0 0 20px rgba(191, 242, 39, 0.5);
+}
+
+/* Smooth transitions for all interactive elements */
+a, button {
+  transition: all 0.3s ease;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(191, 242, 39, 0.3);
+  color: white;
+}
