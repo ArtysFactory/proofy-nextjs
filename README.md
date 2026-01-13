@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Proofy Next.js ⚡
 
-## Getting Started
+> Blockchain-based proof of creation platform - Next.js migration
 
-First, run the development server:
+**Proofy** allows creators to timestamp and protect their creations by anchoring file hashes to the **Polygon blockchain**. This is the Next.js version, migrated from Hono.js.
+
+---
+
+## 🚀 Quick Start
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Features
 
-## Learn More
+- 🔗 **Blockchain Anchoring** on Polygon
+- 🎵 **Music Rights Management**
+- 🤖 **AI Context Tracking**
+- 📜 **Certificate Generation** with QR codes
+- 🎨 **Modern UI** with Framer Motion animations
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Next.js 16** + React 19 + TypeScript
+- **Tailwind CSS 4** + Framer Motion
+- **Polygon Blockchain**
+- **JWT Authentication**
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/
+├── api/           # API routes
+├── dashboard/     # User dashboard
+├── proof/[id]/    # Public verification
+└── ...
+
+components/
+├── layout/        # Navbar, Footer
+└── ui/            # UI components
+
+lib/
+├── db.ts          # Database (TODO)
+└── blockchain.ts  # Blockchain (TODO)
+```
+
+---
+
+## 🔧 Environment Variables
+
+Create `.env.local`:
+
+```env
+JWT_SECRET=your-secret
+POLYGON_PRIVATE_KEY=0x...
+POLYGON_RPC_URL=https://polygon-rpc.com
+```
+
+---
+
+## 🚧 TODO
+
+- [ ] Fix Next.js 15+ API route signatures
+- [ ] Implement database connection
+- [ ] Complete blockchain integration
+- [ ] Add form validation
+- [ ] Add tests
+
+---
+
+## 🐛 Known Issues
+
+1. **TypeScript**: API routes need Next.js 15+ param fix
+2. **Database**: Not configured (returns null)
+3. **Blockchain**: Mock responses only
+
+---
+
+## 🔗 Links
+
+- **Original (Hono)**: [github.com/ArtysFactory/proofy](https://github.com/ArtysFactory/proofy)
+- **Smart Contract**: `0x84250d37de73BE3C1BCbac62947350EA088F16B7` (Polygon)
+
+---
+
+**Made with ❤️ by ArtysFactory**
