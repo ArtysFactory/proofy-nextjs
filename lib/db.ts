@@ -8,7 +8,7 @@ export interface Env {
     POLYGON_RPC_URL?: string;
 }
 
-// Get database connection
+// Get database connection (tagged template version)
 export function getDB() {
     const databaseUrl = process.env.DATABASE_URL;
     
@@ -19,10 +19,19 @@ export function getDB() {
     return neon(databaseUrl);
 }
 
-// Helper function to run a single query
-export async function query(sql: string, params: any[] = []) {
-    const db = getDB();
-    return db(sql, params);
+// Helper function to run a query with parameters
+// Uses sql.query() for parameterized queries
+export async function query(sqlText: string, params: any[] = []) {
+    const databaseUrl = process.env.DATABASE_URL;
+    
+    if (!databaseUrl) {
+        throw new Error('DATABASE_URL environment variable is not set');
+    }
+    
+    const sql = neon(databaseUrl);
+    
+    // Use the query method for parameterized queries
+    return sql.query(sqlText, params);
 }
 
 export function getEnv(): Env {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SignJWT } from 'jose';
-import { query } from '@/lib/db';
+import { neon } from '@neondatabase/serverless';
 
 // Helper to hash password using Web Crypto API
 async function hashPassword(password: string): Promise<string> {
@@ -33,11 +33,19 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Email et mot de passe requis' }, { status: 400 });
         }
 
-        // Find user
-        const users = await query(
-            'SELECT id, first_name, last_name, email, password_hash FROM users WHERE email = $1',
-            [email.toLowerCase().trim()]
-        );
+        const databaseUrl = process.env.DATABASE_URL;
+        if (!databaseUrl) {
+            return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+        }
+
+        const sql = neon(databaseUrl);
+
+        // Find user using tagged template
+        const users = await sql`
+            SELECT id, first_name, last_name, email, password_hash 
+            FROM users 
+            WHERE email = ${email.toLowerCase().trim()}
+        `;
 
         if (users.length === 0) {
             return NextResponse.json({ error: 'Email ou mot de passe incorrect' }, { status: 401 });

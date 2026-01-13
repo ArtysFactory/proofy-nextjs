@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { query } from '@/lib/db';
+import { neon } from '@neondatabase/serverless';
 
 export async function GET(
     request: NextRequest,
@@ -8,18 +8,24 @@ export async function GET(
     try {
         const { id } = await params;
 
-        const results = await query(
-            `SELECT 
+        const databaseUrl = process.env.DATABASE_URL;
+        if (!databaseUrl) {
+            return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+        }
+
+        const sql = neon(databaseUrl);
+
+        const results = await sql`
+            SELECT 
                 c.id, c.public_id as "publicId", c.title, c.description, 
                 c.file_hash as "fileHash", c.project_type as "projectType", 
                 c.authors, c.status, c.created_at as "createdAt", 
                 c.tx_hash as "txHash", c.block_number as "blockNumber",
                 u.first_name as "firstName", u.last_name as "lastName", u.email
-             FROM creations c
-             JOIN users u ON c.user_id = u.id
-             WHERE c.public_id = $1`,
-            [id]
-        );
+            FROM creations c
+            JOIN users u ON c.user_id = u.id
+            WHERE c.public_id = ${id}
+        `;
 
         if (results.length === 0) {
             return NextResponse.json({ error: 'Preuve introuvable' }, { status: 404 });

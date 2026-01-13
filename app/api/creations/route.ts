@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
-import { query } from '@/lib/db';
+import { neon } from '@neondatabase/serverless';
 
 async function verifyToken(request: NextRequest) {
     const authHeader = request.headers.get('Authorization');
@@ -28,15 +28,21 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
         }
 
-        const creations = await query(
-            `SELECT id, public_id as "publicId", title, file_hash as "fileHash", 
-                    project_type as "projectType", status, created_at as "createdAt", 
-                    tx_hash as "txHash", block_number as "blockNumber"
-             FROM creations
-             WHERE user_id = $1
-             ORDER BY created_at DESC`,
-            [payload.userId]
-        );
+        const databaseUrl = process.env.DATABASE_URL;
+        if (!databaseUrl) {
+            return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+        }
+
+        const sql = neon(databaseUrl);
+
+        const creations = await sql`
+            SELECT id, public_id as "publicId", title, file_hash as "fileHash", 
+                   project_type as "projectType", status, created_at as "createdAt", 
+                   tx_hash as "txHash", block_number as "blockNumber"
+            FROM creations
+            WHERE user_id = ${payload.userId}
+            ORDER BY created_at DESC
+        `;
 
         return NextResponse.json({ creations: creations || [] });
     } catch (error: any) {
@@ -64,29 +70,24 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        const databaseUrl = process.env.DATABASE_URL;
+        if (!databaseUrl) {
+            return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+        }
+
+        const sql = neon(databaseUrl);
+
         // Generate unique public ID
         const publicId = generatePublicId();
 
         // Insert creation
-        await query(
-            `INSERT INTO creations (
+        await sql`
+            INSERT INTO creations (
                 user_id, public_id, title, description, file_hash, project_type, 
                 authors, status, created_at, updated_at
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', NOW(), NOW())`,
-            [
-                payload.userId,
-                publicId,
-                title,
-                description || '',
-                fileHash,
-                projectType,
-                authors || ''
-            ]
-        );
-
-        // TODO: Trigger blockchain anchoring in background
-        // For now, we'll return success and the anchoring can happen async
+            VALUES (${payload.userId}, ${publicId}, ${title}, ${description || ''}, ${fileHash}, ${projectType}, ${authors || ''}, 'pending', NOW(), NOW())
+        `;
 
         return NextResponse.json(
             {

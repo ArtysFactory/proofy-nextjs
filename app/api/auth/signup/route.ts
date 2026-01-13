@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { query } from '@/lib/db';
+import { neon } from '@neondatabase/serverless';
 
 // Helper to hash password using Web Crypto API
 async function hashPassword(password: string): Promise<string> {
@@ -32,11 +32,17 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Email invalide' }, { status: 400 });
         }
 
+        const databaseUrl = process.env.DATABASE_URL;
+        if (!databaseUrl) {
+            return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+        }
+
+        const sql = neon(databaseUrl);
+
         // Check if email already exists
-        const existingUsers = await query(
-            'SELECT id FROM users WHERE email = $1',
-            [email.toLowerCase().trim()]
-        );
+        const existingUsers = await sql`
+            SELECT id FROM users WHERE email = ${email.toLowerCase().trim()}
+        `;
 
         if (existingUsers.length > 0) {
             return NextResponse.json({ error: 'Cet email est déjà utilisé' }, { status: 400 });
@@ -46,17 +52,10 @@ export async function POST(request: NextRequest) {
         const passwordHash = await hashPassword(password);
 
         // Create user
-        await query(
-            `INSERT INTO users (first_name, last_name, country, email, password_hash, email_verified, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, $5, false, NOW(), NOW())`,
-            [
-                firstName.trim(),
-                lastName.trim(),
-                country,
-                email.toLowerCase().trim(),
-                passwordHash
-            ]
-        );
+        await sql`
+            INSERT INTO users (first_name, last_name, country, email, password_hash, email_verified, created_at, updated_at)
+            VALUES (${firstName.trim()}, ${lastName.trim()}, ${country}, ${email.toLowerCase().trim()}, ${passwordHash}, false, NOW(), NOW())
+        `;
 
         return NextResponse.json(
             {
