@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -17,6 +17,11 @@ export default function SignupPage() {
     });
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -63,6 +68,19 @@ export default function SignupPage() {
         }
     };
 
+    if (!isMounted) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="aurora-bg">
+                    <div className="aurora-stars"></div>
+                    <div className="aurora-layer"></div>
+                    <div className="aurora-layer aurora-layer-2"></div>
+                </div>
+                <div className="loader"></div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center px-4 py-12">
             {/* Aurora Background */}
@@ -72,12 +90,14 @@ export default function SignupPage() {
                 <div className="aurora-layer aurora-layer-2"></div>
             </div>
 
-            <motion.div
-                className="w-full max-w-2xl relative z-10"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-            >
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key="signup-form"
+                    className="w-full max-w-2xl relative z-10"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
                 {/* Logo */}
                 <Link href="/" className="flex items-center justify-center gap-3 mb-8">
                     <div className="relative w-12 h-12">
@@ -262,6 +282,7 @@ export default function SignupPage() {
                     </Link>
                 </div>
             </motion.div>
+            </AnimatePresence>
         </div>
     );
 }

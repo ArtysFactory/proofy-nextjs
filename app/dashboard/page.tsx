@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -21,8 +21,11 @@ export default function DashboardPage() {
     const [user, setUser] = useState<any>(null);
     const [creations, setCreations] = useState<Creation[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
+        setIsMounted(true);
+        
         // Check authentication
         const token = localStorage.getItem('token');
         const userData = localStorage.getItem('user');
@@ -62,7 +65,27 @@ export default function DashboardPage() {
         router.push('/');
     };
 
-    if (isLoading) {
+    // Animation variants
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+            },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.4, ease: 'easeOut' },
+        },
+    };
+
+    if (isLoading || !isMounted) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="aurora-bg">
@@ -85,7 +108,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-[#bff227]/10">
+            <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-[#bff227]/10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <Link href="/" className="flex items-center gap-3">
@@ -117,181 +140,170 @@ export default function DashboardPage() {
 
             <main className="relative z-10 pt-24 pb-12 px-4">
                 <div className="max-w-7xl mx-auto">
-                    {/* Header */}
-                    <motion.div
-                        className="mb-12"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-                            Tableau de bord
-                        </h1>
-                        <p className="text-gray-400 text-lg">
-                            Gérez vos créations et suivez leur statut sur la blockchain
-                        </p>
-                    </motion.div>
-
-                    {/* Stats Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <AnimatePresence mode="wait">
                         <motion.div
-                            className="glass-card rounded-2xl p-6"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
+                            key="dashboard-content"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
                         >
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-gray-400">Total créations</span>
-                                <i className="fas fa-file text-[#bff227]"></i>
-                            </div>
-                            <div className="font-display text-3xl font-bold text-white">
-                                {creations.length}
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            className="glass-card rounded-2xl p-6"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                        >
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-gray-400">Confirmées</span>
-                                <i className="fas fa-check-circle text-emerald-400"></i>
-                            </div>
-                            <div className="font-display text-3xl font-bold text-white">
-                                {creations.filter((c) => c.status === 'confirmed').length}
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            className="glass-card rounded-2xl p-6"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
-                        >
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-gray-400">En attente</span>
-                                <i className="fas fa-clock text-amber-400"></i>
-                            </div>
-                            <div className="font-display text-3xl font-bold text-white">
-                                {creations.filter((c) => c.status === 'pending').length}
-                            </div>
-                        </motion.div>
-                    </div>
-
-                    {/* CTA Button */}
-                    <motion.div
-                        className="mb-12"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                    >
-                        <Link
-                            href="/dashboard/new"
-                            className="inline-flex items-center gap-3 btn-aurora text-white font-semibold px-8 py-4 rounded-2xl text-lg"
-                        >
-                            <i className="fas fa-plus"></i>
-                            Nouvelle création
-                        </Link>
-                    </motion.div>
-
-                    {/* Creations List */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.5 }}
-                    >
-                        <h2 className="font-display text-2xl font-bold text-white mb-6">
-                            Mes créations
-                        </h2>
-
-                        {creations.length === 0 ? (
-                            <div className="glass-card rounded-2xl p-12 text-center">
-                                <i className="fas fa-folder-open text-6xl text-gray-600 mb-4"></i>
-                                <p className="text-gray-400 text-lg mb-6">
-                                    Vous n'avez pas encore de création enregistrée
+                            {/* Header */}
+                            <motion.div className="mb-12" variants={itemVariants}>
+                                <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
+                                    Tableau de bord
+                                </h1>
+                                <p className="text-gray-400 text-lg">
+                                    Gérez vos créations et suivez leur statut sur la blockchain
                                 </p>
+                            </motion.div>
+
+                            {/* Stats Cards */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                                <motion.div
+                                    className="glass-card rounded-2xl p-6"
+                                    variants={itemVariants}
+                                >
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-gray-400">Total créations</span>
+                                        <i className="fas fa-file text-[#bff227]"></i>
+                                    </div>
+                                    <div className="font-display text-3xl font-bold text-white">
+                                        {creations.length}
+                                    </div>
+                                </motion.div>
+
+                                <motion.div
+                                    className="glass-card rounded-2xl p-6"
+                                    variants={itemVariants}
+                                >
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-gray-400">Confirmées</span>
+                                        <i className="fas fa-check-circle text-emerald-400"></i>
+                                    </div>
+                                    <div className="font-display text-3xl font-bold text-white">
+                                        {creations.filter((c) => c.status === 'confirmed').length}
+                                    </div>
+                                </motion.div>
+
+                                <motion.div
+                                    className="glass-card rounded-2xl p-6"
+                                    variants={itemVariants}
+                                >
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-gray-400">En attente</span>
+                                        <i className="fas fa-clock text-amber-400"></i>
+                                    </div>
+                                    <div className="font-display text-3xl font-bold text-white">
+                                        {creations.filter((c) => c.status === 'pending').length}
+                                    </div>
+                                </motion.div>
+                            </div>
+
+                            {/* CTA Button */}
+                            <motion.div className="mb-12" variants={itemVariants}>
                                 <Link
                                     href="/dashboard/new"
-                                    className="inline-flex items-center gap-2 btn-aurora text-white font-semibold px-6 py-3 rounded-xl"
+                                    className="inline-flex items-center gap-3 btn-aurora text-white font-semibold px-8 py-4 rounded-2xl text-lg"
                                 >
                                     <i className="fas fa-plus"></i>
-                                    Créer ma première preuve
+                                    Nouvelle création
                                 </Link>
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                {creations.map((creation, index) => (
-                                    <motion.div
-                                        key={creation.id}
-                                        className="glass-card rounded-2xl p-6 hover:border-[#bff227]/40 transition-all"
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 0.4, delay: index * 0.1 }}
-                                    >
-                                        <div className="flex items-start justify-between">
-                                            <div className="flex-1">
-                                                <h3 className="font-display text-xl font-bold text-white mb-2">
-                                                    {creation.title}
-                                                </h3>
-                                                <div className="flex flex-wrap gap-3 text-sm text-gray-400 mb-3">
-                                                    <span>
-                                                        <i className="fas fa-tag mr-2"></i>
-                                                        {creation.projectType}
-                                                    </span>
-                                                    <span>
-                                                        <i className="fas fa-calendar mr-2"></i>
-                                                        {new Date(creation.createdAt).toLocaleDateString('fr-FR')}
-                                                    </span>
-                                                </div>
-                                                <div className="hash-display text-xs">
-                                                    {creation.fileHash}
-                                                </div>
-                                            </div>
-                                            <div className="ml-4">
-                                                <span
-                                                    className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${creation.status === 'confirmed'
-                                                            ? 'status-confirmed'
-                                                            : creation.status === 'pending'
-                                                                ? 'status-pending'
-                                                                : 'status-failed'
-                                                        }`}
-                                                >
-                                                    {creation.status === 'confirmed'
-                                                        ? 'Confirmé'
-                                                        : creation.status === 'pending'
-                                                            ? 'En attente'
-                                                            : 'Échec'}
-                                                </span>
-                                            </div>
-                                        </div>
+                            </motion.div>
 
-                                        <div className="mt-4 flex gap-3">
-                                            <Link
-                                                href={`/proof/${creation.publicId}`}
-                                                className="text-[#bff227] hover:underline text-sm"
+                            {/* Creations List */}
+                            <motion.div variants={itemVariants}>
+                                <h2 className="font-display text-2xl font-bold text-white mb-6">
+                                    Mes créations
+                                </h2>
+
+                                {creations.length === 0 ? (
+                                    <div className="glass-card rounded-2xl p-12 text-center">
+                                        <i className="fas fa-folder-open text-6xl text-gray-600 mb-4"></i>
+                                        <p className="text-gray-400 text-lg mb-6">
+                                            Vous n'avez pas encore de création enregistrée
+                                        </p>
+                                        <Link
+                                            href="/dashboard/new"
+                                            className="inline-flex items-center gap-2 btn-aurora text-white font-semibold px-6 py-3 rounded-xl"
+                                        >
+                                            <i className="fas fa-plus"></i>
+                                            Créer ma première preuve
+                                        </Link>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-4">
+                                        {creations.map((creation, index) => (
+                                            <motion.div
+                                                key={creation.id}
+                                                className="glass-card rounded-2xl p-6 hover:border-[#bff227]/40 transition-all"
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ duration: 0.4, delay: index * 0.1 }}
                                             >
-                                                <i className="fas fa-eye mr-2"></i>
-                                                Voir la preuve
-                                            </Link>
-                                            {creation.txHash && (
-                                                <a
-                                                    href={`https://polygonscan.com/tx/${creation.txHash}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-[#bff227] hover:underline text-sm"
-                                                >
-                                                    <i className="fas fa-external-link-alt mr-2"></i>
-                                                    Voir sur Polygonscan
-                                                </a>
-                                            )}
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        )}
-                    </motion.div>
+                                                <div className="flex items-start justify-between">
+                                                    <div className="flex-1">
+                                                        <h3 className="font-display text-xl font-bold text-white mb-2">
+                                                            {creation.title}
+                                                        </h3>
+                                                        <div className="flex flex-wrap gap-3 text-sm text-gray-400 mb-3">
+                                                            <span>
+                                                                <i className="fas fa-tag mr-2"></i>
+                                                                {creation.projectType}
+                                                            </span>
+                                                            <span>
+                                                                <i className="fas fa-calendar mr-2"></i>
+                                                                {new Date(creation.createdAt).toLocaleDateString('fr-FR')}
+                                                            </span>
+                                                        </div>
+                                                        <div className="text-xs font-mono text-gray-500 bg-[#0b0124]/50 p-2 rounded-lg truncate">
+                                                            {creation.fileHash}
+                                                        </div>
+                                                    </div>
+                                                    <div className="ml-4">
+                                                        <span
+                                                            className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${creation.status === 'confirmed'
+                                                                    ? 'status-confirmed'
+                                                                    : creation.status === 'pending'
+                                                                        ? 'status-pending'
+                                                                        : 'status-failed'
+                                                                }`}
+                                                        >
+                                                            {creation.status === 'confirmed'
+                                                                ? 'Confirmé'
+                                                                : creation.status === 'pending'
+                                                                    ? 'En attente'
+                                                                    : 'Échec'}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div className="mt-4 flex gap-3">
+                                                    <Link
+                                                        href={`/proof/${creation.publicId}`}
+                                                        className="text-[#bff227] hover:underline text-sm"
+                                                    >
+                                                        <i className="fas fa-eye mr-2"></i>
+                                                        Voir la preuve
+                                                    </Link>
+                                                    {creation.txHash && (
+                                                        <a
+                                                            href={`https://polygonscan.com/tx/${creation.txHash}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-[#bff227] hover:underline text-sm"
+                                                        >
+                                                            <i className="fas fa-external-link-alt mr-2"></i>
+                                                            Voir sur Polygonscan
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                )}
+                            </motion.div>
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
             </main>
         </div>

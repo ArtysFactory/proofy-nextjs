@@ -332,6 +332,40 @@
     border: 1px solid rgba(239, 68, 68, 0.3);
   }
 
+  /* Upload Zone */
+  .upload-zone {
+    border: 2px dashed rgba(191, 242, 39, 0.3);
+    border-radius: 1.5rem;
+    padding: 3rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(42, 37, 89, 0.3);
+  }
+
+  .upload-zone:hover {
+    border-color: #bff227;
+    background: rgba(42, 37, 89, 0.5);
+  }
+
+  /* Hash Display */
+  .hash-display {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
+    background: rgba(11, 1, 36, 0.6);
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(191, 242, 39, 0.1);
+    word-break: break-all;
+    color: rgba(191, 242, 39, 0.8);
+  }
+
+  /* Glass (simple alias) */
+  .glass {
+    background: rgba(42, 37, 89, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
   /* Loader */
   .loader {
     width: 48px;
@@ -422,4 +456,66 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ============================================
+   UTILITY ANIMATIONS
+   ============================================ */
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-on-scroll {
+  animation: fade-in-up 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Ensure Framer Motion elements are visible */
+.motion-safe\:animate-none {
+  animation: none !important;
+}
+
+/* Force visibility for motion elements that might be stuck */
+[style*="opacity: 0"][style*="transform"] {
+  opacity: 1 !important;
+  transform: none !important;
 }

@@ -1,13 +1,14 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function NewCreationPage() {
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [isMounted, setIsMounted] = useState(false);
 
     const [formData, setFormData] = useState({
         title: '',
@@ -21,6 +22,10 @@ export default function NewCreationPage() {
     const [isHashing, setIsHashing] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     // Calculate SHA-256 hash of file
     const hashFile = async (file: File) => {
@@ -106,6 +111,39 @@ export default function NewCreationPage() {
         }
     };
 
+    // Animation variants
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+            },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.4, ease: 'easeOut' },
+        },
+    };
+
+    if (!isMounted) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="aurora-bg">
+                    <div className="aurora-stars"></div>
+                    <div className="aurora-layer"></div>
+                    <div className="aurora-layer aurora-layer-2"></div>
+                </div>
+                <div className="loader"></div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen">
             {/* Aurora Background */}
@@ -116,11 +154,11 @@ export default function NewCreationPage() {
             </div>
 
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-[#bff227]/10">
+            <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-[#bff227]/10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <Link href="/dashboard" className="flex items-center gap-3">
-                            <i className="fas fa-arrow-left text-gray-400 hover:text-white"></i>
+                            <i className="fas fa-arrow-left text-gray-400 hover:text-white transition-colors"></i>
                             <span className="font-display font-bold text-xl bg-gradient-to-r from-[#bff227] to-white bg-clip-text text-transparent">
                                 Proofy
                             </span>
@@ -131,201 +169,210 @@ export default function NewCreationPage() {
 
             <main className="relative z-10 pt-24 pb-12 px-4">
                 <div className="max-w-4xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-                            Nouvelle création
-                        </h1>
-                        <p className="text-gray-400 text-lg mb-12">
-                            Protégez votre création sur la blockchain Polygon
-                        </p>
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key="new-creation-content"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
+                            <motion.div variants={itemVariants}>
+                                <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
+                                    Nouvelle création
+                                </h1>
+                                <p className="text-gray-400 text-lg mb-12">
+                                    Protégez votre création sur la blockchain Polygon
+                                </p>
+                            </motion.div>
 
-                        {error && (
-                            <div className="mb-6 p-4 glass-card border-red-500/30 text-red-400 rounded-xl">
-                                <i className="fas fa-exclamation-circle mr-2"></i>
-                                {error}
-                            </div>
-                        )}
-
-                        <form onSubmit={handleSubmit} className="space-y-8">
-                            {/* File Upload Zone */}
-                            <div className="glass-card rounded-3xl p-8">
-                                <h2 className="font-display text-xl font-bold text-white mb-4">
-                                    1. Fichier à protéger
-                                </h2>
-
-                                <div
-                                    className="upload-zone"
-                                    onDrop={handleDrop}
-                                    onDragOver={(e) => e.preventDefault()}
-                                    onClick={() => fileInputRef.current?.click()}
+                            {error && (
+                                <motion.div
+                                    className="mb-6 p-4 glass-card border-red-500/30 text-red-400 rounded-xl"
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
                                 >
-                                    <input
-                                        ref={fileInputRef}
-                                        type="file"
-                                        onChange={handleFileChange}
-                                        className="hidden"
-                                    />
+                                    <i className="fas fa-exclamation-circle mr-2"></i>
+                                    {error}
+                                </motion.div>
+                            )}
 
-                                    {!file ? (
-                                        <>
-                                            <i className="fas fa-cloud-upload-alt text-6xl text-[#bff227] mb-4"></i>
-                                            <p className="text-white text-lg font-medium mb-2">
-                                                Glissez-déposez votre fichier ici
-                                            </p>
-                                            <p className="text-gray-400 mb-4">
-                                                ou cliquez pour sélectionner
-                                            </p>
-                                            <p className="text-gray-500 text-sm">
-                                                Tous types de fichiers acceptés : musique, images, vidéos, documents...
-                                            </p>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <i className="fas fa-file-alt text-6xl text-[#bff227] mb-4"></i>
-                                            <p className="text-white text-lg font-medium mb-2">{file.name}</p>
-                                            <p className="text-gray-400 mb-4">
-                                                {(file.size / 1024 / 1024).toFixed(2)} MB
-                                            </p>
-                                            {isHashing ? (
-                                                <div className="flex items-center gap-2 text-[#bff227]">
-                                                    <div className="loader w-4 h-4"></div>
-                                                    <span>Calcul du hash SHA-256...</span>
-                                                </div>
-                                            ) : (
-                                                <div className="hash-display text-xs max-w-md mx-auto">
-                                                    {fileHash}
-                                                </div>
-                                            )}
-                                            <button
-                                                type="button"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setFile(null);
-                                                    setFileHash('');
-                                                }}
-                                                className="mt-4 text-gray-400 hover:text-white text-sm"
-                                            >
-                                                <i className="fas fa-times mr-2"></i>
-                                                Changer de fichier
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
+                            <form onSubmit={handleSubmit} className="space-y-8">
+                                {/* File Upload Zone */}
+                                <motion.div className="glass-card rounded-3xl p-8" variants={itemVariants}>
+                                    <h2 className="font-display text-xl font-bold text-white mb-4">
+                                        1. Fichier à protéger
+                                    </h2>
 
-                            {/* Metadata Form */}
-                            <div className="glass-card rounded-3xl p-8">
-                                <h2 className="font-display text-xl font-bold text-white mb-6">
-                                    2. Informations
-                                </h2>
-
-                                <div className="space-y-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                                            Titre de la création <span className="text-red-400">*</span>
-                                        </label>
+                                    <div
+                                        className="upload-zone"
+                                        onDrop={handleDrop}
+                                        onDragOver={(e) => e.preventDefault()}
+                                        onClick={() => fileInputRef.current?.click()}
+                                    >
                                         <input
-                                            type="text"
-                                            required
-                                            value={formData.title}
-                                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                            className="input-aurora w-full px-4 py-3 rounded-xl text-white"
-                                            placeholder="Ma chanson incroyable"
+                                            ref={fileInputRef}
+                                            type="file"
+                                            onChange={handleFileChange}
+                                            className="hidden"
                                         />
-                                    </div>
 
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                                            Description
-                                        </label>
-                                        <textarea
-                                            value={formData.description}
-                                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                            className="input-aurora w-full px-4 py-3 rounded-xl text-white h-32 resize-none"
-                                            placeholder="Décrivez votre création..."
-                                        />
+                                        {!file ? (
+                                            <>
+                                                <i className="fas fa-cloud-upload-alt text-6xl text-[#bff227] mb-4"></i>
+                                                <p className="text-white text-lg font-medium mb-2">
+                                                    Glissez-déposez votre fichier ici
+                                                </p>
+                                                <p className="text-gray-400 mb-4">
+                                                    ou cliquez pour sélectionner
+                                                </p>
+                                                <p className="text-gray-500 text-sm">
+                                                    Tous types de fichiers acceptés : musique, images, vidéos, documents...
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <i className="fas fa-file-alt text-6xl text-[#bff227] mb-4"></i>
+                                                <p className="text-white text-lg font-medium mb-2">{file.name}</p>
+                                                <p className="text-gray-400 mb-4">
+                                                    {(file.size / 1024 / 1024).toFixed(2)} MB
+                                                </p>
+                                                {isHashing ? (
+                                                    <div className="flex items-center justify-center gap-2 text-[#bff227]">
+                                                        <div className="loader w-4 h-4"></div>
+                                                        <span>Calcul du hash SHA-256...</span>
+                                                    </div>
+                                                ) : (
+                                                    <div className="hash-display text-xs max-w-md mx-auto">
+                                                        {fileHash}
+                                                    </div>
+                                                )}
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setFile(null);
+                                                        setFileHash('');
+                                                    }}
+                                                    className="mt-4 text-gray-400 hover:text-white text-sm transition-colors"
+                                                >
+                                                    <i className="fas fa-times mr-2"></i>
+                                                    Changer de fichier
+                                                </button>
+                                            </>
+                                        )}
                                     </div>
+                                </motion.div>
 
-                                    <div className="grid md:grid-cols-2 gap-6">
+                                {/* Metadata Form */}
+                                <motion.div className="glass-card rounded-3xl p-8" variants={itemVariants}>
+                                    <h2 className="font-display text-xl font-bold text-white mb-6">
+                                        2. Informations
+                                    </h2>
+
+                                    <div className="space-y-6">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-2">
-                                                Type de projet <span className="text-red-400">*</span>
-                                            </label>
-                                            <select
-                                                required
-                                                value={formData.projectType}
-                                                onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-                                                className="input-aurora w-full px-4 py-3 rounded-xl text-white"
-                                            >
-                                                <option value="music">Musique</option>
-                                                <option value="image">Image</option>
-                                                <option value="video">Vidéo</option>
-                                                <option value="document">Document</option>
-                                                <option value="code">Code source</option>
-                                                <option value="other">Autre</option>
-                                            </select>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-300 mb-2">
-                                                Auteur(s)
+                                                Titre de la création <span className="text-red-400">*</span>
                                             </label>
                                             <input
                                                 type="text"
-                                                value={formData.authors}
-                                                onChange={(e) => setFormData({ ...formData, authors: e.target.value })}
+                                                required
+                                                value={formData.title}
+                                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                                 className="input-aurora w-full px-4 py-3 rounded-xl text-white"
-                                                placeholder="John Doe, Jane Smith"
+                                                placeholder="Ma chanson incroyable"
                                             />
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            {/* Submit */}
-                            <div className="glass-card rounded-3xl p-8">
-                                <div className="flex items-center gap-4 mb-6">
-                                    <div className="w-12 h-12 bg-gradient-to-br from-[#bff227]/20 to-purple-600/10 rounded-2xl flex items-center justify-center">
-                                        <i className="fas fa-info-circle text-[#bff227]"></i>
-                                    </div>
-                                    <div>
-                                        <h3 className="font-display font-bold text-white mb-1">
-                                            Prêt à ancrer sur la blockchain
-                                        </h3>
-                                        <p className="text-gray-400 text-sm">
-                                            Coût estimé : <span className="text-[#bff227]">~0.001$</span> • Confirmation : <span className="text-white">&lt;30s</span>
-                                        </p>
-                                    </div>
-                                </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                                Description
+                                            </label>
+                                            <textarea
+                                                value={formData.description}
+                                                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                                className="input-aurora w-full px-4 py-3 rounded-xl text-white h-32 resize-none"
+                                                placeholder="Décrivez votre création..."
+                                            />
+                                        </div>
 
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting || isHashing || !file || !fileHash}
-                                    className="w-full btn-aurora font-semibold py-4 rounded-xl flex items-center justify-center gap-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {isSubmitting ? (
-                                        <>
-                                            <div className="loader w-5 h-5"></div>
-                                            Enregistrement en cours...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <i className="fas fa-shield-alt"></i>
-                                            Protéger ma création
-                                        </>
-                                    )}
-                                </button>
+                                        <div className="grid md:grid-cols-2 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                                    Type de projet <span className="text-red-400">*</span>
+                                                </label>
+                                                <select
+                                                    required
+                                                    value={formData.projectType}
+                                                    onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
+                                                    className="input-aurora w-full px-4 py-3 rounded-xl text-white"
+                                                >
+                                                    <option value="music">Musique</option>
+                                                    <option value="image">Image</option>
+                                                    <option value="video">Vidéo</option>
+                                                    <option value="document">Document</option>
+                                                    <option value="code">Code source</option>
+                                                    <option value="other">Autre</option>
+                                                </select>
+                                            </div>
 
-                                <p className="text-gray-500 text-xs text-center mt-4">
-                                    En cliquant, vous acceptez que le hash SHA-256 de votre fichier soit enregistré sur la blockchain Polygon
-                                </p>
-                            </div>
-                        </form>
-                    </motion.div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                                    Auteur(s)
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.authors}
+                                                    onChange={(e) => setFormData({ ...formData, authors: e.target.value })}
+                                                    className="input-aurora w-full px-4 py-3 rounded-xl text-white"
+                                                    placeholder="John Doe, Jane Smith"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+
+                                {/* Submit */}
+                                <motion.div className="glass-card rounded-3xl p-8" variants={itemVariants}>
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <div className="w-12 h-12 bg-gradient-to-br from-[#bff227]/20 to-purple-600/10 rounded-2xl flex items-center justify-center">
+                                            <i className="fas fa-info-circle text-[#bff227]"></i>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-display font-bold text-white mb-1">
+                                                Prêt à ancrer sur la blockchain
+                                            </h3>
+                                            <p className="text-gray-400 text-sm">
+                                                Coût estimé : <span className="text-[#bff227]">~0.001$</span> • Confirmation : <span className="text-white">&lt;30s</span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting || isHashing || !file || !fileHash}
+                                        className="w-full btn-aurora font-semibold py-4 rounded-xl flex items-center justify-center gap-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <div className="loader w-5 h-5"></div>
+                                                Enregistrement en cours...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <i className="fas fa-shield-alt"></i>
+                                                Protéger ma création
+                                            </>
+                                        )}
+                                    </button>
+
+                                    <p className="text-gray-500 text-xs text-center mt-4">
+                                        En cliquant, vous acceptez que le hash SHA-256 de votre fichier soit enregistré sur la blockchain Polygon
+                                    </p>
+                                </motion.div>
+                            </form>
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
             </main>
         </div>
