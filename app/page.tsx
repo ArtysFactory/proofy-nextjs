@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
+import NeonFlow from '@/components/ui/NeonFlow';
 
 export default function HomePage() {
     const heroRef = useRef(null);
@@ -46,47 +47,36 @@ export default function HomePage() {
             <Navbar />
 
             <main className="relative z-10 pt-16">
-                {/* Hero Section with Parallax */}
+                {/* Hero Section with Neon Flow */}
                 <section
                     ref={heroRef}
-                    className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden"
+                    className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden bg-black"
                 >
-                    {/* Background Grid */}
-                    <div className="hero-grid"></div>
-
-                    {/* Animated Orbs with Parallax - Only render on client */}
+                    {/* Neon Flow Background */}
                     {isMounted && (
-                        <>
-                            <motion.div className="hero-orb hero-orb-1" style={{ y: y1 }} />
-                            <motion.div className="hero-orb hero-orb-2" style={{ y: y2 }} />
-                            <motion.div className="hero-orb hero-orb-3" style={{ y: y1 }} />
-                        </>
+                        <NeonFlow
+                            backgroundColor="#000000"
+                            lineColor="#bff227"
+                            speed={0.6}
+                            lineCount={35}
+                            lineWidth={2.5}
+                            blur={6}
+                        />
                     )}
 
-                    {/* Rotating Rings */}
-                    <div className="hero-ring hero-ring-1"></div>
-                    <div className="hero-ring hero-ring-2"></div>
-                    <div className="hero-ring hero-ring-3"></div>
+                    {/* Subtle gradient overlay for depth */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60 pointer-events-none z-[1]" />
 
-                    {/* Floating Particles */}
-                    {[10, 25, 45, 65, 80, 90].map((left, i) => (
-                        <div
-                            key={i}
-                            className="particle"
-                            style={{
-                                left: `${left}%`,
-                                top: 0,
-                                animation: `particle-float ${12 + i * 3}s linear infinite`,
-                                animationDelay: `${-i * 3}s`,
-                            }}
-                        />
-                    ))}
+                    {/* Subtle center glow */}
+                    <div className="absolute inset-0 bg-radial-gradient pointer-events-none z-[1]" style={{
+                        background: 'radial-gradient(ellipse at 50% 50%, rgba(191, 242, 39, 0.08) 0%, transparent 50%)'
+                    }} />
 
                     {/* Main Content */}
                     <AnimatePresence>
                         {isMounted && (
                             <motion.div
-                                className="max-w-6xl mx-auto text-center relative z-10"
+                                className="max-w-6xl mx-auto text-center relative z-10 pt-8"
                                 variants={containerVariants}
                                 initial="hidden"
                                 animate="visible"
@@ -204,7 +194,7 @@ export default function HomePage() {
 
                     {/* Fallback for SSR - Show content without animations */}
                     {!isMounted && (
-                        <div className="max-w-6xl mx-auto text-center relative z-10">
+                        <div className="max-w-6xl mx-auto text-center relative z-10 pt-8">
                             <div className="inline-flex items-center gap-3 hero-badge badge-shimmer px-5 py-2.5 rounded-full mb-10">
                                 <div className="relative flex items-center justify-center">
                                     <div className="w-2.5 h-2.5 bg-[#bff227] rounded-full"></div>
@@ -231,7 +221,7 @@ export default function HomePage() {
                 </section>
 
                 {/* Features Section */}
-                <section id="features" className="py-24 px-4 relative">
+                <section id="features" className="py-24 px-4 relative bg-black">
                     <div className="max-w-6xl mx-auto">
                         <motion.div
                             className="text-center mb-16"
@@ -270,8 +260,8 @@ export default function HomePage() {
                 </section>
 
                 {/* How it Works */}
-                <section id="how-it-works" className="py-24 px-4 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/5 to-transparent"></div>
+                <section id="how-it-works" className="py-24 px-4 relative overflow-hidden bg-black">
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#bff227]/5 to-transparent"></div>
 
                     <div className="max-w-6xl mx-auto relative z-10">
                         <motion.div
@@ -311,7 +301,7 @@ export default function HomePage() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="py-24 px-4">
+                <section className="py-24 px-4 bg-black">
                     <div className="max-w-4xl mx-auto">
                         <motion.div
                             className="glass-card rounded-3xl p-12 text-center relative overflow-hidden"
