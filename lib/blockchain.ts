@@ -9,7 +9,10 @@ import { privateKeyToAccount } from 'viem/accounts'
 import { polygon } from 'viem/chains'
 
 // Smart Contract Address (deployed on Polygon Mainnet)
-export const PROOFY_REGISTRY_ADDRESS = '0x84250d37de73BE3C1BCbac62947350EA088F16B7' as const
+// NEW CONTRACT - January 2026 - Registrar: 0x9dA6a4027a8a6871Bdf43Cb94CC0E73E902c863d
+export const PROOFY_REGISTRY_ADDRESS = '0x33623122f8B30c6988bb27Dd865e95A38Fe0Ef48' as const
+
+// Old contract (for reference): 0x84250d37de73BE3C1BCbac62947350EA088F16B7
 
 // Smart Contract ABI (only the functions we need)
 export const PROOFY_REGISTRY_ABI = [
