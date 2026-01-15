@@ -347,32 +347,126 @@ export async function GET(
             background: #9b5de5;
         }
         
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #bff227 0%, #9dcc1e 100%);
+            color: #0b0124;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 20px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(191, 242, 39, 0.3);
+        }
+        
+        .actions-bar {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid rgba(191, 242, 39, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(191, 242, 39, 0.5);
+        }
+        
         @media print {
             body {
-                background: #fff;
-                padding: 20px;
+                background: #fff !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             .certificate {
                 border: 2px solid #0b0124;
                 box-shadow: none;
+                border-radius: 0;
             }
             .header {
-                background: #f8f8f8;
+                background: #f0f7d4 !important;
+                -webkit-print-color-adjust: exact !important;
             }
             .logo-text {
                 color: #0b0124 !important;
                 -webkit-text-fill-color: #0b0124 !important;
             }
-            .certificate-subtitle, .creation-title, .info-value, .hash-value, .blockchain-value {
+            .certificate-title {
                 color: #0b0124 !important;
             }
+            .certificate-subtitle, .creation-title, .info-value, .hash-value, .blockchain-value, .qr-url {
+                color: #0b0124 !important;
+            }
+            .info-label, .hash-title, .blockchain-title, .blockchain-label {
+                color: #555 !important;
+            }
             .status-badge {
-                background: #bff227;
+                background: #bff227 !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            .info-card, .hash-section, .blockchain-section, .qr-section {
+                background: #f9f9f9 !important;
+                border-color: #ddd !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            .hash-value {
+                background: #fff !important;
+                border-left-color: #bff227 !important;
+            }
+            .polygon-badge {
+                background: #8247e5 !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            .footer {
+                background: #f5f5f5 !important;
+            }
+            .footer-text {
+                color: #666 !important;
+            }
+            .actions-bar, .download-btn, .back-btn {
+                display: none !important;
             }
         }
     </style>
 </head>
 <body>
+    <div class="actions-bar">
+        <button onclick="window.print()" class="download-btn">
+            📥 Télécharger en PDF
+        </button>
+        <a href="https://proofy-nextjs.vercel.app/dashboard" class="back-btn">
+            ← Retour au tableau de bord
+        </a>
+    </div>
+    
     <div class="certificate">
         <div class="header">
             <div class="logo">
