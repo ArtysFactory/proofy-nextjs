@@ -4,31 +4,54 @@
 // ============================================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { query } from '@/lib/db';
-import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
+import { neon } from '@neondatabase/serverless';
 
-interface JwtPayload {
-  userId: number;
-  email: string;
+// Verify JWT token using jose (Edge-compatible)
+async function verifyToken(request: NextRequest) {
+  const authHeader = request.headers.get('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return null;
+  }
+
+  try {
+    const token = authHeader.replace('Bearer ', '');
+    const jwtSecret = process.env.JWT_SECRET || 'proofy-prod-secret-artys-2024';
+    const secretKey = new TextEncoder().encode(jwtSecret);
+
+    const { payload } = await jwtVerify(token, secretKey);
+    return payload as { userId: number; email: string };
+  } catch (error) {
+    return null;
+  }
 }
 
 // GET - Récupérer les droits d'une création
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const publicId = params.id;
+    const { id: publicId } = await params;
+    
+    const databaseUrl = process.env.DATABASE_URL;
+    if (!databaseUrl) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+    }
+
+    const sql = neon(databaseUrl);
 
     // Get creation with rights
-    const result = await query(
-      `SELECT id, "publicId", title, 
-              "copyrightRights", "neighboringRights",
-              "musicWork", "musicParties"
-       FROM creations 
-       WHERE "publicId" = $1`,
-      [publicId]
-    );
+    const result = await sql`
+      SELECT 
+        id, 
+        public_id as "publicId", 
+        title,
+        copyright_rights as "copyrightRights", 
+        neighboring_rights as "neighboringRights"
+      FROM creations 
+      WHERE public_id = ${publicId}
+    `;
 
     if (result.length === 0) {
       return NextResponse.json({ error: 'Création introuvable' }, { status: 404 });
@@ -52,38 +75,32 @@ export async function GET(
 // PUT - Mettre à jour les droits
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Verify authentication
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader?.startsWith('Bearer ')) {
+    const payload = await verifyToken(request);
+    if (!payload) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
-    const token = authHeader.substring(7);
-    const jwtSecret = process.env.JWT_SECRET;
-
-    if (!jwtSecret) {
-      return NextResponse.json({ error: 'Configuration serveur invalide' }, { status: 500 });
-    }
-
-    let decoded: JwtPayload;
-    try {
-      decoded = jwt.verify(token, jwtSecret) as JwtPayload;
-    } catch {
-      return NextResponse.json({ error: 'Token invalide' }, { status: 401 });
-    }
-
-    const publicId = params.id;
+    const { id: publicId } = await params;
     const body = await request.json();
     const { copyrightRights, neighboringRights } = body;
 
+    const databaseUrl = process.env.DATABASE_URL;
+    if (!databaseUrl) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+    }
+
+    const sql = neon(databaseUrl);
+
     // Verify the creation exists and belongs to the user
-    const existingResult = await query(
-      `SELECT id, "userId" FROM creations WHERE "publicId" = $1`,
-      [publicId]
-    );
+    const existingResult = await sql`
+      SELECT id, user_id as "userId" 
+      FROM creations 
+      WHERE public_id = ${publicId}
+    `;
 
     if (existingResult.length === 0) {
       return NextResponse.json({ error: 'Création introuvable' }, { status: 404 });
@@ -92,7 +109,7 @@ export async function PUT(
     const creation = existingResult[0];
 
     // Check ownership
-    if (creation.userId !== decoded.userId) {
+    if (creation.userId !== payload.userId) {
       return NextResponse.json({ error: 'Non autorisé à modifier cette création' }, { status: 403 });
     }
 
@@ -128,31 +145,26 @@ export async function PUT(
     }
 
     // Update the creation with new rights
-    await query(
-      `UPDATE creations 
-       SET "copyrightRights" = $1,
-           "neighboringRights" = $2,
-           "updatedAt" = NOW()
-       WHERE "publicId" = $3`,
-      [
-        JSON.stringify(copyrightRights),
-        JSON.stringify(neighboringRights),
-        publicId,
-      ]
-    );
+    await sql`
+      UPDATE creations 
+      SET 
+        copyright_rights = ${JSON.stringify(copyrightRights)},
+        neighboring_rights = ${JSON.stringify(neighboringRights)},
+        updated_at = NOW()
+      WHERE public_id = ${publicId}
+    `;
 
     // Log the change in audit
-    await query(
-      `INSERT INTO metadata_audit_log (creation_id, changed_by, change_type, new_value, change_summary)
-       VALUES ($1, $2, $3, $4, $5)`,
-      [
-        creation.id,
-        decoded.email,
-        'rights_update',
-        JSON.stringify({ copyrightRights, neighboringRights }),
-        'Mise à jour des droits d\'auteur et droits voisins',
-      ]
-    );
+    await sql`
+      INSERT INTO metadata_audit_log (creation_id, changed_by, change_type, new_value, change_summary)
+      VALUES (
+        ${creation.id}, 
+        ${payload.email}, 
+        'rights_update', 
+        ${JSON.stringify({ copyrightRights, neighboringRights })}, 
+        'Mise à jour des droits d''auteur et droits voisins'
+      )
+    `;
 
     return NextResponse.json({
       success: true,
