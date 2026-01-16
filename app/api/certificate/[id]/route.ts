@@ -63,36 +63,51 @@ export async function GET(
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ===========================================
+           PROOFY CERTIFICATE - PRINT-OPTIMIZED STYLES
+           Force dark theme colors in PDF export
+           =========================================== */
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0b0124;
-            min-height: 100vh;
-            padding: 40px 20px;
-            color: #fff;
+        /* CRITICAL: Force background colors to print */
+        html {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #0a0a0a !important;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #ffffff !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
         }
         
         .certificate {
             max-width: 800px;
             margin: 0 auto;
-            background: #12082d;
-            border: 2px solid #bff227;
+            background-color: #0a0a0a !important;
+            border: 3px solid #bff227 !important;
             border-radius: 24px;
             overflow: hidden;
+            box-shadow: 0 0 60px rgba(191, 242, 39, 0.15);
         }
         
         .header {
-            background: linear-gradient(135deg, #1a0f3a 0%, #12082d 100%);
+            background-color: #0a0a0a !important;
+            background-image: linear-gradient(135deg, #141414 0%, #0a0a0a 100%) !important;
             padding: 40px;
             text-align: center;
-            border-bottom: 2px solid #bff227;
+            border-bottom: 3px solid #bff227 !important;
         }
         
         .logo {
@@ -106,7 +121,7 @@ export async function GET(
         .logo-icon {
             width: 48px;
             height: 48px;
-            background: #bff227;
+            background-color: #bff227 !important;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -118,14 +133,14 @@ export async function GET(
             font-family: 'Space Grotesk', sans-serif;
             font-size: 32px;
             font-weight: 700;
-            color: #bff227;
+            color: #bff227 !important;
         }
         
         .certificate-title {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 14px;
             font-weight: 600;
-            color: #bff227;
+            color: #bff227 !important;
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 8px;
@@ -134,15 +149,15 @@ export async function GET(
         .certificate-subtitle {
             font-size: 24px;
             font-weight: 600;
-            color: #fff;
+            color: #ffffff !important;
         }
         
         .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #bff227;
-            color: #0b0124;
+            background-color: #bff227 !important;
+            color: #0a0a0a !important;
             padding: 10px 20px;
             border-radius: 50px;
             font-weight: 600;
@@ -152,14 +167,14 @@ export async function GET(
         
         .content {
             padding: 40px;
-            background: #12082d;
+            background-color: #0a0a0a !important;
         }
         
         .creation-title {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 28px;
             font-weight: 700;
-            color: #fff;
+            color: #ffffff !important;
             margin-bottom: 30px;
             text-align: center;
         }
@@ -172,8 +187,8 @@ export async function GET(
         }
         
         .info-card {
-            background: #1a0f3a;
-            border: 1px solid #3d2a6d;
+            background-color: #141414 !important;
+            border: 1px solid #333333 !important;
             border-radius: 16px;
             padding: 20px;
         }
@@ -181,7 +196,7 @@ export async function GET(
         .info-label {
             font-size: 12px;
             font-weight: 600;
-            color: #bff227;
+            color: #bff227 !important;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 8px;
@@ -189,13 +204,13 @@ export async function GET(
         
         .info-value {
             font-size: 16px;
-            color: #fff;
+            color: #ffffff !important;
             font-weight: 500;
         }
         
         .hash-section {
-            background: #1a0f3a;
-            border: 1px solid #3d2a6d;
+            background-color: #141414 !important;
+            border: 1px solid #333333 !important;
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 30px;
@@ -204,7 +219,7 @@ export async function GET(
         .hash-title {
             font-size: 14px;
             font-weight: 600;
-            color: #bff227;
+            color: #bff227 !important;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 12px;
@@ -213,17 +228,17 @@ export async function GET(
         .hash-value {
             font-family: 'Courier New', monospace;
             font-size: 11px;
-            color: #fff;
+            color: #ffffff !important;
             word-break: break-all;
-            background: #0b0124;
+            background-color: #0a0a0a !important;
             padding: 16px;
             border-radius: 8px;
-            border-left: 3px solid #bff227;
+            border-left: 4px solid #bff227 !important;
         }
         
         .blockchain-section {
-            background: #1a0f3a;
-            border: 2px solid #bff227;
+            background-color: #141414 !important;
+            border: 3px solid #bff227 !important;
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 30px;
@@ -235,7 +250,7 @@ export async function GET(
             gap: 10px;
             font-size: 14px;
             font-weight: 600;
-            color: #bff227;
+            color: #bff227 !important;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 16px;
@@ -254,34 +269,34 @@ export async function GET(
         
         .blockchain-label {
             font-size: 12px;
-            color: #a0a0a0;
+            color: #888888 !important;
         }
         
         .blockchain-value {
             font-family: 'Courier New', monospace;
             font-size: 11px;
-            color: #fff;
+            color: #ffffff !important;
             word-break: break-all;
         }
         
         .qr-section {
             text-align: center;
             padding: 30px;
-            background: #1a0f3a;
+            background-color: #141414 !important;
             border-radius: 16px;
-            border: 1px solid #3d2a6d;
+            border: 1px solid #333333 !important;
         }
         
         .qr-title {
             font-size: 14px;
             font-weight: 600;
-            color: #bff227;
+            color: #bff227 !important;
             margin-bottom: 20px;
         }
         
         .qr-code {
             display: inline-block;
-            background: #fff;
+            background-color: #ffffff !important;
             padding: 16px;
             border-radius: 16px;
             margin-bottom: 16px;
@@ -295,30 +310,30 @@ export async function GET(
         
         .qr-url {
             font-size: 11px;
-            color: #a0a0a0;
+            color: #888888 !important;
             word-break: break-all;
         }
         
         .qr-url a {
-            color: #bff227;
+            color: #bff227 !important;
             text-decoration: none;
         }
         
         .footer {
-            background: #0b0124;
+            background-color: #0a0a0a !important;
             padding: 30px 40px;
             text-align: center;
-            border-top: 1px solid #3d2a6d;
+            border-top: 1px solid #333333 !important;
         }
         
         .footer-text {
             font-size: 12px;
-            color: #a0a0a0;
+            color: #888888 !important;
             margin-bottom: 8px;
         }
         
         .footer-link {
-            color: #bff227;
+            color: #bff227 !important;
             text-decoration: none;
             font-weight: 500;
         }
@@ -327,8 +342,8 @@ export async function GET(
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #8247e5;
-            color: #fff;
+            background-color: #8247e5 !important;
+            color: #ffffff !important;
             padding: 8px 16px;
             border-radius: 8px;
             font-size: 12px;
@@ -341,8 +356,8 @@ export async function GET(
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #bff227;
-            color: #0b0124;
+            background-color: #bff227 !important;
+            color: #0a0a0a !important;
             padding: 14px 28px;
             border-radius: 12px;
             font-size: 16px;
@@ -351,10 +366,12 @@ export async function GET(
             border: none;
             cursor: pointer;
             margin-bottom: 20px;
+            transition: all 0.2s ease;
         }
         
         .download-btn:hover {
-            background: #d4ff4d;
+            background-color: #d4ff4d !important;
+            transform: translateY(-2px);
         }
         
         .actions-bar {
@@ -369,45 +386,130 @@ export async function GET(
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: transparent;
-            color: #fff;
+            background-color: transparent !important;
+            color: #ffffff !important;
             padding: 14px 28px;
             border-radius: 12px;
             font-size: 16px;
             font-weight: 500;
             text-decoration: none;
-            border: 1px solid #bff227;
+            border: 2px solid #bff227 !important;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
         
         .back-btn:hover {
-            background: rgba(191, 242, 39, 0.1);
+            background-color: rgba(191, 242, 39, 0.1) !important;
         }
         
+        /* Print notice banner */
+        .print-notice {
+            background-color: #1a1a2e !important;
+            border: 2px solid #bff227 !important;
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .print-notice-icon {
+            font-size: 24px;
+        }
+        
+        .print-notice-text {
+            color: #ffffff !important;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .print-notice-text strong {
+            color: #bff227 !important;
+        }
+        
+        /* ===========================================
+           PRINT MEDIA QUERIES - FORCE DARK THEME
+           =========================================== */
         @media print {
-            body {
-                padding: 0 !important;
-                background: #0b0124 !important;
+            * {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+                color-adjust: exact !important;
             }
-            .actions-bar {
+            
+            html, body {
+                background-color: #0a0a0a !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            .actions-bar, .print-notice {
                 display: none !important;
             }
+            
             .certificate {
                 border-radius: 0 !important;
                 margin: 0 !important;
                 max-width: 100% !important;
+                box-shadow: none !important;
+                border-width: 0 !important;
+                border-bottom: 3px solid #bff227 !important;
+            }
+            
+            .header {
+                border-radius: 0 !important;
+            }
+            
+            /* Force all backgrounds for print */
+            .header, .content, .footer {
+                background-color: #0a0a0a !important;
+            }
+            
+            .info-card, .hash-section, .blockchain-section, .qr-section {
+                background-color: #141414 !important;
+            }
+            
+            .hash-value {
+                background-color: #0a0a0a !important;
+            }
+            
+            /* Ensure text visibility */
+            .certificate-subtitle, .creation-title, .info-value, 
+            .hash-value, .blockchain-value {
+                color: #ffffff !important;
+            }
+            
+            .logo-text, .certificate-title, .info-label, 
+            .hash-title, .blockchain-title, .qr-title, .footer-link {
+                color: #bff227 !important;
+            }
+            
+            .blockchain-label, .qr-url, .footer-text {
+                color: #888888 !important;
+            }
+            
+            /* Keep QR code background white */
+            .qr-code {
+                background-color: #ffffff !important;
             }
         }
         
         @page {
             size: A4;
-            margin: 0;
+            margin: 10mm;
         }
     </style>
 </head>
 <body>
+    <div class="print-notice">
+        <span class="print-notice-icon">💡</span>
+        <span class="print-notice-text">
+            Pour conserver le design sombre dans le PDF, activez <strong>"Graphiques d'arrière-plan"</strong> 
+            dans les options d'impression (Plus de paramètres → Graphiques d'arrière-plan).
+        </span>
+    </div>
+    
     <div class="actions-bar">
         <button onclick="window.print()" class="download-btn">
             📥 Télécharger en PDF
