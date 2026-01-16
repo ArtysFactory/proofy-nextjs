@@ -1,20 +1,28 @@
 // ============================================
-// PROOFY V3 - Wizard Components Export
+// PROOFY V3 - Wizard Components Index
 // ============================================
+
+// Context & Types
+export { 
+  WizardProvider, 
+  useWizard,
+  type WizardState,
+  type CopyrightHolder,
+  type NeighboringRightsHolder,
+  type CopyrightRights,
+  type NeighboringRights,
+} from './WizardContext';
+
+// Progress Bar
+export { default as WizardProgress } from './WizardProgress';
+
+// Steps
+export { default as Step1Upload } from './Step1Upload';
+export { default as Step2CopyrightRights } from './Step2CopyrightRights';
+export { default as Step3NeighboringRights } from './Step3NeighboringRights';
+export { default as Step4Masters } from './Step4Masters';
+export { default as Step5Review } from './Step5Review';
 
 // Main Wizard Component
 export { default as WizardV3 } from './WizardV3';
 export { default } from './WizardV3';
-
-// Context & Hooks
-export { WizardProvider, useWizard } from './WizardContext';
-export type { WizardState } from './WizardContext';
-
-// Progress Component
-export { default as WizardProgress } from './WizardProgress';
-
-// Step Components
-export { default as Step1Upload } from './Step1Upload';
-export { default as Step2WorkParties } from './Step2WorkParties';
-export { default as Step3Masters } from './Step3Masters';
-export { default as Step4Review } from './Step4Review';

@@ -22,6 +22,39 @@ import {
   generateMandateId,
 } from '@/lib/music-rights';
 
+// ===== RIGHTS HOLDER TYPES =====
+
+export interface CopyrightHolder {
+  id: string;
+  name: string;
+  percentage: number;
+  email?: string;
+  ipi?: string;
+}
+
+export interface NeighboringRightsHolder {
+  id: string;
+  name: string;
+  percentage: number;
+  email?: string;
+  ipn?: string;
+  role?: string; // For "other" category
+}
+
+export interface CopyrightRights {
+  authors: CopyrightHolder[];
+  composers: CopyrightHolder[];
+  publishers: CopyrightHolder[];
+}
+
+export interface NeighboringRights {
+  enabled: boolean;
+  producers: NeighboringRightsHolder[];
+  performers: NeighboringRightsHolder[];
+  labels: NeighboringRightsHolder[];
+  others: NeighboringRightsHolder[];
+}
+
 // ===== WIZARD STATE =====
 
 export interface WizardState {
@@ -36,16 +69,21 @@ export interface WizardState {
   fileSize: number;
   fileType: string;
   
-  // Step 2: Work & Parties
+  // Step 2: Droits d'auteur (Copyright)
+  workTitle: string;
+  copyrightRights: CopyrightRights;
+  
+  // Step 3: Droits voisins (Neighboring Rights)
+  neighboringRights: NeighboringRights;
+  
+  // Step 4: Work, Masters & Releases
   work: MusicWork;
   parties: MusicParty[];
-  
-  // Step 3: Masters & Releases
   masters: MusicMaster[];
   releases: MusicRelease[];
   audioMetadata: AudioMetadata | null;
   
-  // Step 4: Mandates
+  // Step 5: Mandates & Validation
   mandates: MusicMandate[];
   
   // Meta
@@ -67,14 +105,31 @@ const initialWork: MusicWork = {
   publishers: [],
 };
 
+const initialCopyrightRights: CopyrightRights = {
+  authors: [{ id: '1', name: '', percentage: 100 }],
+  composers: [],
+  publishers: [],
+};
+
+const initialNeighboringRights: NeighboringRights = {
+  enabled: false,
+  producers: [],
+  performers: [],
+  labels: [],
+  others: [],
+};
+
 const initialState: WizardState = {
   currentStep: 1,
-  totalSteps: 4,
+  totalSteps: 5, // Now 5 steps
   file: null,
   fileHash: '',
   fileName: '',
   fileSize: 0,
   fileType: '',
+  workTitle: '',
+  copyrightRights: initialCopyrightRights,
+  neighboringRights: initialNeighboringRights,
   work: initialWork,
   parties: [],
   masters: [],
@@ -94,6 +149,9 @@ type WizardAction =
   | { type: 'NEXT_STEP' }
   | { type: 'PREV_STEP' }
   | { type: 'SET_FILE'; file: File; hash: string }
+  | { type: 'SET_WORK_TITLE'; title: string }
+  | { type: 'SET_COPYRIGHT_RIGHTS'; rights: CopyrightRights }
+  | { type: 'SET_NEIGHBORING_RIGHTS'; rights: NeighboringRights }
   | { type: 'SET_WORK'; work: Partial<MusicWork> }
   | { type: 'ADD_PARTY'; party: MusicParty }
   | { type: 'UPDATE_PARTY'; partyId: string; party: Partial<MusicParty> }
@@ -135,12 +193,26 @@ function wizardReducer(state: WizardState, action: WizardAction): WizardState {
         fileSize: action.file.size,
         fileType: action.file.type,
         // Auto-fill work title from filename
+        workTitle: state.workTitle || action.file.name.replace(/\.[^/.]+$/, ''),
         work: {
           ...state.work,
           work_id: state.work.work_id || generateWorkId(),
           title: state.work.title || action.file.name.replace(/\.[^/.]+$/, ''),
         },
       };
+    
+    case 'SET_WORK_TITLE':
+      return {
+        ...state,
+        workTitle: action.title,
+        work: { ...state.work, title: action.title },
+      };
+    
+    case 'SET_COPYRIGHT_RIGHTS':
+      return { ...state, copyrightRights: action.rights };
+    
+    case 'SET_NEIGHBORING_RIGHTS':
+      return { ...state, neighboringRights: action.rights };
     
     case 'SET_WORK':
       return {
@@ -262,6 +334,9 @@ interface WizardContextType {
   prevStep: () => void;
   goToStep: (step: number) => void;
   setFile: (file: File, hash: string) => void;
+  setWorkTitle: (title: string) => void;
+  setCopyrightRights: (rights: CopyrightRights) => void;
+  setNeighboringRights: (rights: NeighboringRights) => void;
   updateWork: (work: Partial<MusicWork>) => void;
   addParty: (party: Omit<MusicParty, 'party_id'> & { party_id?: string }) => void;
   updateParty: (partyId: string, party: Partial<MusicParty>) => void;
@@ -293,6 +368,9 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     prevStep: () => dispatch({ type: 'PREV_STEP' }),
     goToStep: (step) => dispatch({ type: 'SET_STEP', step }),
     setFile: (file, hash) => dispatch({ type: 'SET_FILE', file, hash }),
+    setWorkTitle: (title) => dispatch({ type: 'SET_WORK_TITLE', title }),
+    setCopyrightRights: (rights) => dispatch({ type: 'SET_COPYRIGHT_RIGHTS', rights }),
+    setNeighboringRights: (rights) => dispatch({ type: 'SET_NEIGHBORING_RIGHTS', rights }),
     updateWork: (work) => dispatch({ type: 'SET_WORK', work }),
     addParty: (party) => dispatch({ type: 'ADD_PARTY', party: party as MusicParty }),
     updateParty: (partyId, party) => dispatch({ type: 'UPDATE_PARTY', partyId, party }),

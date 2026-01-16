@@ -1,7 +1,7 @@
 'use client';
 
 // ============================================
-// PROOFY V3 - Step 4: Review & Submit
+// PROOFY V3 - Step 5: Review & Submit
 // ============================================
 
 import { useState } from 'react';
@@ -10,7 +10,8 @@ import { useWizard } from './WizardContext';
 import { useRouter } from 'next/navigation';
 import {
   FileText,
-  Users,
+  PenLine,
+  Mic2,
   Music,
   Disc,
   FileCheck,
@@ -26,9 +27,11 @@ import {
   Clock,
   User,
   Building,
+  BookOpen,
+  Music2,
 } from 'lucide-react';
 
-export default function Step4Review() {
+export default function Step5Review() {
   const router = useRouter();
   const { state, prevStep, goToStep, dispatch } = useWizard();
   const [expandedSection, setExpandedSection] = useState<string | null>('file');
@@ -37,10 +40,23 @@ export default function Step4Review() {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptMandate, setAcceptMandate] = useState(false);
 
+  // Calculate totals for rights
+  const copyrightTotal = 
+    state.copyrightRights.authors.reduce((sum, h) => sum + h.percentage, 0) +
+    state.copyrightRights.composers.reduce((sum, h) => sum + h.percentage, 0) +
+    state.copyrightRights.publishers.reduce((sum, h) => sum + h.percentage, 0);
+  
+  const neighboringTotal = state.neighboringRights.enabled ?
+    state.neighboringRights.producers.reduce((sum, h) => sum + h.percentage, 0) +
+    state.neighboringRights.performers.reduce((sum, h) => sum + h.percentage, 0) +
+    state.neighboringRights.labels.reduce((sum, h) => sum + h.percentage, 0) +
+    state.neighboringRights.others.reduce((sum, h) => sum + h.percentage, 0) : 0;
+
   // Validation checks
   const validations = {
-    file: state.fileHash && state.fileName,
-    work: state.work.title && state.parties.length > 0,
+    file: !!state.fileHash && !!state.fileName,
+    copyright: copyrightTotal === 100 && !!state.workTitle,
+    neighboring: !state.neighboringRights.enabled || neighboringTotal === 100,
     masters: state.masters.length > 0,
   };
 
@@ -64,11 +80,17 @@ export default function Step4Review() {
     setSubmitError(null);
 
     try {
+      // Build authors string from copyright rights
+      const authorsNames = [
+        ...state.copyrightRights.authors.map(a => a.name),
+        ...state.copyrightRights.composers.map(c => c.name),
+      ].filter(n => n).join(', ');
+
       // Build the payload
       const payload = {
         // Basic creation data
-        title: state.work.title,
-        description: state.work.subtitle || '',
+        title: state.workTitle,
+        description: '',
         projectType: 'music',
         fileHash: state.fileHash,
         fileName: state.fileName,
@@ -76,23 +98,31 @@ export default function Step4Review() {
         fileType: state.fileType,
         
         // V3 Music Rights data
-        musicWork: state.work,
+        musicWork: {
+          ...state.work,
+          title: state.workTitle,
+        },
         musicMasters: state.masters,
         musicReleases: state.releases,
         musicParties: state.parties,
         musicMandates: state.mandates,
         audioMetadata: state.audioMetadata,
         
+        // Copyright & Neighboring Rights (new V3 structure)
+        copyrightRights: state.copyrightRights,
+        neighboringRights: state.neighboringRights,
+        
         // Authors (flatten for backward compatibility)
-        authors: state.parties
-          .filter(p => p.role_tags.some(t => ['author', 'composer', 'main_artist'].includes(t)))
-          .map(p => p.full_name)
-          .join(', '),
+        authors: authorsNames,
       };
 
+      const token = localStorage.getItem('token');
       const response = await fetch('/api/creations', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
       });
 
@@ -188,6 +218,29 @@ export default function Step4Review() {
     );
   };
 
+  // Rights holder display component
+  const RightsHoldersList = ({ 
+    holders, 
+    emptyMessage 
+  }: { 
+    holders: Array<{ id: string; name: string; percentage: number }>; 
+    emptyMessage: string;
+  }) => {
+    if (holders.length === 0 || !holders.some(h => h.name)) {
+      return <p className="text-gray-500 text-sm">{emptyMessage}</p>;
+    }
+    return (
+      <div className="space-y-1">
+        {holders.filter(h => h.name).map(h => (
+          <div key={h.id} className="flex justify-between text-sm">
+            <span className="text-white">{h.name}</span>
+            <span className="text-[#bff227] font-medium">{h.percentage}%</span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -240,81 +293,162 @@ export default function Step4Review() {
           </div>
         </ReviewSection>
 
-        {/* Work & Parties Section */}
+        {/* Copyright Section (Step 2) */}
         <ReviewSection
-          id="work"
-          title="Œuvre & Parties"
-          icon={Users}
-          isValid={validations.work}
+          id="copyright"
+          title="Droits d'auteur"
+          icon={PenLine}
+          isValid={validations.copyright}
           editStep={2}
         >
           <div className="space-y-4">
-            {/* Work Info */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between py-2 border-b border-white/5">
-                <span className="text-gray-400 text-sm">Titre</span>
-                <span className="text-white font-medium">{state.work.title || '—'}</span>
-              </div>
-              {state.work.iswc && (
-                <div className="flex items-center justify-between py-2 border-b border-white/5">
-                  <span className="text-gray-400 text-sm">ISWC</span>
-                  <span className="text-white font-mono text-sm">{state.work.iswc}</span>
-                </div>
-              )}
-              <div className="flex items-center justify-between py-2 border-b border-white/5">
-                <span className="text-gray-400 text-sm">Genre</span>
-                <span className="text-white text-sm">{state.work.genre || '—'}</span>
-              </div>
+            {/* Work Title */}
+            <div className="flex items-center justify-between py-2 border-b border-white/5">
+              <span className="text-gray-400 text-sm">Titre de l'œuvre</span>
+              <span className="text-white font-medium">{state.workTitle || '—'}</span>
             </div>
 
-            {/* Parties */}
-            {state.parties.length > 0 && (
-              <div>
-                <p className="text-[#bff227] text-xs font-semibold uppercase tracking-wider mb-3">
-                  Parties prenantes ({state.parties.length})
-                </p>
-                <div className="space-y-2">
-                  {state.parties.map((party) => (
-                    <div
-                      key={party.party_id}
-                      className="flex items-center gap-3 bg-white/5 rounded-lg p-3"
-                    >
-                      <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
-                        {party.party_type === 'person' ? (
-                          <User className="w-4 h-4 text-gray-400" />
-                        ) : (
-                          <Building className="w-4 h-4 text-gray-400" />
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm font-medium truncate">{party.display_name}</p>
-                        <p className="text-gray-400 text-xs">
-                          {party.role_tags.map(r => 
-                            r === 'author' ? 'Auteur' :
-                            r === 'composer' ? 'Compositeur' :
-                            r === 'main_artist' ? 'Artiste principal' :
-                            r === 'performer' ? 'Interprète' :
-                            r === 'producer' ? 'Producteur' :
-                            r === 'publisher' ? 'Éditeur' : r
-                          ).join(', ')}
-                        </p>
-                      </div>
-                      {/* Share percentage could be shown here if calculated */}
-                    </div>
-                  ))}
-                </div>
+            {/* Authors */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-yellow-400">
+                <PenLine className="w-4 h-4" />
+                <span className="text-xs font-semibold uppercase tracking-wider">Auteurs</span>
               </div>
-            )}
+              <RightsHoldersList 
+                holders={state.copyrightRights.authors} 
+                emptyMessage="Aucun auteur" 
+              />
+            </div>
+
+            {/* Composers */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-pink-400">
+                <Music2 className="w-4 h-4" />
+                <span className="text-xs font-semibold uppercase tracking-wider">Compositeurs</span>
+              </div>
+              <RightsHoldersList 
+                holders={state.copyrightRights.composers} 
+                emptyMessage="Aucun compositeur" 
+              />
+            </div>
+
+            {/* Publishers */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-orange-400">
+                <BookOpen className="w-4 h-4" />
+                <span className="text-xs font-semibold uppercase tracking-wider">Éditeurs</span>
+              </div>
+              <RightsHoldersList 
+                holders={state.copyrightRights.publishers} 
+                emptyMessage="Aucun éditeur" 
+              />
+            </div>
+
+            {/* Total */}
+            <div className={`flex justify-between p-3 rounded-lg ${
+              copyrightTotal === 100 ? 'bg-green-500/10' : 'bg-red-500/10'
+            }`}>
+              <span className="text-white font-medium">Total</span>
+              <span className={`font-bold ${
+                copyrightTotal === 100 ? 'text-green-400' : 'text-red-400'
+              }`}>{copyrightTotal}%</span>
+            </div>
           </div>
         </ReviewSection>
 
-        {/* Masters Section */}
+        {/* Neighboring Rights Section (Step 3) */}
+        <ReviewSection
+          id="neighboring"
+          title="Droits voisins"
+          icon={Mic2}
+          isValid={validations.neighboring}
+          editStep={3}
+        >
+          {!state.neighboringRights.enabled ? (
+            <div className="text-center py-4">
+              <p className="text-gray-400">Droits voisins non enregistrés</p>
+              <p className="text-gray-500 text-sm mt-1">
+                Vous pouvez les ajouter plus tard via "Gérer les droits"
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {/* Producers */}
+              {state.neighboringRights.producers.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-purple-400">
+                    <Disc className="w-4 h-4" />
+                    <span className="text-xs font-semibold uppercase tracking-wider">Producteurs</span>
+                  </div>
+                  <RightsHoldersList 
+                    holders={state.neighboringRights.producers} 
+                    emptyMessage="Aucun producteur" 
+                  />
+                </div>
+              )}
+
+              {/* Performers */}
+              {state.neighboringRights.performers.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-cyan-400">
+                    <Mic2 className="w-4 h-4" />
+                    <span className="text-xs font-semibold uppercase tracking-wider">Interprètes</span>
+                  </div>
+                  <RightsHoldersList 
+                    holders={state.neighboringRights.performers} 
+                    emptyMessage="Aucun interprète" 
+                  />
+                </div>
+              )}
+
+              {/* Labels */}
+              {state.neighboringRights.labels.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-green-400">
+                    <Building className="w-4 h-4" />
+                    <span className="text-xs font-semibold uppercase tracking-wider">Labels</span>
+                  </div>
+                  <RightsHoldersList 
+                    holders={state.neighboringRights.labels} 
+                    emptyMessage="Aucun label" 
+                  />
+                </div>
+              )}
+
+              {/* Others */}
+              {state.neighboringRights.others.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-orange-400">
+                    <User className="w-4 h-4" />
+                    <span className="text-xs font-semibold uppercase tracking-wider">Autres</span>
+                  </div>
+                  <RightsHoldersList 
+                    holders={state.neighboringRights.others} 
+                    emptyMessage="Aucun autre" 
+                  />
+                </div>
+              )}
+
+              {/* Total */}
+              <div className={`flex justify-between p-3 rounded-lg ${
+                neighboringTotal === 100 ? 'bg-green-500/10' : 'bg-red-500/10'
+              }`}>
+                <span className="text-white font-medium">Total</span>
+                <span className={`font-bold ${
+                  neighboringTotal === 100 ? 'text-green-400' : 'text-red-400'
+                }`}>{neighboringTotal}%</span>
+              </div>
+            </div>
+          )}
+        </ReviewSection>
+
+        {/* Masters Section (Step 4) */}
         <ReviewSection
           id="masters"
           title="Enregistrements"
           icon={Music}
           isValid={validations.masters}
-          editStep={3}
+          editStep={4}
         >
           <div className="space-y-3">
             {state.masters.length === 0 ? (
@@ -455,8 +589,11 @@ export default function Step4Review() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
-            <p className="text-2xl font-bold text-white">{state.parties.length}</p>
-            <p className="text-xs text-gray-400">Parties</p>
+            <p className="text-2xl font-bold text-white">
+              {state.copyrightRights.authors.filter(a => a.name).length + 
+               state.copyrightRights.composers.filter(c => c.name).length}
+            </p>
+            <p className="text-xs text-gray-400">Auteurs</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-white">{state.masters.length}</p>

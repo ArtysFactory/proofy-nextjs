@@ -9,9 +9,10 @@ import { AnimatePresence } from 'framer-motion';
 import { WizardProvider, useWizard } from './WizardContext';
 import WizardProgress from './WizardProgress';
 import Step1Upload from './Step1Upload';
-import Step2WorkParties from './Step2WorkParties';
-import Step3Masters from './Step3Masters';
-import Step4Review from './Step4Review';
+import Step2CopyrightRights from './Step2CopyrightRights';
+import Step3NeighboringRights from './Step3NeighboringRights';
+import Step4Masters from './Step4Masters';
+import Step5Review from './Step5Review';
 
 // ===== WIZARD CONTENT =====
 
@@ -38,9 +39,10 @@ function WizardContent() {
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8">
           <AnimatePresence mode="wait">
             {state.currentStep === 1 && <Step1Upload key="step1" />}
-            {state.currentStep === 2 && <Step2WorkParties key="step2" />}
-            {state.currentStep === 3 && <Step3Masters key="step3" />}
-            {state.currentStep === 4 && <Step4Review key="step4" />}
+            {state.currentStep === 2 && <Step2CopyrightRights key="step2" />}
+            {state.currentStep === 3 && <Step3NeighboringRights key="step3" />}
+            {state.currentStep === 4 && <Step4Masters key="step4" />}
+            {state.currentStep === 5 && <Step5Review key="step5" />}
           </AnimatePresence>
         </div>
 
@@ -73,6 +75,7 @@ export default function WizardV3() {
 export { WizardProvider, useWizard } from './WizardContext';
 export { default as WizardProgress } from './WizardProgress';
 export { default as Step1Upload } from './Step1Upload';
-export { default as Step2WorkParties } from './Step2WorkParties';
-export { default as Step3Masters } from './Step3Masters';
-export { default as Step4Review } from './Step4Review';
+export { default as Step2CopyrightRights } from './Step2CopyrightRights';
+export { default as Step3NeighboringRights } from './Step3NeighboringRights';
+export { default as Step4Masters } from './Step4Masters';
+export { default as Step5Review } from './Step5Review';

@@ -6,13 +6,14 @@
 
 import { motion } from 'framer-motion';
 import { useWizard } from './WizardContext';
-import { Check, Upload, Users, Music, FileCheck } from 'lucide-react';
+import { Check, Upload, PenLine, Mic2, Music, FileCheck } from 'lucide-react';
 
 const steps = [
   { id: 1, name: 'Upload', icon: Upload, description: 'Fichier & Hash' },
-  { id: 2, name: 'Œuvre', icon: Users, description: 'Auteurs & Parties' },
-  { id: 3, name: 'Masters', icon: Music, description: 'Enregistrements' },
-  { id: 4, name: 'Validation', icon: FileCheck, description: 'Mandats & Dépôt' },
+  { id: 2, name: 'Auteurs', icon: PenLine, description: 'Droits d\'auteur' },
+  { id: 3, name: 'Voisins', icon: Mic2, description: 'Droits voisins' },
+  { id: 4, name: 'Masters', icon: Music, description: 'Enregistrements' },
+  { id: 5, name: 'Validation', icon: FileCheck, description: 'Mandats & Dépôt' },
 ];
 
 export default function WizardProgress() {
