@@ -5,7 +5,7 @@ import { useRef, useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
-import NeonHexagon from '@/components/ui/NeonHexagon';
+// Video background - no component needed
 
 export default function HomePage() {
     const heroRef = useRef(null);
@@ -52,17 +52,19 @@ export default function HomePage() {
                     ref={heroRef}
                     className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden bg-black"
                 >
-                    {/* Neon Hexagon Background */}
-                    {isMounted && (
-                        <div className="absolute inset-0 flex items-center justify-center z-0">
-                            <NeonHexagon
-                                size={600}
-                                rotationSpeed={0.3}
-                                glowIntensity={1.2}
-                                className="opacity-80"
-                            />
-                        </div>
-                    )}
+                    {/* Video Background */}
+                    <div className="absolute inset-0 z-0 overflow-hidden">
+                        <video
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="absolute w-full h-full object-cover"
+                            style={{ filter: 'brightness(0.6)' }}
+                        >
+                            <source src="/hero-background.mp4" type="video/mp4" />
+                        </video>
+                    </div>
 
                     {/* Subtle gradient overlay for depth */}
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60 pointer-events-none z-[1]" />
