@@ -5,7 +5,7 @@ import { useRef, useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Link from 'next/link';
-import NeonFlow from '@/components/ui/NeonFlow';
+import NeonHexagon from '@/components/ui/NeonHexagon';
 
 export default function HomePage() {
     const heroRef = useRef(null);
@@ -52,16 +52,16 @@ export default function HomePage() {
                     ref={heroRef}
                     className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden bg-black"
                 >
-                    {/* Neon Flow Background */}
+                    {/* Neon Hexagon Background */}
                     {isMounted && (
-                        <NeonFlow
-                            backgroundColor="#000000"
-                            lineColor="#bff227"
-                            speed={0.6}
-                            lineCount={35}
-                            lineWidth={2.5}
-                            blur={6}
-                        />
+                        <div className="absolute inset-0 flex items-center justify-center z-0">
+                            <NeonHexagon
+                                size={600}
+                                rotationSpeed={0.3}
+                                glowIntensity={1.2}
+                                className="opacity-80"
+                            />
+                        </div>
                     )}
 
                     {/* Subtle gradient overlay for depth */}
