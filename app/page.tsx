@@ -223,7 +223,7 @@ export default function HomePage() {
                 </section>
 
                 {/* Features Section */}
-                <section id="features" className="py-24 px-4 relative bg-black">
+                <section id="features" className="py-24 px-4 relative bg-[#0a0a0a]">
                     <div className="max-w-6xl mx-auto">
                         <motion.div
                             className="text-center mb-16"
@@ -262,7 +262,7 @@ export default function HomePage() {
                 </section>
 
                 {/* How it Works */}
-                <section id="how-it-works" className="py-24 px-4 relative overflow-hidden bg-black">
+                <section id="how-it-works" className="py-24 px-4 relative overflow-hidden bg-[#0a0a0a]">
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#bff227]/5 to-transparent"></div>
 
                     <div className="max-w-6xl mx-auto relative z-10">

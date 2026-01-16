@@ -5,7 +5,7 @@
    ============================================ */
 
 @theme {
-  --color-proofy-dark: #000000;
+  --color-proofy-dark: #0a0a0a;
   --color-proofy-primary: #0a0a0a;
   --color-proofy-accent: #bff227;
   --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
@@ -27,7 +27,7 @@
   }
 
   body {
-    background: #000000;
+    background: #0a0a0a;
     min-height: 100vh;
     color: white;
     -webkit-font-smoothing: antialiased;
@@ -44,7 +44,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #000000;
+    background: #0a0a0a;
   }
 
   ::-webkit-scrollbar-thumb {
