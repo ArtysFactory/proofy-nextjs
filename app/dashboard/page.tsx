@@ -277,13 +277,20 @@ export default function DashboardPage() {
                                                     </div>
                                                 </div>
 
-                                                <div className="mt-4 flex gap-3">
+                                                <div className="mt-4 flex flex-wrap gap-3">
                                                     <Link
                                                         href={`/proof/${creation.publicId}`}
                                                         className="text-[#bff227] hover:underline text-sm"
                                                     >
                                                         <i className="fas fa-eye mr-2"></i>
                                                         Voir la preuve
+                                                    </Link>
+                                                    <Link
+                                                        href={`/dashboard/rights/${creation.publicId}`}
+                                                        className="text-purple-400 hover:underline text-sm"
+                                                    >
+                                                        <i className="fas fa-scale-balanced mr-2"></i>
+                                                        Gérer les droits
                                                     </Link>
                                                     {creation.txHash && (
                                                         <a
@@ -293,7 +300,7 @@ export default function DashboardPage() {
                                                             className="text-[#bff227] hover:underline text-sm"
                                                         >
                                                             <i className="fas fa-external-link-alt mr-2"></i>
-                                                            Voir sur Polygonscan
+                                                            Polygonscan
                                                         </a>
                                                     )}
                                                 </div>
