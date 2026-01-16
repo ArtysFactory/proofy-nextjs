@@ -26,29 +26,25 @@ const WizardV3 = dynamic(() => import('@/components/wizard-v3/WizardV3'), {
 export default function NewCreationV3Page() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // Check authentication
-    const checkAuth = async () => {
-      try {
-        const response = await fetch('/api/auth/me');
-        if (response.ok) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-          router.push('/login?redirect=/dashboard/new-v3');
-        }
-      } catch (error) {
-        setIsAuthenticated(false);
-        router.push('/login?redirect=/dashboard/new-v3');
-      }
-    };
+    setIsMounted(true);
+    
+    // Check authentication using localStorage (same as dashboard)
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
 
-    checkAuth();
+    if (!token || !userData) {
+      router.push('/login?redirect=/dashboard/new-v3');
+      setIsAuthenticated(false);
+    } else {
+      setIsAuthenticated(true);
+    }
   }, [router]);
 
-  // Loading state
-  if (isAuthenticated === null) {
+  // Loading state (wait for mount to access localStorage)
+  if (!isMounted || isAuthenticated === null) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
         <div className="text-center">
