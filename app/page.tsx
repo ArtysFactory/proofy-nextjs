@@ -302,36 +302,7 @@ export default function HomePage() {
                     </div>
                 </section>
 
-                {/* CTA Section */}
-                <section className="py-24 px-4 bg-[#0a0a0a]">
-                    <div className="max-w-4xl mx-auto">
-                        <motion.div
-                            className="glass-card rounded-3xl p-12 text-center relative overflow-hidden"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-r from-[#bff227]/10 via-transparent to-white/10"></div>
-                            <div className="relative z-10">
-                                <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-                                    Prêt à protéger vos créations ?
-                                </h2>
-                                <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-                                    Rejoignez les créateurs qui font confiance à la blockchain pour sécuriser leur propriété intellectuelle.
-                                </p>
-                                <Link
-                                    href="/signup"
-                                    className="inline-flex items-center gap-3 btn-aurora text-white font-semibold px-8 py-4 rounded-2xl text-lg"
-                                >
-                                    <i className="fas fa-shield-alt"></i>
-                                    Créer mon compte gratuitement
-                                    <i className="fas fa-arrow-right"></i>
-                                </Link>
-                            </div>
-                        </motion.div>
-                    </div>
-                </section>
+
             </main>
 
             <Footer />
