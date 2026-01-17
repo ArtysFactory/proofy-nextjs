@@ -202,12 +202,11 @@ export default function DashboardPage() {
                             {/* CTA Button */}
                             <motion.div className="mb-12 flex flex-wrap gap-4" variants={itemVariants}>
                                 <Link
-                                    href="/dashboard/new-v3"
+                                    href="/dashboard/new"
                                     className="inline-flex items-center gap-3 btn-aurora text-white font-semibold px-8 py-4 rounded-2xl text-lg"
                                 >
                                     <i className="fas fa-plus"></i>
                                     Nouvelle création
-                                    <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs">V3</span>
                                 </Link>
                             </motion.div>
 
@@ -224,7 +223,7 @@ export default function DashboardPage() {
                                             Vous n'avez pas encore de création enregistrée
                                         </p>
                                         <Link
-                                            href="/dashboard/new-v3"
+                                            href="/dashboard/new"
                                             className="inline-flex items-center gap-2 btn-aurora text-white font-semibold px-6 py-3 rounded-xl"
                                         >
                                             <i className="fas fa-plus"></i>
