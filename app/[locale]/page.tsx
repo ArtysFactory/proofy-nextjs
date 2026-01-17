@@ -2,12 +2,13 @@
 
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import Link from 'next/link';
-// Video background - no component needed
+import LocaleLink from '@/components/LocaleLink';
 
 export default function HomePage() {
+    const t = useTranslations('home');
     const heroRef = useRef(null);
     const { scrollY } = useScroll();
     const [isMounted, setIsMounted] = useState(false);
@@ -41,6 +42,59 @@ export default function HomePage() {
             transition: { duration: 0.5, ease: 'easeOut' },
         },
     };
+
+    // Features data with translations
+    const features = [
+        {
+            icon: 'fas fa-fingerprint text-[#bff227]',
+            gradient: 'bg-gradient-to-br from-[#bff227]/20 to-purple-600/10',
+            titleKey: 'hash',
+        },
+        {
+            icon: 'fas fa-link text-white',
+            gradient: 'bg-gradient-to-br from-[#bff227]/20 to-violet-600/10',
+            titleKey: 'blockchain',
+        },
+        {
+            icon: 'fas fa-certificate text-[#bff227]',
+            gradient: 'bg-gradient-to-br from-[#bff227]/20 to-purple-600/10',
+            titleKey: 'certificate',
+        },
+        {
+            icon: 'fas fa-clock text-amber-400',
+            gradient: 'bg-gradient-to-br from-amber-500/20 to-amber-600/10',
+            titleKey: 'timestamp',
+        },
+        {
+            icon: 'fas fa-shield-alt text-rose-400',
+            gradient: 'bg-gradient-to-br from-rose-500/20 to-rose-600/10',
+            titleKey: 'gdpr',
+        },
+        {
+            icon: 'fas fa-wallet text-indigo-400',
+            gradient: 'bg-gradient-to-br from-[#bff227]/20 to-indigo-600/10',
+            titleKey: 'noWallet',
+        },
+    ];
+
+    // Steps data
+    const steps = [
+        {
+            stepKey: 'step1',
+            gradient: 'bg-gradient-to-br from-[#bff227] to-purple-600',
+            shadow: 'shadow-[#bff227]/30',
+        },
+        {
+            stepKey: 'step2',
+            gradient: 'bg-gradient-to-br from-[#bff227] to-violet-600',
+            shadow: 'shadow-violet-500/30',
+        },
+        {
+            stepKey: 'step3',
+            gradient: 'bg-gradient-to-br from-[#bff227] to-indigo-600',
+            shadow: 'shadow-indigo-500/30',
+        },
+    ];
 
     return (
         <>
@@ -93,7 +147,7 @@ export default function HomePage() {
                                         <div className="absolute w-2.5 h-2.5 bg-[#bff227] rounded-full animate-ping"></div>
                                     </div>
                                     <span className="text-gray-200 text-sm font-medium tracking-wide">
-                                        Ancré sur <span className="text-[#bff227] font-semibold">Polygon</span> • Ultra rapide • Économique
+                                        {t('hero.badge')} <span className="text-[#bff227] font-semibold">Polygon</span> • {t('hero.badgeFast')} • {t('hero.badgeCheap')}
                                     </span>
                                     <div className="w-px h-4 bg-[#bff227]/30"></div>
                                     <span className="text-[#bff227] text-xs font-semibold uppercase tracking-wider">Web3</span>
@@ -104,14 +158,14 @@ export default function HomePage() {
                                     className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight"
                                     variants={itemVariants}
                                 >
-                                    <span className="text-white">Protégez vos</span>
+                                    <span className="text-white">{t('hero.title1')}</span>
                                     <br className="hidden sm:block" />
-                                    <span className="text-gradient-animated">créations</span>
+                                    <span className="text-gradient-animated">{t('hero.title2')}</span>
                                     <br />
-                                    <span className="text-white">sur la </span>
+                                    <span className="text-white">{t('hero.title3')} </span>
                                     <span className="relative inline-block">
                                         <span className="bg-gradient-to-r from-[#bff227] via-white to-white bg-clip-text text-transparent">
-                                            blockchain
+                                            {t('hero.title4')}
                                         </span>
                                     </span>
                                 </motion.h1>
@@ -121,9 +175,11 @@ export default function HomePage() {
                                     className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-14 leading-relaxed"
                                     variants={itemVariants}
                                 >
-                                    Prouvez l&apos;<span className="text-[#bff227]">antériorité</span> de vos œuvres en quelques clics.
+                                    {t('hero.subtitle').split(t('hero.subtitleHighlight'))[0]}
+                                    <span className="text-[#bff227]">{t('hero.subtitleHighlight')}</span>
+                                    {t('hero.subtitle').split(t('hero.subtitleHighlight'))[1]}
                                     <br className="hidden md:block" />
-                                    Certificat <span className="text-white">horodaté</span>, <span className="text-white">immuable</span> et vérifiable par tous.
+                                    {t('hero.subtitleEnd')}
                                 </motion.p>
 
                                 {/* CTA Buttons */}
@@ -131,14 +187,14 @@ export default function HomePage() {
                                     className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-16"
                                     variants={itemVariants}
                                 >
-                                    <Link
+                                    <LocaleLink
                                         href="/signup"
                                         className="btn-premium text-white font-semibold px-10 py-5 rounded-2xl text-lg flex items-center gap-4 group shadow-2xl shadow-[#bff227]/25 hover:shadow-[#bff227]/40 transition-all duration-300 hover:scale-105 hover:-translate-y-1"
                                     >
                                         <i className="fas fa-rocket text-xl"></i>
-                                        <span>Déposer une création</span>
+                                        <span>{t('hero.cta')}</span>
                                         <i className="fas fa-arrow-right group-hover:translate-x-2 transition-transform duration-300"></i>
-                                    </Link>
+                                    </LocaleLink>
                                     <a
                                         href="#how-it-works"
                                         className="glass-card text-white font-semibold px-10 py-5 rounded-2xl text-lg flex items-center gap-4 hover:border-[#bff227]/50 transition-all duration-300 group hover:-translate-y-1"
@@ -146,7 +202,7 @@ export default function HomePage() {
                                         <div className="w-10 h-10 rounded-full bg-[#bff227]/20 flex items-center justify-center group-hover:bg-[#bff227]/30 transition-colors">
                                             <i className="fas fa-play text-[#bff227]"></i>
                                         </div>
-                                        <span>Comment ça marche</span>
+                                        <span>{t('hero.ctaSecondary')}</span>
                                     </a>
                                 </motion.div>
 
@@ -160,7 +216,7 @@ export default function HomePage() {
                                             <span className="text-gradient-animated">0.001</span>
                                             <span className="text-[#bff227]">$</span>
                                         </div>
-                                        <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">par dépôt</div>
+                                        <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">{t('hero.statCost')}</div>
                                     </div>
 
                                     <div className="glass-card rounded-2xl p-6 text-center hover:border-[#bff227]/40 transition-all duration-300 hover:-translate-y-1">
@@ -169,14 +225,14 @@ export default function HomePage() {
                                             <span className="text-gradient-animated">30</span>
                                             <span className="text-white">s</span>
                                         </div>
-                                        <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">confirmation</div>
+                                        <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">{t('hero.statTime')}</div>
                                     </div>
 
                                     <div className="glass-card rounded-2xl p-6 text-center hover:border-[#bff227]/40 transition-all duration-300 hover:-translate-y-1">
                                         <div className="font-display text-4xl md:text-5xl font-bold mb-2">
                                             <span className="text-gradient-animated">∞</span>
                                         </div>
-                                        <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">durée de validité</div>
+                                        <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">{t('hero.statValidity')}</div>
                                     </div>
                                 </motion.div>
 
@@ -185,7 +241,7 @@ export default function HomePage() {
                                     className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
                                     variants={itemVariants}
                                 >
-                                    <span className="text-gray-500 text-xs uppercase tracking-widest">Découvrir</span>
+                                    <span className="text-gray-500 text-xs uppercase tracking-widest">{t('hero.discover')}</span>
                                     <div className="w-6 h-10 rounded-full border-2 border-[#bff227]/30 flex justify-center pt-2">
                                         <div className="w-1.5 h-1.5 bg-[#bff227] rounded-full animate-bounce"></div>
                                     </div>
@@ -202,21 +258,21 @@ export default function HomePage() {
                                     <div className="w-2.5 h-2.5 bg-[#bff227] rounded-full"></div>
                                 </div>
                                 <span className="text-gray-200 text-sm font-medium tracking-wide">
-                                    Ancré sur <span className="text-[#bff227] font-semibold">Polygon</span> • Ultra rapide • Économique
+                                    {t('hero.badge')} <span className="text-[#bff227] font-semibold">Polygon</span> • {t('hero.badgeFast')} • {t('hero.badgeCheap')}
                                 </span>
                             </div>
                             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
-                                <span className="text-white">Protégez vos</span>
+                                <span className="text-white">{t('hero.title1')}</span>
                                 <br className="hidden sm:block" />
-                                <span className="text-gradient-animated">créations</span>
+                                <span className="text-gradient-animated">{t('hero.title2')}</span>
                                 <br />
-                                <span className="text-white">sur la </span>
+                                <span className="text-white">{t('hero.title3')} </span>
                                 <span className="bg-gradient-to-r from-[#bff227] via-white to-white bg-clip-text text-transparent">
-                                    blockchain
+                                    {t('hero.title4')}
                                 </span>
                             </h1>
                             <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-14 leading-relaxed">
-                                Prouvez l&apos;antériorité de vos œuvres en quelques clics.
+                                {t('hero.subtitle')}
                             </p>
                         </div>
                     )}
@@ -233,10 +289,10 @@ export default function HomePage() {
                             transition={{ duration: 0.5 }}
                         >
                             <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-                                Tout ce dont vous avez <span className="text-[#bff227]">besoin</span>
+                                {t('features.title')} <span className="text-[#bff227]">{t('features.titleHighlight')}</span>
                             </h2>
                             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                                Une solution complète pour protéger votre propriété intellectuelle
+                                {t('features.subtitle')}
                             </p>
                         </motion.div>
 
@@ -253,8 +309,12 @@ export default function HomePage() {
                                     <div className={`w-16 h-16 ${feature.gradient} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                                         <i className={`${feature.icon} text-2xl`}></i>
                                     </div>
-                                    <h3 className="font-display text-xl font-bold text-white mb-3">{feature.title}</h3>
-                                    <p className="text-gray-400">{feature.description}</p>
+                                    <h3 className="font-display text-xl font-bold text-white mb-3">
+                                        {t(`features.${feature.titleKey}.title`)}
+                                    </h3>
+                                    <p className="text-gray-400">
+                                        {t(`features.${feature.titleKey}.description`)}
+                                    </p>
                                 </motion.div>
                             ))}
                         </div>
@@ -274,9 +334,9 @@ export default function HomePage() {
                             transition={{ duration: 0.5 }}
                         >
                             <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-                                Comment ça <span className="text-[#bff227]">marche</span> ?
+                                {t('howItWorks.title')} <span className="text-[#bff227]">{t('howItWorks.titleHighlight')}</span> ?
                             </h2>
-                            <p className="text-gray-400 text-lg">3 étapes simples pour protéger vos créations</p>
+                            <p className="text-gray-400 text-lg">{t('howItWorks.subtitle')}</p>
                         </motion.div>
 
                         <div className="grid md:grid-cols-3 gap-8 relative">
@@ -294,8 +354,12 @@ export default function HomePage() {
                                     <div className={`w-16 h-16 mx-auto mb-6 ${step.gradient} rounded-2xl flex items-center justify-center text-white font-display text-2xl font-bold shadow-lg ${step.shadow} relative z-10`}>
                                         {index + 1}
                                     </div>
-                                    <h3 className="font-display text-xl font-bold text-white mb-3">{step.title}</h3>
-                                    <p className="text-gray-400">{step.description}</p>
+                                    <h3 className="font-display text-xl font-bold text-white mb-3">
+                                        {t(`howItWorks.${step.stepKey}.title`)}
+                                    </h3>
+                                    <p className="text-gray-400">
+                                        {t(`howItWorks.${step.stepKey}.description`)}
+                                    </p>
                                 </motion.div>
                             ))}
                         </div>
@@ -309,63 +373,3 @@ export default function HomePage() {
         </>
     );
 }
-
-const features = [
-    {
-        icon: 'fas fa-fingerprint text-[#bff227]',
-        gradient: 'bg-gradient-to-br from-[#bff227]/20 to-purple-600/10',
-        title: 'Hash SHA-256',
-        description: 'Empreinte unique et irréversible de votre fichier. Impossible à falsifier.',
-    },
-    {
-        icon: 'fas fa-link text-white',
-        gradient: 'bg-gradient-to-br from-[#bff227]/20 to-violet-600/10',
-        title: 'Ancrage Blockchain',
-        description: 'Votre preuve est enregistrée sur Polygon, une blockchain sécurisée et écologique.',
-    },
-    {
-        icon: 'fas fa-certificate text-[#bff227]',
-        gradient: 'bg-gradient-to-br from-[#bff227]/20 to-purple-600/10',
-        title: 'Certificat PDF',
-        description: 'Téléchargez un certificat officiel avec QR code pour prouver votre antériorité.',
-    },
-    {
-        icon: 'fas fa-clock text-amber-400',
-        gradient: 'bg-gradient-to-br from-amber-500/20 to-amber-600/10',
-        title: 'Horodatage UTC',
-        description: 'Date et heure précises enregistrées on-chain. Preuve légale incontestable.',
-    },
-    {
-        icon: 'fas fa-shield-alt text-rose-400',
-        gradient: 'bg-gradient-to-br from-rose-500/20 to-rose-600/10',
-        title: 'RGPD Compliant',
-        description: 'Vos données personnelles sont protégées. Seul le hash est public.',
-    },
-    {
-        icon: 'fas fa-wallet text-indigo-400',
-        gradient: 'bg-gradient-to-br from-[#bff227]/20 to-indigo-600/10',
-        title: 'Sans Wallet',
-        description: 'Aucune connaissance Web3 requise. Nous gérons tout pour vous.',
-    },
-];
-
-const steps = [
-    {
-        title: 'Uploadez votre fichier',
-        description: 'Musique, image, vidéo, texte, PDF... Glissez-déposez votre création.',
-        gradient: 'bg-gradient-to-br from-[#bff227] to-purple-600',
-        shadow: 'shadow-[#bff227]/30',
-    },
-    {
-        title: 'Remplissez les métadonnées',
-        description: 'Titre, description, type de projet, auteurs... Personnalisez votre dépôt.',
-        gradient: 'bg-gradient-to-br from-[#bff227] to-violet-600',
-        shadow: 'shadow-violet-500/30',
-    },
-    {
-        title: 'Obtenez votre certificat',
-        description: 'Votre preuve est ancrée sur la blockchain. Téléchargez votre certificat PDF.',
-        gradient: 'bg-gradient-to-br from-[#bff227] to-indigo-600',
-        shadow: 'shadow-indigo-500/30',
-    },
-];

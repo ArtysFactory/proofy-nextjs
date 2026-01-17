@@ -16,9 +16,10 @@
     "required": "Obligatoire",
     "optional": "optionnel",
     "yes": "Oui",
-    "no": "Non",
+    "no": "No",
     "or": "ou",
-    "and": "et"
+    "and": "et",
+    "rememberMe": "Se souvenir de moi"
   },
   "brand": {
     "name": "Proofy",
@@ -32,7 +33,77 @@
     "login": "Connexion",
     "signup": "Inscription",
     "logout": "Déconnexion",
-    "backToDashboard": "Retour au tableau de bord"
+    "backToDashboard": "Retour au tableau de bord",
+    "features": "Fonctionnalités",
+    "howItWorks": "Comment ça marche",
+    "pricing": "Tarifs",
+    "getStarted": "Commencer"
+  },
+  "home": {
+    "hero": {
+      "badge": "Ancré sur",
+      "badgeFast": "Ultra rapide",
+      "badgeCheap": "Économique",
+      "title1": "Protégez vos",
+      "title2": "créations",
+      "title3": "sur la",
+      "title4": "blockchain",
+      "subtitle": "Prouvez l'antériorité de vos œuvres en quelques clics.",
+      "subtitleHighlight": "antériorité",
+      "subtitleEnd": "Certificat horodaté, immuable et vérifiable par tous.",
+      "cta": "Déposer une création",
+      "ctaSecondary": "Comment ça marche",
+      "statCost": "par dépôt",
+      "statTime": "confirmation",
+      "statValidity": "durée de validité",
+      "discover": "Découvrir"
+    },
+    "features": {
+      "title": "Tout ce dont vous avez",
+      "titleHighlight": "besoin",
+      "subtitle": "Une solution complète pour protéger votre propriété intellectuelle",
+      "hash": {
+        "title": "Hash SHA-256",
+        "description": "Empreinte unique et irréversible de votre fichier. Impossible à falsifier."
+      },
+      "blockchain": {
+        "title": "Ancrage Blockchain",
+        "description": "Votre preuve est enregistrée sur Polygon, une blockchain sécurisée et écologique."
+      },
+      "certificate": {
+        "title": "Certificat PDF",
+        "description": "Téléchargez un certificat officiel avec QR code pour prouver votre antériorité."
+      },
+      "timestamp": {
+        "title": "Horodatage UTC",
+        "description": "Date et heure précises enregistrées on-chain. Preuve légale incontestable."
+      },
+      "gdpr": {
+        "title": "RGPD Compliant",
+        "description": "Vos données personnelles sont protégées. Seul le hash est public."
+      },
+      "noWallet": {
+        "title": "Sans Wallet",
+        "description": "Aucune connaissance Web3 requise. Nous gérons tout pour vous."
+      }
+    },
+    "howItWorks": {
+      "title": "Comment ça",
+      "titleHighlight": "marche",
+      "subtitle": "3 étapes simples pour protéger vos créations",
+      "step1": {
+        "title": "Uploadez votre fichier",
+        "description": "Musique, image, vidéo, texte, PDF... Glissez-déposez votre création."
+      },
+      "step2": {
+        "title": "Remplissez les métadonnées",
+        "description": "Titre, description, type de projet, auteurs... Personnalisez votre dépôt."
+      },
+      "step3": {
+        "title": "Obtenez votre certificat",
+        "description": "Votre preuve est ancrée sur la blockchain. Téléchargez votre certificat PDF."
+      }
+    }
   },
   "auth": {
     "login": {
@@ -43,7 +114,8 @@
       "submit": "Se connecter",
       "noAccount": "Pas encore de compte ?",
       "createAccount": "Créer un compte",
-      "forgotPassword": "Mot de passe oublié ?"
+      "forgotPassword": "Mot de passe oublié ?",
+      "backToHome": "Retour à l'accueil"
     },
     "signup": {
       "title": "Créer un compte",
@@ -55,7 +127,10 @@
       "confirmPassword": "Confirmer le mot de passe",
       "submit": "Créer mon compte",
       "hasAccount": "Déjà un compte ?",
-      "login": "Se connecter"
+      "login": "Se connecter",
+      "termsAgree": "En créant un compte, vous acceptez nos",
+      "terms": "Conditions d'utilisation",
+      "backToHome": "Retour à l'accueil"
     },
     "errors": {
       "invalidCredentials": "Email ou mot de passe incorrect",
@@ -66,6 +141,7 @@
   },
   "dashboard": {
     "title": "Tableau de bord",
+    "subtitle": "Gérez vos créations et suivez leur statut sur la blockchain",
     "welcome": "Bienvenue",
     "newCreation": "Nouvelle création",
     "myCreations": "Mes créations",
@@ -76,13 +152,15 @@
     },
     "empty": {
       "title": "Aucune création",
-      "subtitle": "Commencez par créer votre première preuve d'antériorité"
+      "subtitle": "Commencez par créer votre première preuve d'antériorité",
+      "cta": "Créer ma première preuve"
     },
     "creation": {
       "viewProof": "Voir la preuve",
       "manageRights": "Gérer les droits",
       "confirmed": "Confirmée",
-      "pending": "En attente"
+      "pending": "En attente",
+      "failed": "Échec"
     }
   },
   "newCreation": {
@@ -149,7 +227,9 @@
       "fileHash": "Empreinte SHA-256",
       "hashCalculating": "Calcul en cours...",
       "hashInfo": "Cette empreinte unique identifie votre fichier. Elle sera enregistrée sur la blockchain.",
-      "supported": "Formats supportés : MP3, WAV, FLAC, MP4, MOV, AVI, et plus"
+      "supported": "Formats supportés : MP3, WAV, FLAC, MP4, MOV, AVI, et plus",
+      "fileSelected": "Fichier sélectionné",
+      "changeFile": "Changer de fichier"
     },
     "copyright": {
       "title": "Droits d'auteur",
@@ -187,7 +267,9 @@
       "others": "Autre(s)",
       "othersDesc": "Autres ayants droit",
       "holderIPN": "N° IPN",
-      "holderRole": "Rôle"
+      "holderRole": "Rôle",
+      "disabled": "Droits voisins désactivés",
+      "skip": "Passer cette étape"
     },
     "masters": {
       "title": "Enregistrements",
@@ -204,7 +286,9 @@
       "releaseTitle": "Titre de la sortie",
       "releaseDate": "Date de sortie",
       "upc": "Code UPC/EAN",
-      "platforms": "Plateformes"
+      "platforms": "Plateformes",
+      "optional": "Cette étape est optionnelle",
+      "skip": "Passer cette étape"
     },
     "review": {
       "title": "Validation & Dépôt",
@@ -224,7 +308,16 @@
       "depositing": "Dépôt en cours...",
       "cost": "Coût blockchain",
       "free": "Gratuit",
-      "network": "Réseau Polygon Mainnet"
+      "network": "Réseau Polygon Mainnet",
+      "summary": "Résumé",
+      "authors": "auteur(s)",
+      "recordings": "enregistrement(s)",
+      "releases": "sortie(s)"
+    },
+    "navigation": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "step": "Étape"
     }
   },
   "simpleForm": {
@@ -249,7 +342,10 @@
       "title": "Traitement en cours...",
       "success": "Création enregistrée !",
       "redirect": "Redirection vers votre certificat..."
-    }
+    },
+    "human100": "Humain (100%)",
+    "ai100": "IA (100%)",
+    "hybridPercent": "Hybride ({percent}% IA)"
   },
   "proof": {
     "title": "Certificat de preuve",
@@ -264,11 +360,14 @@
       "fileHash": "Empreinte SHA-256",
       "txHash": "Hash de transaction",
       "blockNumber": "Numéro de bloc",
-      "network": "Réseau"
+      "network": "Réseau",
+      "status": "Statut"
     },
     "viewOnExplorer": "Voir sur Polygonscan",
     "downloadCertificate": "Télécharger le certificat",
-    "share": "Partager"
+    "share": "Partager",
+    "backToDashboard": "Retour au tableau de bord",
+    "proofInfo": "Cette preuve d'antériorité est enregistrée de façon permanente et immuable sur la blockchain Polygon."
   },
   "rights": {
     "title": "Gérer les droits",
@@ -279,7 +378,10 @@
     "fileHash": "Empreinte",
     "viewOnBlockchain": "Voir sur blockchain",
     "saveChanges": "Enregistrer les modifications",
-    "saved": "Modifications enregistrées avec succès"
+    "saved": "Modifications enregistrées avec succès",
+    "saving": "Enregistrement en cours...",
+    "copyrightRights": "Droits d'auteur",
+    "neighboringRights": "Droits voisins"
   },
   "errors": {
     "generic": "Une erreur s'est produite",

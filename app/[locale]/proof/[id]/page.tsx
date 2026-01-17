@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
+import LocaleLink from '@/components/LocaleLink';
 
 interface ProofData {
     id: number;
@@ -23,6 +24,11 @@ interface ProofData {
 
 export default function ProofPage() {
     const params = useParams();
+    const t = useTranslations('proof');
+    const tCommon = useTranslations('common');
+    const tErrors = useTranslations('errors');
+    const locale = useLocale();
+    
     const [proof, setProof] = useState<ProofData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -39,7 +45,7 @@ export default function ProofPage() {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Preuve introuvable');
+                throw new Error(data.error || tErrors('notFound'));
             }
 
             setProof(data.creation);
@@ -94,12 +100,12 @@ export default function ProofPage() {
                 <div className="glass-card rounded-3xl p-12 text-center max-w-md relative z-10">
                     <i className="fas fa-exclamation-triangle text-6xl text-amber-400 mb-4"></i>
                     <h1 className="font-display text-2xl font-bold text-white mb-2">
-                        Preuve introuvable
+                        {tErrors('notFound')}
                     </h1>
                     <p className="text-gray-400 mb-6">{error}</p>
-                    <Link href="/" className="btn-aurora inline-block px-6 py-3 rounded-xl">
-                        Retour à l'accueil
-                    </Link>
+                    <LocaleLink href="/" className="btn-aurora inline-block px-6 py-3 rounded-xl">
+                        {t('backToDashboard')}
+                    </LocaleLink>
                 </div>
             </div>
         );
@@ -118,7 +124,7 @@ export default function ProofPage() {
             <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-[#bff227]/10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
-                        <Link href="/" className="flex items-center gap-3">
+                        <LocaleLink href="/" className="flex items-center gap-3">
                             <div className="relative w-10 h-10">
                                 <div className="absolute inset-0 bg-gradient-to-br from-[#bff227] to-[#9dcc1e] rounded-xl"></div>
                                 <div className="absolute inset-0 bg-[#0b0124] rounded-xl flex items-center justify-center m-0.5">
@@ -128,7 +134,7 @@ export default function ProofPage() {
                             <span className="font-display font-bold text-xl bg-gradient-to-r from-[#bff227] to-white bg-clip-text text-transparent">
                                 Proofy
                             </span>
-                        </Link>
+                        </LocaleLink>
                     </div>
                 </div>
             </nav>
@@ -162,10 +168,10 @@ export default function ProofPage() {
                                                 } mr-2`}
                                         ></i>
                                         {proof.status === 'confirmed'
-                                            ? 'Confirmé sur la blockchain'
+                                            ? t('verified')
                                             : proof.status === 'pending'
-                                                ? 'En attente de confirmation'
-                                                : 'Échec'}
+                                                ? t('pending')
+                                                : tErrors('generic')}
                                     </span>
                                 </div>
 
@@ -174,7 +180,7 @@ export default function ProofPage() {
                                 </h1>
 
                                 <p className="text-gray-400 text-lg">
-                                    Preuve d'antériorité vérifiable publiquement
+                                    {t('subtitle')}
                                 </p>
                             </motion.div>
 
@@ -182,26 +188,26 @@ export default function ProofPage() {
                             <motion.div className="glass-card rounded-3xl p-8 mb-8" variants={itemVariants}>
                                 <div className="grid md:grid-cols-2 gap-8">
                                     <div>
-                                        <h3 className="text-sm font-medium text-gray-400 mb-2">Type de projet</h3>
+                                        <h3 className="text-sm font-medium text-gray-400 mb-2">{t('details.projectType')}</h3>
                                         <p className="text-white font-semibold capitalize">{proof.projectType}</p>
                                     </div>
 
                                     <div>
-                                        <h3 className="text-sm font-medium text-gray-400 mb-2">Date de dépôt</h3>
+                                        <h3 className="text-sm font-medium text-gray-400 mb-2">{t('details.depositDate')}</h3>
                                         <p className="text-white font-semibold">
-                                            {new Date(proof.createdAt).toLocaleString('fr-FR')}
+                                            {new Date(proof.createdAt).toLocaleString(locale === 'fr' ? 'fr-FR' : locale === 'es' ? 'es-ES' : 'en-US')}
                                         </p>
                                     </div>
 
                                     {proof.authors && (
                                         <div>
-                                            <h3 className="text-sm font-medium text-gray-400 mb-2">Auteur(s)</h3>
+                                            <h3 className="text-sm font-medium text-gray-400 mb-2">{t('details.createdBy')}</h3>
                                             <p className="text-white font-semibold">{proof.authors}</p>
                                         </div>
                                     )}
 
                                     <div>
-                                        <h3 className="text-sm font-medium text-gray-400 mb-2">Déposant</h3>
+                                        <h3 className="text-sm font-medium text-gray-400 mb-2">{t('details.createdBy')}</h3>
                                         <p className="text-white font-semibold">
                                             {proof.firstName} {proof.lastName}
                                         </p>
@@ -210,7 +216,7 @@ export default function ProofPage() {
 
                                 {proof.description && (
                                     <div className="mt-6 pt-6 border-t border-[#bff227]/10">
-                                        <h3 className="text-sm font-medium text-gray-400 mb-2">Description</h3>
+                                        <h3 className="text-sm font-medium text-gray-400 mb-2">{t('details.title')}</h3>
                                         <p className="text-white">{proof.description}</p>
                                     </div>
                                 )}
@@ -219,11 +225,11 @@ export default function ProofPage() {
                             {/* Hash Card */}
                             <motion.div className="glass-card rounded-3xl p-8 mb-8" variants={itemVariants}>
                                 <h3 className="font-display text-xl font-bold text-white mb-4">
-                                    Empreinte SHA-256
+                                    {t('details.fileHash')}
                                 </h3>
                                 <div className="hash-display text-sm">{proof.fileHash}</div>
                                 <p className="text-gray-400 text-sm mt-4">
-                                    Cette empreinte unique prouve l'existence du fichier à cette date. Impossible à falsifier ou à modifier.
+                                    {t('proofInfo')}
                                 </p>
                             </motion.div>
 
@@ -231,18 +237,18 @@ export default function ProofPage() {
                             {proof.txHash && (
                                 <motion.div className="glass-card rounded-3xl p-8 mb-8" variants={itemVariants}>
                                     <h3 className="font-display text-xl font-bold text-white mb-4">
-                                        Informations blockchain
+                                        {t('details.network')}
                                     </h3>
 
                                     <div className="space-y-4">
                                         <div>
-                                            <h4 className="text-sm font-medium text-gray-400 mb-2">Transaction Hash</h4>
+                                            <h4 className="text-sm font-medium text-gray-400 mb-2">{t('details.txHash')}</h4>
                                             <div className="hash-display text-sm">{proof.txHash}</div>
                                         </div>
 
                                         {proof.blockNumber && (
                                             <div>
-                                                <h4 className="text-sm font-medium text-gray-400 mb-2">Bloc</h4>
+                                                <h4 className="text-sm font-medium text-gray-400 mb-2">{t('details.blockNumber')}</h4>
                                                 <p className="text-white font-mono">#{proof.blockNumber}</p>
                                             </div>
                                         )}
@@ -255,7 +261,7 @@ export default function ProofPage() {
                                                 className="inline-flex items-center gap-2 btn-aurora px-6 py-3 rounded-xl"
                                             >
                                                 <i className="fas fa-external-link-alt"></i>
-                                                Voir sur Polygonscan
+                                                {t('viewOnExplorer')}
                                             </a>
                                         </div>
                                     </div>
@@ -271,16 +277,16 @@ export default function ProofPage() {
                                     className="btn-aurora flex items-center justify-center gap-2 px-6 py-3 rounded-xl flex-1"
                                 >
                                     <i className="fas fa-download"></i>
-                                    Télécharger le certificat
+                                    {t('downloadCertificate')}
                                 </a>
 
-                                <Link
+                                <LocaleLink
                                     href="/"
                                     className="glass-card flex items-center justify-center gap-2 px-6 py-3 rounded-xl hover:border-[#bff227]/50 transition-all flex-1 text-center"
                                 >
                                     <i className="fas fa-home"></i>
-                                    Retour à l'accueil
-                                </Link>
+                                    {t('backToDashboard')}
+                                </LocaleLink>
                             </motion.div>
                         </motion.div>
                     </AnimatePresence>

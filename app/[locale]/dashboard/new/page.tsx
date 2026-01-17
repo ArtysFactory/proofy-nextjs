@@ -103,7 +103,7 @@ export default function NewCreationPage() {
         publicPseudo: '',
       });
     }
-  }, [router]);
+  }, [router, locale]);
 
   // Validation
   const isIndividualValid = depositorType === 'individual' && 
@@ -212,9 +212,9 @@ export default function NewCreationPage() {
               <label className="block text-gray-300 text-sm font-medium mb-3">{t('section1.madeBy')} *</label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: 'human', icon: User, label: 'Humain', sublabel: '100% création humaine', color: 'emerald' },
-                  { value: 'ai', icon: Bot, label: 'IA', sublabel: '100% généré par IA', color: 'purple' },
-                  { value: 'hybrid', icon: Sparkles, label: 'Hybride', sublabel: 'Humain + IA', color: 'cyan' },
+                  { value: 'human', icon: User, label: t('section1.human'), sublabel: t('section1.humanDesc'), color: 'emerald' },
+                  { value: 'ai', icon: Bot, label: t('section1.ai'), sublabel: t('section1.aiDesc'), color: 'purple' },
+                  { value: 'hybrid', icon: Sparkles, label: t('section1.hybrid'), sublabel: t('section1.hybridDesc'), color: 'cyan' },
                 ].map(({ value, icon: Icon, label, sublabel, color }) => (
                   <button
                     key={value}
@@ -240,7 +240,7 @@ export default function NewCreationPage() {
             {madeBy === 'hybrid' && (
               <div className="mb-6 p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
                 <label className="block text-gray-300 text-sm font-medium mb-3">
-                  Proportion IA vs Humain: <span className="text-[#bff227] font-bold">{aiHumanRatio}%</span> IA / <span className="text-[#bff227] font-bold">{100 - aiHumanRatio}%</span> Humain
+                  {t('section1.aiRatio')}: <span className="text-[#bff227] font-bold">{aiHumanRatio}%</span> IA / <span className="text-[#bff227] font-bold">{100 - aiHumanRatio}%</span> {t('section1.human')}
                 </label>
                 <input
                   type="range"
@@ -261,26 +261,26 @@ export default function NewCreationPage() {
             {(madeBy === 'ai' || madeBy === 'hybrid') && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-gray-300 text-sm font-medium mb-2">Outils IA utilisés</label>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">{t('section1.aiTools')}</label>
                   <input
                     type="text"
                     value={aiTools}
                     onChange={(e) => setAiTools(e.target.value)}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none"
-                    placeholder="Ex: Midjourney v6, Suno, ChatGPT..."
+                    placeholder={t('section1.aiToolsPlaceholder')}
                   />
-                  <p className="text-gray-500 text-xs mt-1">Séparez par des virgules</p>
+                  <p className="text-gray-500 text-xs mt-1">{t('section1.aiToolsHint')}</p>
                 </div>
 
                 {madeBy === 'hybrid' && (
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">Contribution humaine</label>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">{t('section1.humanContribution')}</label>
                     <textarea
                       value={humanContribution}
                       onChange={(e) => setHumanContribution(e.target.value)}
                       rows={2}
                       className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none resize-none"
-                      placeholder="Ex: Paroles originales, arrangement, mixage..."
+                      placeholder={t('section1.humanContributionPlaceholder')}
                     />
                   </div>
                 )}
@@ -299,13 +299,13 @@ export default function NewCreationPage() {
               <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center text-white font-bold">
                 2
               </div>
-              <h2 className="text-lg font-semibold text-white">Type de déposant</h2>
+              <h2 className="text-lg font-semibold text-white">{t('section2.title')}</h2>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               {[
-                { value: 'individual', icon: UserCircle, label: 'Particulier', sublabel: 'Personne physique' },
-                { value: 'company', icon: Building2, label: 'Entreprise', sublabel: 'Personne morale' },
+                { value: 'individual', icon: UserCircle, label: t('section2.individual'), sublabel: t('section2.individualDesc') },
+                { value: 'company', icon: Building2, label: t('section2.company'), sublabel: t('section2.companyDesc') },
               ].map(({ value, icon: Icon, label, sublabel }) => (
                 <button
                   key={value}
@@ -333,32 +333,32 @@ export default function NewCreationPage() {
               <div className="p-4 bg-[#bff227]/5 border border-[#bff227]/20 rounded-xl space-y-4">
                 <h3 className="text-white font-medium flex items-center gap-2">
                   <UserCircle className="w-5 h-5 text-[#bff227]" />
-                  Informations personnelles
+                  {t('section2.personalInfo')}
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">Prénom *</label>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">{t('section2.firstName')} *</label>
                     <input
                       type="text"
                       value={individualInfo.firstName}
                       onChange={(e) => setIndividualInfo({ ...individualInfo, firstName: e.target.value })}
                       className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none"
-                      placeholder="Votre prénom"
+                      placeholder="Jean"
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">Nom *</label>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">{t('section2.lastName')} *</label>
                     <input
                       type="text"
                       value={individualInfo.lastName}
                       onChange={(e) => setIndividualInfo({ ...individualInfo, lastName: e.target.value })}
                       className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none"
-                      placeholder="Votre nom"
+                      placeholder="Dupont"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-gray-300 text-sm font-medium mb-2">Adresse email *</label>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">{t('section2.email')} *</label>
                   <input
                     type="email"
                     value={individualInfo.email}
@@ -369,7 +369,7 @@ export default function NewCreationPage() {
                 </div>
                 <div>
                   <label className="block text-gray-300 text-sm font-medium mb-2">
-                    Pseudonyme public <span className="text-gray-500">(optionnel)</span>
+                    {t('section2.publicPseudo')} <span className="text-gray-500">({tCommon('optional')})</span>
                   </label>
                   <input
                     type="text"
@@ -378,7 +378,7 @@ export default function NewCreationPage() {
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none"
                     placeholder="Nom affiché sur la page de preuve"
                   />
-                  <p className="text-gray-500 text-xs mt-1">Laissez vide pour utiliser votre nom complet</p>
+                  <p className="text-gray-500 text-xs mt-1">{t('section2.publicPseudoHint')}</p>
                 </div>
               </div>
             )}
@@ -388,11 +388,11 @@ export default function NewCreationPage() {
               <div className="p-4 bg-[#bff227]/5 border border-[#bff227]/20 rounded-xl space-y-4">
                 <h3 className="text-white font-medium flex items-center gap-2">
                   <Building2 className="w-5 h-5 text-[#bff227]" />
-                  Informations entreprise
+                  {t('section2.companyInfo')}
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">Nom de l'entreprise *</label>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">{t('section2.companyName')} *</label>
                     <input
                       type="text"
                       value={companyInfo.companyName}
@@ -402,7 +402,7 @@ export default function NewCreationPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-300 text-sm font-medium mb-2">Nom du déposant *</label>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">{t('section2.depositorName')} *</label>
                     <input
                       type="text"
                       value={companyInfo.depositorName}
@@ -413,7 +413,7 @@ export default function NewCreationPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-gray-300 text-sm font-medium mb-2">N° SIRET/SIREN *</label>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">{t('section2.siret')} *</label>
                   <input
                     type="text"
                     value={companyInfo.registrationNumber}
@@ -423,7 +423,7 @@ export default function NewCreationPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-300 text-sm font-medium mb-2">Adresse du siège social</label>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">{t('section2.address')}</label>
                   <textarea
                     value={companyInfo.address}
                     onChange={(e) => setCompanyInfo({ ...companyInfo, address: e.target.value })}
@@ -447,16 +447,16 @@ export default function NewCreationPage() {
               <div className="w-10 h-10 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold">
                 3
               </div>
-              <h2 className="text-lg font-semibold text-white">Type de projet</h2>
+              <h2 className="text-lg font-semibold text-white">{t('section3.title')}</h2>
             </div>
 
             <div className="grid grid-cols-5 gap-3">
               {[
-                { value: 'music', icon: Music, label: 'Musique', color: 'rose' },
-                { value: 'image', icon: ImageIcon, label: 'Image', color: 'cyan' },
-                { value: 'video', icon: Video, label: 'Vidéo', color: 'purple' },
-                { value: 'document', icon: FileText, label: 'Document', color: 'emerald' },
-                { value: 'other', icon: Shapes, label: 'Autre', color: 'amber' },
+                { value: 'music', icon: Music, label: t('section3.music'), color: 'rose' },
+                { value: 'image', icon: ImageIcon, label: t('section3.image'), color: 'cyan' },
+                { value: 'video', icon: Video, label: t('section3.video'), color: 'purple' },
+                { value: 'document', icon: FileText, label: t('section3.document'), color: 'emerald' },
+                { value: 'other', icon: Shapes, label: t('section3.other'), color: 'amber' },
               ].map(({ value, icon: Icon, label, color }) => (
                 <button
                   key={value}
@@ -486,11 +486,11 @@ export default function NewCreationPage() {
                 <p className="text-blue-300 text-sm">
                   {projectType === 'music' || projectType === 'video' ? (
                     <>
-                      <strong>Prochaine étape :</strong> Upload du fichier, puis gestion des droits d'auteur et droits voisins.
+                      <strong>{t('section3.nextStepRights').split(':')[0]}:</strong> {t('section3.nextStepRights').split(':')[1]}
                     </>
                   ) : (
                     <>
-                      <strong>Prochaine étape :</strong> Upload du fichier et création de la preuve d'antériorité.
+                      <strong>{t('section3.nextStepSimple').split(':')[0]}:</strong> {t('section3.nextStepSimple').split(':')[1]}
                     </>
                   )}
                 </p>
@@ -517,11 +517,11 @@ export default function NewCreationPage() {
               {isNavigating ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Chargement...
+                  {tCommon('loading')}
                 </>
               ) : (
                 <>
-                  Continuer
+                  {tCommon('continue')}
                   <ArrowRight className="w-5 h-5" />
                 </>
               )}

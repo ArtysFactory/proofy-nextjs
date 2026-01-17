@@ -160,7 +160,7 @@ export default function DashboardPage() {
                                     {t('title')}
                                 </h1>
                                 <p className="text-gray-400 text-lg">
-                                    Gérez vos créations et suivez leur statut sur la blockchain
+                                    {t('subtitle')}
                                 </p>
                             </motion.div>
 

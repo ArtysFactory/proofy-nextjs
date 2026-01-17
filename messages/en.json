@@ -18,7 +18,8 @@
     "yes": "Yes",
     "no": "No",
     "or": "or",
-    "and": "and"
+    "and": "and",
+    "rememberMe": "Remember me"
   },
   "brand": {
     "name": "Proofy",
@@ -32,7 +33,77 @@
     "login": "Login",
     "signup": "Sign up",
     "logout": "Logout",
-    "backToDashboard": "Back to dashboard"
+    "backToDashboard": "Back to dashboard",
+    "features": "Features",
+    "howItWorks": "How it works",
+    "pricing": "Pricing",
+    "getStarted": "Get started"
+  },
+  "home": {
+    "hero": {
+      "badge": "Anchored on",
+      "badgeFast": "Ultra fast",
+      "badgeCheap": "Cost-effective",
+      "title1": "Protect your",
+      "title2": "creations",
+      "title3": "on the",
+      "title4": "blockchain",
+      "subtitle": "Prove the anteriority of your works in a few clicks.",
+      "subtitleHighlight": "anteriority",
+      "subtitleEnd": "Timestamped certificate, immutable and verifiable by everyone.",
+      "cta": "Submit a creation",
+      "ctaSecondary": "How it works",
+      "statCost": "per deposit",
+      "statTime": "confirmation",
+      "statValidity": "validity period",
+      "discover": "Discover"
+    },
+    "features": {
+      "title": "Everything you",
+      "titleHighlight": "need",
+      "subtitle": "A complete solution to protect your intellectual property",
+      "hash": {
+        "title": "SHA-256 Hash",
+        "description": "Unique and irreversible fingerprint of your file. Impossible to falsify."
+      },
+      "blockchain": {
+        "title": "Blockchain Anchoring",
+        "description": "Your proof is recorded on Polygon, a secure and eco-friendly blockchain."
+      },
+      "certificate": {
+        "title": "PDF Certificate",
+        "description": "Download an official certificate with QR code to prove your anteriority."
+      },
+      "timestamp": {
+        "title": "UTC Timestamp",
+        "description": "Precise date and time recorded on-chain. Indisputable legal proof."
+      },
+      "gdpr": {
+        "title": "GDPR Compliant",
+        "description": "Your personal data is protected. Only the hash is public."
+      },
+      "noWallet": {
+        "title": "No Wallet Needed",
+        "description": "No Web3 knowledge required. We handle everything for you."
+      }
+    },
+    "howItWorks": {
+      "title": "How it",
+      "titleHighlight": "works",
+      "subtitle": "3 simple steps to protect your creations",
+      "step1": {
+        "title": "Upload your file",
+        "description": "Music, image, video, text, PDF... Drag and drop your creation."
+      },
+      "step2": {
+        "title": "Fill in the metadata",
+        "description": "Title, description, project type, authors... Customize your deposit."
+      },
+      "step3": {
+        "title": "Get your certificate",
+        "description": "Your proof is anchored on the blockchain. Download your PDF certificate."
+      }
+    }
   },
   "auth": {
     "login": {
@@ -43,7 +114,8 @@
       "submit": "Sign in",
       "noAccount": "Don't have an account?",
       "createAccount": "Create an account",
-      "forgotPassword": "Forgot password?"
+      "forgotPassword": "Forgot password?",
+      "backToHome": "Back to home"
     },
     "signup": {
       "title": "Create an account",
@@ -55,7 +127,10 @@
       "confirmPassword": "Confirm password",
       "submit": "Create my account",
       "hasAccount": "Already have an account?",
-      "login": "Sign in"
+      "login": "Sign in",
+      "termsAgree": "By creating an account, you agree to our",
+      "terms": "Terms of Service",
+      "backToHome": "Back to home"
     },
     "errors": {
       "invalidCredentials": "Invalid email or password",
@@ -66,6 +141,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "subtitle": "Manage your creations and track their blockchain status",
     "welcome": "Welcome",
     "newCreation": "New creation",
     "myCreations": "My creations",
@@ -76,13 +152,15 @@
     },
     "empty": {
       "title": "No creations",
-      "subtitle": "Start by creating your first proof of anteriority"
+      "subtitle": "Start by creating your first proof of anteriority",
+      "cta": "Create my first proof"
     },
     "creation": {
       "viewProof": "View proof",
       "manageRights": "Manage rights",
       "confirmed": "Confirmed",
-      "pending": "Pending"
+      "pending": "Pending",
+      "failed": "Failed"
     }
   },
   "newCreation": {
@@ -149,7 +227,9 @@
       "fileHash": "SHA-256 fingerprint",
       "hashCalculating": "Calculating...",
       "hashInfo": "This unique fingerprint identifies your file. It will be recorded on the blockchain.",
-      "supported": "Supported formats: MP3, WAV, FLAC, MP4, MOV, AVI, and more"
+      "supported": "Supported formats: MP3, WAV, FLAC, MP4, MOV, AVI, and more",
+      "fileSelected": "File selected",
+      "changeFile": "Change file"
     },
     "copyright": {
       "title": "Copyright",
@@ -187,7 +267,9 @@
       "others": "Other(s)",
       "othersDesc": "Other rights holders",
       "holderIPN": "IPN number",
-      "holderRole": "Role"
+      "holderRole": "Role",
+      "disabled": "Neighboring rights disabled",
+      "skip": "Skip this step"
     },
     "masters": {
       "title": "Recordings",
@@ -204,7 +286,9 @@
       "releaseTitle": "Release title",
       "releaseDate": "Release date",
       "upc": "UPC/EAN code",
-      "platforms": "Platforms"
+      "platforms": "Platforms",
+      "optional": "This step is optional",
+      "skip": "Skip this step"
     },
     "review": {
       "title": "Review & Submit",
@@ -224,7 +308,16 @@
       "depositing": "Submitting...",
       "cost": "Blockchain cost",
       "free": "Free",
-      "network": "Polygon Mainnet network"
+      "network": "Polygon Mainnet network",
+      "summary": "Summary",
+      "authors": "author(s)",
+      "recordings": "recording(s)",
+      "releases": "release(s)"
+    },
+    "navigation": {
+      "previous": "Previous",
+      "next": "Next",
+      "step": "Step"
     }
   },
   "simpleForm": {
@@ -249,7 +342,10 @@
       "title": "Processing...",
       "success": "Creation recorded!",
       "redirect": "Redirecting to your certificate..."
-    }
+    },
+    "human100": "Human (100%)",
+    "ai100": "AI (100%)",
+    "hybridPercent": "Hybrid ({percent}% AI)"
   },
   "proof": {
     "title": "Proof certificate",
@@ -264,11 +360,14 @@
       "fileHash": "SHA-256 fingerprint",
       "txHash": "Transaction hash",
       "blockNumber": "Block number",
-      "network": "Network"
+      "network": "Network",
+      "status": "Status"
     },
     "viewOnExplorer": "View on Polygonscan",
     "downloadCertificate": "Download certificate",
-    "share": "Share"
+    "share": "Share",
+    "backToDashboard": "Back to dashboard",
+    "proofInfo": "This proof of anteriority is permanently and immutably recorded on the Polygon blockchain."
   },
   "rights": {
     "title": "Manage rights",
@@ -279,7 +378,10 @@
     "fileHash": "Fingerprint",
     "viewOnBlockchain": "View on blockchain",
     "saveChanges": "Save changes",
-    "saved": "Changes saved successfully"
+    "saved": "Changes saved successfully",
+    "saving": "Saving...",
+    "copyrightRights": "Copyright",
+    "neighboringRights": "Neighboring rights"
   },
   "errors": {
     "generic": "An error occurred",

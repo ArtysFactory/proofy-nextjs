@@ -2,11 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
+import LocaleLink from '@/components/LocaleLink';
 
 export default function SignupPage() {
     const router = useRouter();
+    const t = useTranslations('auth.signup');
+    const tErrors = useTranslations('auth.errors');
+    const tCommon = useTranslations('common');
+    const locale = useLocale();
+    
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -29,12 +35,12 @@ export default function SignupPage() {
 
         // Validation
         if (formData.password !== formData.confirmPassword) {
-            setError('Les mots de passe ne correspondent pas');
+            setError(tErrors('passwordMismatch'));
             return;
         }
 
         if (formData.password.length < 8) {
-            setError('Le mot de passe doit contenir au moins 8 caractères');
+            setError(tErrors('weakPassword'));
             return;
         }
 
@@ -56,7 +62,7 @@ export default function SignupPage() {
             const signupData = await response.json();
 
             if (!response.ok) {
-                throw new Error(signupData.error || 'Erreur lors de l\'inscription');
+                throw new Error(signupData.error || tErrors('emailExists'));
             }
 
             // Auto-login after successful signup
@@ -77,10 +83,10 @@ export default function SignupPage() {
                 localStorage.setItem('user', JSON.stringify(loginData.user));
                 
                 // Redirect to dashboard
-                router.push('/dashboard');
+                router.push(`/${locale}/dashboard`);
             } else {
                 // Fallback to login page if auto-login fails
-                router.push('/login?message=account-created');
+                router.push(`/${locale}/login?message=account-created`);
             }
         } catch (err: any) {
             setError(err.message);
@@ -120,7 +126,7 @@ export default function SignupPage() {
                     transition={{ duration: 0.5 }}
                 >
                 {/* Logo */}
-                <Link href="/" className="flex items-center justify-center gap-3 mb-8">
+                <LocaleLink href="/" className="flex items-center justify-center gap-3 mb-8">
                     <div className="relative w-12 h-12">
                         <div className="absolute inset-0 bg-gradient-to-br from-[#bff227] to-[#9dcc1e] rounded-xl rotate-6"></div>
                         <div className="absolute inset-0 bg-[#0b0124] rounded-xl flex items-center justify-center">
@@ -130,15 +136,15 @@ export default function SignupPage() {
                     <span className="font-display font-bold text-2xl bg-gradient-to-r from-[#bff227] to-white bg-clip-text text-transparent">
                         Proofy
                     </span>
-                </Link>
+                </LocaleLink>
 
                 {/* Signup Card */}
                 <div className="glass-card rounded-3xl p-8">
                     <h1 className="font-display text-3xl font-bold text-white mb-2 text-center">
-                        Créer un compte
+                        {t('title')}
                     </h1>
                     <p className="text-gray-400 text-center mb-8">
-                        Commencez à protéger vos créations sur la blockchain
+                        {t('subtitle')}
                     </p>
 
                     {error && (
@@ -156,7 +162,7 @@ export default function SignupPage() {
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="firstName" className="block text-sm font-medium text-gray-300 mb-2">
-                                    Prénom
+                                    {t('firstName')}
                                 </label>
                                 <input
                                     id="firstName"
@@ -171,7 +177,7 @@ export default function SignupPage() {
 
                             <div>
                                 <label htmlFor="lastName" className="block text-sm font-medium text-gray-300 mb-2">
-                                    Nom
+                                    {t('lastName')}
                                 </label>
                                 <input
                                     id="lastName"
@@ -186,28 +192,8 @@ export default function SignupPage() {
                         </div>
 
                         <div>
-                            <label htmlFor="country" className="block text-sm font-medium text-gray-300 mb-2">
-                                Pays
-                            </label>
-                            <select
-                                id="country"
-                                required
-                                value={formData.country}
-                                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                                className="input-aurora w-full px-4 py-3 rounded-xl text-white"
-                            >
-                                <option value="FR">France</option>
-                                <option value="BE">Belgique</option>
-                                <option value="CH">Suisse</option>
-                                <option value="CA">Canada</option>
-                                <option value="US">États-Unis</option>
-                                <option value="OTHER">Autre</option>
-                            </select>
-                        </div>
-
-                        <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                                Email
+                                {t('email')}
                             </label>
                             <input
                                 id="email"
@@ -223,7 +209,7 @@ export default function SignupPage() {
                         <div className="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                                    Mot de passe
+                                    {t('password')}
                                 </label>
                                 <input
                                     id="password"
@@ -234,12 +220,12 @@ export default function SignupPage() {
                                     className="input-aurora w-full px-4 py-3 rounded-xl text-white"
                                     placeholder="••••••••"
                                 />
-                                <p className="text-xs text-gray-500 mt-1">Minimum 8 caractères</p>
+                                <p className="text-xs text-gray-500 mt-1">{tErrors('weakPassword')}</p>
                             </div>
 
                             <div>
                                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
-                                    Confirmer le mot de passe
+                                    {t('confirmPassword')}
                                 </label>
                                 <input
                                     id="confirmPassword"
@@ -256,14 +242,10 @@ export default function SignupPage() {
                         <div className="flex items-start">
                             <input type="checkbox" required className="mt-1 mr-2" />
                             <span className="text-sm text-gray-400">
-                                J'accepte les{' '}
-                                <Link href="/terms" className="text-[#bff227] hover:underline">
-                                    conditions d'utilisation
-                                </Link>{' '}
-                                et la{' '}
-                                <Link href="/privacy" className="text-[#bff227] hover:underline">
-                                    politique de confidentialité
-                                </Link>
+                                {t('termsAgree')}{' '}
+                                <LocaleLink href="/terms" className="text-[#bff227] hover:underline">
+                                    {t('terms')}
+                                </LocaleLink>
                             </span>
                         </div>
 
@@ -275,12 +257,12 @@ export default function SignupPage() {
                             {isLoading ? (
                                 <>
                                     <div className="loader w-5 h-5 border-2"></div>
-                                    Création du compte...
+                                    {tCommon('loading')}
                                 </>
                             ) : (
                                 <>
                                     <i className="fas fa-user-plus"></i>
-                                    Créer mon compte
+                                    {t('submit')}
                                 </>
                             )}
                         </button>
@@ -288,19 +270,19 @@ export default function SignupPage() {
 
                     <div className="mt-8 text-center">
                         <p className="text-gray-400">
-                            Vous avez déjà un compte ?{' '}
-                            <Link href="/login" className="text-[#bff227] hover:underline font-semibold">
-                                Se connecter
-                            </Link>
+                            {t('hasAccount')}{' '}
+                            <LocaleLink href="/login" className="text-[#bff227] hover:underline font-semibold">
+                                {t('login')}
+                            </LocaleLink>
                         </p>
                     </div>
                 </div>
 
                 <div className="mt-6 text-center">
-                    <Link href="/" className="text-gray-400 hover:text-white transition-colors text-sm">
+                    <LocaleLink href="/" className="text-gray-400 hover:text-white transition-colors text-sm">
                         <i className="fas fa-arrow-left mr-2"></i>
-                        Retour à l'accueil
-                    </Link>
+                        {t('backToHome')}
+                    </LocaleLink>
                 </div>
             </motion.div>
             </AnimatePresence>

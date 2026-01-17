@@ -8,7 +8,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
+import LocaleLink from '@/components/LocaleLink';
 import {
   ArrowLeft,
   Upload,
@@ -53,6 +54,12 @@ interface InitialFormData {
 
 export default function NewSimpleCreationPage() {
   const router = useRouter();
+  const t = useTranslations('simpleForm');
+  const tCommon = useTranslations('common');
+  const tErrors = useTranslations('errors');
+  const tWizard = useTranslations('wizard');
+  const locale = useLocale();
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -83,7 +90,7 @@ export default function NewSimpleCreationPage() {
     // Check authentication
     const token = localStorage.getItem('token');
     if (!token) {
-      router.push('/login?redirect=/dashboard/new-simple');
+      router.push(`/${locale}/login?redirect=/${locale}/dashboard/new-simple`);
       return;
     }
 
@@ -96,13 +103,13 @@ export default function NewSimpleCreationPage() {
         setProjectType(data.projectType as 'image' | 'document' | 'other');
       } else {
         // No initial data, redirect back to the first form
-        router.push('/dashboard/new');
+        router.push(`/${locale}/dashboard/new`);
       }
     } catch (error) {
       console.error('Error loading initial data:', error);
-      router.push('/dashboard/new');
+      router.push(`/${locale}/dashboard/new`);
     }
-  }, [router]);
+  }, [router, locale]);
 
   // Calculate SHA-256 hash
   const hashFile = async (file: File) => {
@@ -114,7 +121,7 @@ export default function NewSimpleCreationPage() {
       const hash = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
       setFileHash(hash);
     } catch (err) {
-      setError('Erreur lors du calcul du hash');
+      setError(tErrors('generic'));
       console.error(err);
     } finally {
       setIsHashing(false);
@@ -125,7 +132,7 @@ export default function NewSimpleCreationPage() {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       if (selectedFile.size > 500 * 1024 * 1024) {
-        setError('Fichier trop volumineux (max 500 MB)');
+        setError(tErrors('fileTooLarge'));
         return;
       }
       setFile(selectedFile);
@@ -147,7 +154,7 @@ export default function NewSimpleCreationPage() {
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile) {
       if (droppedFile.size > 500 * 1024 * 1024) {
-        setError('Fichier trop volumineux (max 500 MB)');
+        setError(tErrors('fileTooLarge'));
         return;
       }
       setFile(droppedFile);
@@ -160,15 +167,15 @@ export default function NewSimpleCreationPage() {
     setError('');
 
     if (!file || !fileHash) {
-      setError('Veuillez sélectionner un fichier');
+      setError(tErrors('fileRequired'));
       return;
     }
     if (!title) {
-      setError('Veuillez entrer un titre');
+      setError(tErrors('titleRequired'));
       return;
     }
     if (!confirmOwnership) {
-      setError('Veuillez confirmer être l\'auteur ou avoir les droits');
+      setError(tErrors('ownershipRequired'));
       return;
     }
 
@@ -210,12 +217,12 @@ export default function NewSimpleCreationPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Erreur lors de la création');
+        throw new Error(data.error || tErrors('generic'));
       }
 
       setProcessingStep(3);
       await new Promise(r => setTimeout(r, 1000));
-      router.push(`/proof/${data.publicId}`);
+      router.push(`/${locale}/proof/${data.publicId}`);
     } catch (err: any) {
       setError(err.message);
       setIsSubmitting(false);
@@ -244,13 +251,13 @@ export default function NewSimpleCreationPage() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-sm border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/dashboard/new" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+          <LocaleLink href="/dashboard/new" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
             <ArrowLeft className="w-5 h-5" />
-            <span>Retour</span>
-          </Link>
-          <Link href="/" className="text-xl font-bold text-[#bff227]">
+            <span>{tCommon('back')}</span>
+          </LocaleLink>
+          <LocaleLink href="/" className="text-xl font-bold text-[#bff227]">
             Proofy
-          </Link>
+          </LocaleLink>
           <div className="w-24" />
         </div>
       </nav>
@@ -267,10 +274,10 @@ export default function NewSimpleCreationPage() {
               <ImageIcon className="w-8 h-8 text-cyan-400" />
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">
-              Nouveau dépôt
+              {t('title')}
             </h1>
             <p className="text-gray-400">
-              Créez une preuve d'antériorité pour votre fichier
+              {t('subtitle')}
             </p>
           </motion.div>
 
@@ -302,7 +309,7 @@ export default function NewSimpleCreationPage() {
             >
               <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-[#bff227]" />
-                Récapitulatif
+                {t('summary')}
               </h2>
               
               <div className="grid md:grid-cols-2 gap-4">
@@ -316,11 +323,11 @@ export default function NewSimpleCreationPage() {
                     <Sparkles className="w-5 h-5 text-cyan-400" />
                   )}
                   <div>
-                    <p className="text-gray-400 text-xs">Créé par</p>
+                    <p className="text-gray-400 text-xs">{t('createdBy')}</p>
                     <p className="text-white text-sm font-medium">
-                      {initialData.madeBy === 'human' ? 'Humain (100%)' : 
-                       initialData.madeBy === 'ai' ? 'IA (100%)' : 
-                       `Hybride (${initialData.aiHumanRatio}% IA)`}
+                      {initialData.madeBy === 'human' ? t('human100') : 
+                       initialData.madeBy === 'ai' ? t('ai100') : 
+                       t('hybridPercent', { percent: initialData.aiHumanRatio })}
                     </p>
                   </div>
                 </div>
@@ -333,7 +340,7 @@ export default function NewSimpleCreationPage() {
                     <Building2 className="w-5 h-5 text-[#bff227]" />
                   )}
                   <div>
-                    <p className="text-gray-400 text-xs">Déposant</p>
+                    <p className="text-gray-400 text-xs">{t('depositor')}</p>
                     <p className="text-white text-sm font-medium">
                       {initialData.depositorType === 'individual' 
                         ? `${initialData.individualInfo?.firstName} ${initialData.individualInfo?.lastName}`
@@ -346,7 +353,7 @@ export default function NewSimpleCreationPage() {
               {/* AI Tools (if applicable) */}
               {initialData.aiTools && (
                 <div className="mt-4 p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl">
-                  <p className="text-gray-400 text-xs mb-1">Outils IA utilisés</p>
+                  <p className="text-gray-400 text-xs mb-1">{t('aiToolsUsed')}</p>
                   <p className="text-purple-300 text-sm">{initialData.aiTools}</p>
                 </div>
               )}
@@ -363,7 +370,7 @@ export default function NewSimpleCreationPage() {
             >
               <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                 <Upload className="w-5 h-5 text-[#bff227]" />
-                Votre fichier
+                {tWizard('upload.title')}
               </h2>
 
               <div
@@ -391,8 +398,8 @@ export default function NewSimpleCreationPage() {
                     <div className="w-16 h-16 mx-auto mb-4 bg-white/10 rounded-2xl flex items-center justify-center">
                       <Upload className="w-8 h-8 text-gray-400" />
                     </div>
-                    <p className="text-white font-medium mb-2">Glissez-déposez votre fichier ici</p>
-                    <p className="text-gray-500 text-sm mb-4">ou cliquez pour sélectionner</p>
+                    <p className="text-white font-medium mb-2">{tWizard('upload.dragDrop')}</p>
+                    <p className="text-gray-500 text-sm mb-4">{tWizard('upload.clickSelect')}</p>
                     <div className="flex items-center justify-center gap-4 text-gray-500 text-xs">
                       <span className="flex items-center gap-1">
                         <ImageIcon className="w-4 h-4" /> Image
@@ -404,7 +411,7 @@ export default function NewSimpleCreationPage() {
                         <FileArchive className="w-4 h-4" /> ZIP
                       </span>
                     </div>
-                    <p className="text-gray-600 text-xs mt-4">Max 500 MB</p>
+                    <p className="text-gray-600 text-xs mt-4">{tWizard('upload.maxSize')}</p>
                   </>
                 ) : (
                   <div className="flex items-center gap-4 justify-center">
@@ -439,12 +446,12 @@ export default function NewSimpleCreationPage() {
                 <div className="mt-4">
                   <label className="text-gray-400 text-sm flex items-center gap-2 mb-2">
                     <Fingerprint className="w-4 h-4 text-[#bff227]" />
-                    Empreinte SHA-256
+                    {tWizard('upload.fileHash')}
                   </label>
                   {isHashing ? (
                     <div className="flex items-center gap-2 text-[#bff227]">
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span className="text-sm">Calcul en cours...</span>
+                      <span className="text-sm">{tWizard('upload.hashCalculating')}</span>
                     </div>
                   ) : (
                     <div className="bg-[#0a0a0a] border border-white/10 rounded-lg p-3">
@@ -466,34 +473,34 @@ export default function NewSimpleCreationPage() {
             >
               <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-[#bff227]" />
-                Informations
+                {t('information')}
               </h2>
 
               <div className="space-y-4">
                 <div>
                   <label className="block text-gray-300 text-sm font-medium mb-2">
-                    Titre de l'œuvre *
+                    {t('workTitle')} *
                   </label>
                   <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#bff227]/50"
-                    placeholder="Ex: Logo de mon entreprise"
+                    placeholder={t('workTitlePlaceholder')}
                     required
                   />
                 </div>
 
                 <div>
                   <label className="block text-gray-300 text-sm font-medium mb-2">
-                    Description <span className="text-gray-500">(optionnel)</span>
+                    {t('description')} <span className="text-gray-500">({tCommon('optional')})</span>
                   </label>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     rows={3}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#bff227]/50 resize-none"
-                    placeholder="Décrivez brièvement votre création..."
+                    placeholder={t('descriptionPlaceholder')}
                   />
                 </div>
               </div>
@@ -508,7 +515,7 @@ export default function NewSimpleCreationPage() {
             >
               <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                 <Shield className="w-5 h-5 text-[#bff227]" />
-                Confirmation
+                {t('confirmation')}
               </h2>
 
               <label className="flex items-start gap-3 cursor-pointer">
@@ -519,7 +526,7 @@ export default function NewSimpleCreationPage() {
                   className="mt-1 w-5 h-5 rounded border-white/20 bg-white/5 text-[#bff227] focus:ring-[#bff227]"
                 />
                 <span className="text-gray-300 text-sm">
-                  Je confirme être l'auteur ou avoir les droits sur cette création, et j'accepte que le hash soit enregistré de façon permanente sur la blockchain Polygon.
+                  {t('ownershipConfirm')}
                 </span>
               </label>
             </motion.div>
@@ -542,14 +549,14 @@ export default function NewSimpleCreationPage() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  {processingStep === 1 && 'Préparation...'}
-                  {processingStep === 2 && 'Ancrage blockchain...'}
-                  {processingStep === 3 && 'Finalisation...'}
+                  {processingStep === 1 && t('processing.preparing')}
+                  {processingStep === 2 && t('processing.blockchain')}
+                  {processingStep === 3 && t('processing.finalizing')}
                 </>
               ) : (
                 <>
                   <CheckCircle2 className="w-5 h-5" />
-                  Créer ma preuve d'antériorité
+                  {t('createProof')}
                 </>
               )}
             </motion.button>
@@ -574,12 +581,12 @@ export default function NewSimpleCreationPage() {
             >
               <Loader2 className="w-12 h-12 text-[#bff227] animate-spin mx-auto mb-6" />
               <h3 className="text-xl font-semibold text-white mb-2">
-                {processingStep === 3 ? 'Création enregistrée !' : 'Traitement en cours...'}
+                {processingStep === 3 ? t('processing.success') : t('processing.title')}
               </h3>
               <p className="text-gray-400">
-                {processingStep === 1 && 'Préparation des données...'}
-                {processingStep === 2 && 'Ancrage sur la blockchain Polygon...'}
-                {processingStep === 3 && 'Redirection vers votre certificat...'}
+                {processingStep === 1 && t('processing.preparing')}
+                {processingStep === 2 && t('processing.blockchain')}
+                {processingStep === 3 && t('processing.redirect')}
               </p>
 
               <div className="mt-6 space-y-2">
@@ -598,9 +605,9 @@ export default function NewSimpleCreationPage() {
                       )}
                     </div>
                     <span className={`text-sm ${processingStep >= step ? 'text-gray-300' : 'text-gray-500'}`}>
-                      {step === 1 && 'Préparation'}
+                      {step === 1 && t('processing.preparing').replace('...', '')}
                       {step === 2 && 'Blockchain'}
-                      {step === 3 && 'Certificat'}
+                      {step === 3 && t('processing.finalizing').replace('...', '')}
                     </span>
                   </div>
                 ))}

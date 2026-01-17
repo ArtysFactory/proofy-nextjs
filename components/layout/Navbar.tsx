@@ -49,13 +49,13 @@ export default function Navbar() {
                             href="#features"
                             className="text-gray-300 hover:text-[#bff227] transition-colors text-sm"
                         >
-                            Fonctionnalités
+                            {t('features')}
                         </a>
                         <a
                             href="#how-it-works"
                             className="text-gray-300 hover:text-[#bff227] transition-colors text-sm"
                         >
-                            Comment ça marche
+                            {t('howItWorks')}
                         </a>
                         <LocaleLink
                             href="/login"
@@ -67,7 +67,7 @@ export default function Navbar() {
                             href="/signup"
                             className="px-5 py-2 bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0b0124] font-semibold rounded-lg hover:shadow-lg hover:shadow-[#bff227]/20 transition-all duration-300 text-sm"
                         >
-                            {t('newCreation')}
+                            {t('getStarted')}
                         </LocaleLink>
                         
                         {/* Language Switcher */}
@@ -95,14 +95,14 @@ export default function Navbar() {
                                 className="text-gray-300 hover:text-[#bff227] transition-colors py-2"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                Fonctionnalités
+                                {t('features')}
                             </a>
                             <a
                                 href="#how-it-works"
                                 className="text-gray-300 hover:text-[#bff227] transition-colors py-2"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                Comment ça marche
+                                {t('howItWorks')}
                             </a>
                             <LocaleLink
                                 href="/login"
@@ -116,7 +116,7 @@ export default function Navbar() {
                                 className="px-5 py-2 bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0b0124] font-semibold rounded-lg hover:shadow-lg hover:shadow-[#bff227]/20 transition-all duration-300 text-center"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                {t('newCreation')}
+                                {t('getStarted')}
                             </LocaleLink>
                         </div>
                     </div>
