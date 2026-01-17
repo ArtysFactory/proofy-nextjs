@@ -55,6 +55,19 @@ export interface NeighboringRights {
   others: NeighboringRightsHolder[];
 }
 
+// ===== GENERAL INFO TYPES =====
+
+export type MadeByType = 'human' | 'ai' | 'hybrid';
+export type DepositorType = 'individual' | 'company';
+
+export interface CompanyInfo {
+  companyName: string;
+  depositorName: string;
+  address: string;
+  registrationNumber: string;
+  vatNumber?: string;
+}
+
 // ===== WIZARD STATE =====
 
 export interface WizardState {
@@ -69,7 +82,16 @@ export interface WizardState {
   fileSize: number;
   fileType: string;
   
-  // Step 2: Droits d'auteur (Copyright)
+  // Step 2: General Info + Droits d'auteur (Copyright)
+  // General Info
+  madeBy: MadeByType;
+  aiHumanRatio: number;
+  aiTools: string;
+  humanContribution: string;
+  depositorType: DepositorType;
+  publicPseudo: string;
+  companyInfo: CompanyInfo | null;
+  // Copyright
   workTitle: string;
   copyrightRights: CopyrightRights;
   
@@ -127,6 +149,15 @@ const initialState: WizardState = {
   fileName: '',
   fileSize: 0,
   fileType: '',
+  // General Info
+  madeBy: 'human',
+  aiHumanRatio: 50,
+  aiTools: '',
+  humanContribution: '',
+  depositorType: 'individual',
+  publicPseudo: '',
+  companyInfo: null,
+  // Copyright
   workTitle: '',
   copyrightRights: initialCopyrightRights,
   neighboringRights: initialNeighboringRights,
@@ -150,6 +181,7 @@ type WizardAction =
   | { type: 'PREV_STEP' }
   | { type: 'SET_FILE'; file: File; hash: string }
   | { type: 'SET_WORK_TITLE'; title: string }
+  | { type: 'SET_GENERAL_INFO'; info: Partial<Pick<WizardState, 'madeBy' | 'aiHumanRatio' | 'aiTools' | 'humanContribution' | 'depositorType' | 'publicPseudo' | 'companyInfo'>> }
   | { type: 'SET_COPYRIGHT_RIGHTS'; rights: CopyrightRights }
   | { type: 'SET_NEIGHBORING_RIGHTS'; rights: NeighboringRights }
   | { type: 'SET_WORK'; work: Partial<MusicWork> }
@@ -207,6 +239,9 @@ function wizardReducer(state: WizardState, action: WizardAction): WizardState {
         workTitle: action.title,
         work: { ...state.work, title: action.title },
       };
+    
+    case 'SET_GENERAL_INFO':
+      return { ...state, ...action.info };
     
     case 'SET_COPYRIGHT_RIGHTS':
       return { ...state, copyrightRights: action.rights };
@@ -335,6 +370,7 @@ interface WizardContextType {
   goToStep: (step: number) => void;
   setFile: (file: File, hash: string) => void;
   setWorkTitle: (title: string) => void;
+  setGeneralInfo: (info: Partial<Pick<WizardState, 'madeBy' | 'aiHumanRatio' | 'aiTools' | 'humanContribution' | 'depositorType' | 'publicPseudo' | 'companyInfo'>>) => void;
   setCopyrightRights: (rights: CopyrightRights) => void;
   setNeighboringRights: (rights: NeighboringRights) => void;
   updateWork: (work: Partial<MusicWork>) => void;
@@ -369,6 +405,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     goToStep: (step) => dispatch({ type: 'SET_STEP', step }),
     setFile: (file, hash) => dispatch({ type: 'SET_FILE', file, hash }),
     setWorkTitle: (title) => dispatch({ type: 'SET_WORK_TITLE', title }),
+    setGeneralInfo: (info) => dispatch({ type: 'SET_GENERAL_INFO', info }),
     setCopyrightRights: (rights) => dispatch({ type: 'SET_COPYRIGHT_RIGHTS', rights }),
     setNeighboringRights: (rights) => dispatch({ type: 'SET_NEIGHBORING_RIGHTS', rights }),
     updateWork: (work) => dispatch({ type: 'SET_WORK', work }),

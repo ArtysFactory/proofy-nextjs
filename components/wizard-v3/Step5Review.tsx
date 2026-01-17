@@ -97,6 +97,15 @@ export default function Step5Review() {
         fileSize: state.fileSize,
         fileType: state.fileType,
         
+        // General Info (from Step 2)
+        madeBy: state.madeBy,
+        aiHumanRatio: state.madeBy === 'human' ? 0 : state.madeBy === 'ai' ? 100 : state.aiHumanRatio,
+        aiTools: state.aiTools,
+        humanContribution: state.humanContribution,
+        depositorType: state.depositorType,
+        publicPseudo: state.publicPseudo,
+        companyInfo: state.companyInfo,
+        
         // V3 Music Rights data
         musicWork: {
           ...state.work,
