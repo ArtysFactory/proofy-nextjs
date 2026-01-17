@@ -1,0 +1,304 @@
+{
+  "common": {
+    "back": "Volver",
+    "continue": "Continuar",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Añadir",
+    "remove": "Quitar",
+    "close": "Cerrar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "required": "Obligatorio",
+    "optional": "opcional",
+    "yes": "Sí",
+    "no": "No",
+    "or": "o",
+    "and": "y"
+  },
+  "brand": {
+    "name": "Proofy",
+    "tagline": "Protege tus creaciones en la blockchain",
+    "version": "V3 BETA"
+  },
+  "nav": {
+    "home": "Inicio",
+    "dashboard": "Panel de control",
+    "newCreation": "Nueva creación",
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar sesión",
+    "backToDashboard": "Volver al panel"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar sesión",
+      "subtitle": "Accede a tu cuenta Proofy",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "submit": "Iniciar sesión",
+      "noAccount": "¿No tienes cuenta?",
+      "createAccount": "Crear una cuenta",
+      "forgotPassword": "¿Olvidaste tu contraseña?"
+    },
+    "signup": {
+      "title": "Crear una cuenta",
+      "subtitle": "Únete a Proofy y protege tus creaciones",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "submit": "Crear mi cuenta",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "login": "Iniciar sesión"
+    },
+    "errors": {
+      "invalidCredentials": "Correo o contraseña incorrectos",
+      "emailExists": "Este correo ya está en uso",
+      "weakPassword": "La contraseña debe tener al menos 8 caracteres",
+      "passwordMismatch": "Las contraseñas no coinciden"
+    }
+  },
+  "dashboard": {
+    "title": "Panel de control",
+    "welcome": "Bienvenido",
+    "newCreation": "Nueva creación",
+    "myCreations": "Mis creaciones",
+    "stats": {
+      "total": "Total de creaciones",
+      "confirmed": "Confirmadas",
+      "pending": "Pendientes"
+    },
+    "empty": {
+      "title": "Sin creaciones",
+      "subtitle": "Comienza creando tu primera prueba de anterioridad"
+    },
+    "creation": {
+      "viewProof": "Ver prueba",
+      "manageRights": "Gestionar derechos",
+      "confirmed": "Confirmada",
+      "pending": "Pendiente"
+    }
+  },
+  "newCreation": {
+    "title": "Nueva creación",
+    "subtitle": "Protege tu obra en la blockchain en pocos clics",
+    "section1": {
+      "title": "Información general",
+      "madeBy": "Creado por",
+      "human": "Humano",
+      "humanDesc": "100% creación humana",
+      "ai": "IA",
+      "aiDesc": "100% generado por IA",
+      "hybrid": "Híbrido",
+      "hybridDesc": "Humano + IA",
+      "aiRatio": "Proporción IA vs Humano",
+      "aiTools": "Herramientas de IA utilizadas",
+      "aiToolsPlaceholder": "Ej: Midjourney v6, Suno, ChatGPT...",
+      "aiToolsHint": "Separar con comas",
+      "humanContribution": "Contribución humana",
+      "humanContributionPlaceholder": "Ej: Letras originales, arreglos, mezcla..."
+    },
+    "section2": {
+      "title": "Tipo de depositante",
+      "individual": "Particular",
+      "individualDesc": "Persona física",
+      "company": "Empresa",
+      "companyDesc": "Persona jurídica",
+      "personalInfo": "Información personal",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "publicPseudo": "Seudónimo público",
+      "publicPseudoHint": "Dejar vacío para usar tu nombre completo",
+      "companyInfo": "Información de la empresa",
+      "companyName": "Nombre de la empresa",
+      "depositorName": "Nombre del depositante",
+      "siret": "Número de registro",
+      "address": "Dirección de la sede"
+    },
+    "section3": {
+      "title": "Tipo de proyecto",
+      "music": "Música",
+      "image": "Imagen",
+      "video": "Vídeo",
+      "document": "Documento",
+      "other": "Otro",
+      "nextStepRights": "Siguiente paso: Subir archivo, luego gestión de derechos de autor y derechos conexos.",
+      "nextStepSimple": "Siguiente paso: Subir archivo y creación de prueba de anterioridad."
+    }
+  },
+  "wizard": {
+    "steps": {
+      "upload": "Subir",
+      "copyright": "Derechos de autor",
+      "neighboring": "Derechos conexos",
+      "masters": "Grabaciones",
+      "review": "Revisión"
+    },
+    "upload": {
+      "title": "Tu archivo",
+      "dragDrop": "Arrastra y suelta tu archivo aquí",
+      "clickSelect": "o haz clic para seleccionar",
+      "maxSize": "Máx 500 MB",
+      "fileHash": "Huella SHA-256",
+      "hashCalculating": "Calculando...",
+      "hashInfo": "Esta huella única identifica tu archivo. Se registrará en la blockchain.",
+      "supported": "Formatos soportados: MP3, WAV, FLAC, MP4, MOV, AVI, y más"
+    },
+    "copyright": {
+      "title": "Derechos de autor",
+      "subtitle": "Distribución de derechos sobre la obra",
+      "info": "Los derechos de autor protegen la obra (composición, letras). En España, son gestionados por la SGAE.",
+      "workTitle": "Título de la obra",
+      "workTitlePlaceholder": "Ej: Mi canción",
+      "authors": "Autor(es)",
+      "authorsDesc": "Letristas, autores del texto",
+      "composers": "Compositor(es)",
+      "composersDesc": "Autores de la música",
+      "publishers": "Editor(es)",
+      "publishersDesc": "Derechos de edición musical",
+      "total": "Total",
+      "mustEqual100": "El total debe ser igual a 100%",
+      "addHolder": "Añadir",
+      "holderName": "Nombre",
+      "holderPercentage": "Porcentaje",
+      "holderEmail": "Correo",
+      "holderIPI": "Número IPI/CAE",
+      "noHolders": "Ningún titular añadido"
+    },
+    "neighboring": {
+      "title": "Derechos conexos",
+      "subtitle": "Distribución de derechos sobre la grabación",
+      "info": "Los derechos conexos protegen la grabación (interpretación, producción). Son distintos de los derechos de autor.",
+      "enable": "Activar derechos conexos",
+      "enableDesc": "Marca si deseas declarar derechos conexos para esta creación",
+      "producers": "Productor(es) fonográfico",
+      "producersDesc": "Productores de la grabación",
+      "performers": "Artista(s) intérprete(s)",
+      "performersDesc": "Músicos, cantantes",
+      "labels": "Sello(s)",
+      "labelsDesc": "Sellos de distribución",
+      "others": "Otro(s)",
+      "othersDesc": "Otros titulares de derechos",
+      "holderIPN": "Número IPN",
+      "holderRole": "Rol"
+    },
+    "masters": {
+      "title": "Grabaciones",
+      "subtitle": "Información sobre el master y los lanzamientos",
+      "addMaster": "Añadir grabación",
+      "masterTitle": "Título de la grabación",
+      "isrc": "Código ISRC",
+      "isrcPlaceholder": "Ej: ES-XXX-24-00001",
+      "duration": "Duración",
+      "durationPlaceholder": "Ej: 3:45",
+      "recordingDate": "Fecha de grabación",
+      "releases": "Lanzamientos",
+      "addRelease": "Añadir lanzamiento",
+      "releaseTitle": "Título del lanzamiento",
+      "releaseDate": "Fecha de lanzamiento",
+      "upc": "Código UPC/EAN",
+      "platforms": "Plataformas"
+    },
+    "review": {
+      "title": "Revisión y Envío",
+      "subtitle": "Verifica la información antes del envío a blockchain",
+      "fileSection": "Archivo",
+      "fileName": "Nombre del archivo",
+      "fileSize": "Tamaño",
+      "fileHash": "Huella SHA-256",
+      "copyrightSection": "Derechos de autor",
+      "neighboringSection": "Derechos conexos",
+      "mastersSection": "Grabaciones",
+      "termsTitle": "Términos y condiciones",
+      "termsAccept": "Acepto los términos y condiciones de uso",
+      "ownershipConfirm": "Confirmo que soy el autor o tengo los derechos sobre esta creación",
+      "blockchainInfo": "El hash SHA-256 de tu archivo se registrará permanentemente en la blockchain Polygon.",
+      "deposit": "Enviar mi creación",
+      "depositing": "Enviando...",
+      "cost": "Coste blockchain",
+      "free": "Gratis",
+      "network": "Red Polygon Mainnet"
+    }
+  },
+  "simpleForm": {
+    "title": "Nuevo depósito",
+    "subtitle": "Crea una prueba de anterioridad para tu archivo",
+    "summary": "Resumen",
+    "createdBy": "Creado por",
+    "depositor": "Depositante",
+    "aiToolsUsed": "Herramientas de IA utilizadas",
+    "information": "Información",
+    "workTitle": "Título de la obra",
+    "workTitlePlaceholder": "Ej: Logo de mi empresa",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Describe brevemente tu creación...",
+    "confirmation": "Confirmación",
+    "ownershipConfirm": "Confirmo que soy el autor o tengo los derechos sobre esta creación, y acepto que el hash se registre permanentemente en la blockchain Polygon.",
+    "createProof": "Crear mi prueba de anterioridad",
+    "processing": {
+      "preparing": "Preparando...",
+      "blockchain": "Anclaje blockchain...",
+      "finalizing": "Finalizando...",
+      "title": "Procesando...",
+      "success": "¡Creación registrada!",
+      "redirect": "Redirigiendo a tu certificado..."
+    }
+  },
+  "proof": {
+    "title": "Certificado de prueba",
+    "subtitle": "Prueba de anterioridad registrada en la blockchain",
+    "verified": "Verificado en blockchain",
+    "pending": "Pendiente de confirmación",
+    "details": {
+      "title": "Título",
+      "createdBy": "Creado por",
+      "depositDate": "Fecha de depósito",
+      "projectType": "Tipo de proyecto",
+      "fileHash": "Huella SHA-256",
+      "txHash": "Hash de transacción",
+      "blockNumber": "Número de bloque",
+      "network": "Red"
+    },
+    "viewOnExplorer": "Ver en Polygonscan",
+    "downloadCertificate": "Descargar certificado",
+    "share": "Compartir"
+  },
+  "rights": {
+    "title": "Gestionar derechos",
+    "subtitle": "Modificar la distribución de derechos",
+    "initialDeposit": "Información del depósito inicial",
+    "depositDate": "Fecha de depósito",
+    "projectType": "Tipo de proyecto",
+    "fileHash": "Huella",
+    "viewOnBlockchain": "Ver en blockchain",
+    "saveChanges": "Guardar cambios",
+    "saved": "Cambios guardados correctamente"
+  },
+  "errors": {
+    "generic": "Se ha producido un error",
+    "notFound": "Página no encontrada",
+    "unauthorized": "Acceso no autorizado",
+    "serverError": "Error del servidor",
+    "networkError": "Error de conexión",
+    "fileRequired": "Por favor selecciona un archivo",
+    "titleRequired": "Por favor introduce un título",
+    "ownershipRequired": "Por favor confirma que eres el autor o tienes los derechos",
+    "totalMustBe100": "Los porcentajes totales deben sumar 100%",
+    "fileTooLarge": "Archivo demasiado grande"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados",
+    "privacy": "Política de privacidad",
+    "terms": "Términos de uso",
+    "contact": "Contacto",
+    "gdprInfo": "Tus datos se procesan de forma segura y conforme al RGPD.",
+    "hashInfo": "El hash SHA-256 de tu archivo se calcula localmente — tu archivo nunca se sube."
+  }
+}

@@ -2,17 +2,18 @@
 
 // ============================================
 // PROOFY - Language Switcher component
+// Uses next-intl's Link for proper locale switching
 // ============================================
 
 import { useLocale } from 'next-intl';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 import { locales, localeNames, localeFlags, type Locale } from '@/i18n/config';
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -28,14 +29,17 @@ export default function LanguageSwitcher() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const switchLocale = (newLocale: Locale) => {
-    // Get the path without the current locale
+  // Get the path without the current locale
+  const getLocalizedPath = (newLocale: Locale) => {
     const segments = pathname.split('/');
-    segments[1] = newLocale; // Replace the locale segment
-    const newPath = segments.join('/');
-    
-    router.push(newPath);
-    setIsOpen(false);
+    // Replace the locale segment (first segment after /)
+    if (locales.includes(segments[1] as Locale)) {
+      segments[1] = newLocale;
+    } else {
+      // No locale in path, add it
+      segments.splice(1, 0, newLocale);
+    }
+    return segments.join('/') || `/${newLocale}`;
   };
 
   return (
@@ -53,9 +57,10 @@ export default function LanguageSwitcher() {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-40 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-xl overflow-hidden z-50">
           {locales.map((loc) => (
-            <button
+            <Link
               key={loc}
-              onClick={() => switchLocale(loc)}
+              href={getLocalizedPath(loc)}
+              onClick={() => setIsOpen(false)}
               className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
                 locale === loc
                   ? 'bg-[#bff227]/10 text-[#bff227]'
@@ -67,7 +72,7 @@ export default function LanguageSwitcher() {
               {locale === loc && (
                 <span className="ml-auto text-[#bff227]">✓</span>
               )}
-            </button>
+            </Link>
           ))}
         </div>
       )}
