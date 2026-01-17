@@ -21,6 +21,10 @@ export async function GET(
                 c.file_hash as "fileHash", c.project_type as "projectType", 
                 c.authors, c.status, c.created_at as "createdAt", 
                 c.tx_hash as "txHash", c.block_number as "blockNumber",
+                c.copyright_rights as "copyrightRights",
+                c.neighboring_rights as "neighboringRights",
+                c.music_work as "musicWork",
+                c.music_parties as "musicParties",
                 u.first_name as "firstName", u.last_name as "lastName", u.email
             FROM creations c
             JOIN users u ON c.user_id = u.id

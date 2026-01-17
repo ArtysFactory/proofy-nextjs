@@ -56,6 +56,14 @@ interface CreationData {
   id: number;
   publicId: string;
   title: string;
+  fileHash?: string;
+  projectType?: string;
+  status?: string;
+  createdAt?: string;
+  txHash?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
   copyrightRights?: CopyrightRights;
   neighboringRights?: NeighboringRights;
 }
@@ -117,14 +125,24 @@ export default function RightsManagementPage() {
       }
 
       const data = await response.json();
-      setCreation(data.creation);
+      const creationData = data.creation;
+      setCreation(creationData);
 
-      // Load existing rights or use defaults
-      if (data.creation.copyrightRights) {
-        setCopyrightRights(data.creation.copyrightRights);
+      // Load existing rights or initialize with depositor info
+      if (creationData.copyrightRights) {
+        setCopyrightRights(creationData.copyrightRights);
+      } else {
+        // Initialize with depositor as default author
+        const depositorName = [creationData.firstName, creationData.lastName].filter(Boolean).join(' ') || 'Déposant';
+        setCopyrightRights({
+          authors: [{ id: '1', name: depositorName, percentage: 100, email: creationData.email || '' }],
+          composers: [],
+          publishers: [],
+        });
       }
-      if (data.creation.neighboringRights) {
-        setNeighboringRights(data.creation.neighboringRights);
+      
+      if (creationData.neighboringRights) {
+        setNeighboringRights(creationData.neighboringRights);
       }
     } catch (err: any) {
       setError(err.message);
@@ -397,6 +415,64 @@ export default function RightsManagementPage() {
             <h1 className="text-3xl font-bold text-white mb-2">Gérer les droits</h1>
             <p className="text-gray-400">{creation?.title}</p>
           </motion.div>
+
+          {/* Creation Info Card */}
+          {creation && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 }}
+              className="bg-gradient-to-br from-[#bff227]/10 to-[#bff227]/5 border border-[#bff227]/30 rounded-2xl p-6 mb-6"
+            >
+              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <Info className="w-5 h-5 text-[#bff227]" />
+                Informations du dépôt
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Titre de l'œuvre</p>
+                  <p className="text-white font-medium">{creation.title}</p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Type de projet</p>
+                  <p className="text-white capitalize">{creation.projectType || 'Non spécifié'}</p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Déposant</p>
+                  <p className="text-white">
+                    {[creation.firstName, creation.lastName].filter(Boolean).join(' ') || 'Non spécifié'}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Date de dépôt</p>
+                  <p className="text-white">
+                    {creation.createdAt 
+                      ? new Date(creation.createdAt).toLocaleDateString('fr-FR', { 
+                          day: 'numeric', month: 'long', year: 'numeric' 
+                        })
+                      : 'Non spécifié'}
+                  </p>
+                </div>
+                <div className="md:col-span-2">
+                  <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Empreinte SHA-256</p>
+                  <p className="text-[#bff227] font-mono text-xs break-all">{creation.fileHash || 'Non disponible'}</p>
+                </div>
+                {creation.txHash && (
+                  <div className="md:col-span-2">
+                    <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Transaction Blockchain</p>
+                    <a 
+                      href={`https://polygonscan.com/tx/${creation.txHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#bff227] font-mono text-xs break-all hover:underline"
+                    >
+                      {creation.txHash}
+                    </a>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
 
           {/* Success/Error Messages */}
           <AnimatePresence>
