@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import LocaleLink from '@/components/LocaleLink';
+import HeroTypewriter from '@/components/ui/HeroTypewriter';
 
 export default function HomePage() {
     const t = useTranslations('home');
@@ -153,22 +154,21 @@ export default function HomePage() {
                                     <span className="text-[#bff227] text-xs font-semibold uppercase tracking-wider">Web3</span>
                                 </motion.div>
 
-                                {/* Main Title */}
-                                <motion.h1
-                                    className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight"
+                                {/* Main Title with Typewriter Effect */}
+                                <motion.div
+                                    className="mb-8"
                                     variants={itemVariants}
                                 >
-                                    <span className="text-white">{t('hero.title1')}</span>
-                                    <br className="hidden sm:block" />
-                                    <span className="text-gradient-animated">{t('hero.title2')}</span>
-                                    <br />
-                                    <span className="text-white">{t('hero.title3')} </span>
-                                    <span className="relative inline-block">
-                                        <span className="bg-gradient-to-r from-[#bff227] via-white to-white bg-clip-text text-transparent">
-                                            {t('hero.title4')}
-                                        </span>
-                                    </span>
-                                </motion.h1>
+                                    <HeroTypewriter
+                                        line1={t('hero.line1')}
+                                        line3={t('hero.line3')}
+                                        rotatingWords={t.raw('hero.rotatingWords') as string[]}
+                                        typingSpeed={70}
+                                        deletingSpeed={40}
+                                        delayBetweenWords={1800}
+                                        initialDelay={300}
+                                    />
+                                </motion.div>
 
                                 {/* Subtitle */}
                                 <motion.p
@@ -261,16 +261,16 @@ export default function HomePage() {
                                     {t('hero.badge')} <span className="text-[#bff227] font-semibold">Polygon</span> • {t('hero.badgeFast')} • {t('hero.badgeCheap')}
                                 </span>
                             </div>
-                            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
-                                <span className="text-white">{t('hero.title1')}</span>
-                                <br className="hidden sm:block" />
-                                <span className="text-gradient-animated">{t('hero.title2')}</span>
-                                <br />
-                                <span className="text-white">{t('hero.title3')} </span>
-                                <span className="bg-gradient-to-r from-[#bff227] via-white to-white bg-clip-text text-transparent">
-                                    {t('hero.title4')}
-                                </span>
-                            </h1>
+                            <div className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
+                                <div className="text-white">{t('hero.line1')}</div>
+                                <div className="text-gradient-animated">{(t.raw('hero.rotatingWords') as string[])[0]}</div>
+                                <div>
+                                    <span className="text-white">{t('hero.line3').split(' ').slice(0, -1).join(' ')} </span>
+                                    <span className="bg-gradient-to-r from-[#bff227] via-white to-white bg-clip-text text-transparent">
+                                        {t('hero.line3').split(' ').slice(-1)[0]}
+                                    </span>
+                                </div>
+                            </div>
                             <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-14 leading-relaxed">
                                 {t('hero.subtitle')}
                             </p>
