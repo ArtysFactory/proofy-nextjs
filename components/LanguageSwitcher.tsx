@@ -31,15 +31,22 @@ export default function LanguageSwitcher() {
 
   // Get the path without the current locale
   const getLocalizedPath = (newLocale: Locale) => {
-    const segments = pathname.split('/');
-    // Replace the locale segment (first segment after /)
-    if (locales.includes(segments[1] as Locale)) {
-      segments[1] = newLocale;
+    // Remove leading slash and split
+    const pathWithoutLeadingSlash = pathname.startsWith('/') ? pathname.slice(1) : pathname;
+    const segments = pathWithoutLeadingSlash.split('/');
+    
+    // Check if first segment is a locale
+    if (segments[0] && locales.includes(segments[0] as Locale)) {
+      // Replace existing locale
+      segments[0] = newLocale;
     } else {
-      // No locale in path, add it
-      segments.splice(1, 0, newLocale);
+      // No locale in path, prepend new locale
+      segments.unshift(newLocale);
     }
-    return segments.join('/') || `/${newLocale}`;
+    
+    // Rebuild path
+    const newPath = '/' + segments.filter(Boolean).join('/');
+    return newPath || `/${newLocale}`;
   };
 
   return (
