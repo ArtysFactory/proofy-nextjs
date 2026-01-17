@@ -21,12 +21,43 @@ import {
   X,
   Image as ImageIcon,
   FileArchive,
+  User,
+  Bot,
+  Sparkles,
+  UserCircle,
+  Building2,
 } from 'lucide-react';
+
+// Types from the initial form
+interface InitialFormData {
+  madeBy: 'human' | 'ai' | 'hybrid';
+  aiHumanRatio: number;
+  aiTools: string;
+  humanContribution: string;
+  depositorType: 'individual' | 'company';
+  individualInfo: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    publicPseudo: string;
+  } | null;
+  companyInfo: {
+    companyName: string;
+    depositorName: string;
+    address: string;
+    registrationNumber: string;
+    vatNumber?: string;
+  } | null;
+  projectType: 'image' | 'document' | 'other';
+}
 
 export default function NewSimpleCreationPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isMounted, setIsMounted] = useState(false);
+
+  // Initial form data from /dashboard/new
+  const [initialData, setInitialData] = useState<InitialFormData | null>(null);
 
   // Form state
   const [title, setTitle] = useState('');
@@ -48,9 +79,28 @@ export default function NewSimpleCreationPage() {
 
   useEffect(() => {
     setIsMounted(true);
+    
+    // Check authentication
     const token = localStorage.getItem('token');
     if (!token) {
       router.push('/login?redirect=/dashboard/new-simple');
+      return;
+    }
+
+    // Load initial data from sessionStorage (from /dashboard/new)
+    try {
+      const savedData = sessionStorage.getItem('proofy_new_creation');
+      if (savedData) {
+        const data = JSON.parse(savedData) as InitialFormData;
+        setInitialData(data);
+        setProjectType(data.projectType as 'image' | 'document' | 'other');
+      } else {
+        // No initial data, redirect back to the first form
+        router.push('/dashboard/new');
+      }
+    } catch (error) {
+      console.error('Error loading initial data:', error);
+      router.push('/dashboard/new');
     }
   }, [router]);
 
@@ -136,7 +186,13 @@ export default function NewSimpleCreationPage() {
         fileSize: file.size,
         fileType: file.type,
         projectType,
-        madeBy: 'human',
+        madeBy: initialData?.madeBy || 'human',
+        aiHumanRatio: initialData?.aiHumanRatio || 0,
+        aiTools: initialData?.aiTools || '',
+        humanContribution: initialData?.humanContribution || '',
+        depositorType: initialData?.depositorType || 'individual',
+        publicPseudo: initialData?.individualInfo?.publicPseudo || '',
+        companyInfo: initialData?.companyInfo || null,
         declaredOwnership: confirmOwnership,
       };
 
@@ -235,6 +291,67 @@ export default function NewSimpleCreationPage() {
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Initial Data Summary */}
+          {initialData && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6"
+            >
+              <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-[#bff227]" />
+                Récapitulatif
+              </h2>
+              
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Créé par */}
+                <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+                  {initialData.madeBy === 'human' ? (
+                    <User className="w-5 h-5 text-emerald-400" />
+                  ) : initialData.madeBy === 'ai' ? (
+                    <Bot className="w-5 h-5 text-purple-400" />
+                  ) : (
+                    <Sparkles className="w-5 h-5 text-cyan-400" />
+                  )}
+                  <div>
+                    <p className="text-gray-400 text-xs">Créé par</p>
+                    <p className="text-white text-sm font-medium">
+                      {initialData.madeBy === 'human' ? 'Humain (100%)' : 
+                       initialData.madeBy === 'ai' ? 'IA (100%)' : 
+                       `Hybride (${initialData.aiHumanRatio}% IA)`}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Déposant */}
+                <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+                  {initialData.depositorType === 'individual' ? (
+                    <UserCircle className="w-5 h-5 text-[#bff227]" />
+                  ) : (
+                    <Building2 className="w-5 h-5 text-[#bff227]" />
+                  )}
+                  <div>
+                    <p className="text-gray-400 text-xs">Déposant</p>
+                    <p className="text-white text-sm font-medium">
+                      {initialData.depositorType === 'individual' 
+                        ? `${initialData.individualInfo?.firstName} ${initialData.individualInfo?.lastName}`
+                        : initialData.companyInfo?.companyName}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* AI Tools (if applicable) */}
+              {initialData.aiTools && (
+                <div className="mt-4 p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl">
+                  <p className="text-gray-400 text-xs mb-1">Outils IA utilisés</p>
+                  <p className="text-purple-300 text-sm">{initialData.aiTools}</p>
+                </div>
+              )}
+            </motion.div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Upload Zone */}

@@ -5,7 +5,7 @@
 // Global state management for the wizard
 // ============================================
 
-import { createContext, useContext, useReducer, ReactNode } from 'react';
+import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import type {
   MusicWork,
   MusicMaster,
@@ -396,6 +396,51 @@ const WizardContext = createContext<WizardContextType | null>(null);
 
 export function WizardProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(wizardReducer, initialState);
+
+  // Load initial data from sessionStorage (from /dashboard/new)
+  useEffect(() => {
+    try {
+      const savedData = sessionStorage.getItem('proofy_new_creation');
+      if (savedData) {
+        const data = JSON.parse(savedData);
+        
+        // Set general info from the first page
+        dispatch({
+          type: 'SET_GENERAL_INFO',
+          info: {
+            madeBy: data.madeBy || 'human',
+            aiHumanRatio: data.aiHumanRatio || 50,
+            aiTools: data.aiTools || '',
+            humanContribution: data.humanContribution || '',
+            depositorType: data.depositorType || 'individual',
+            publicPseudo: data.individualInfo?.publicPseudo || '',
+            companyInfo: data.companyInfo || null,
+          },
+        });
+
+        // Pre-fill author with individual info if available
+        if (data.depositorType === 'individual' && data.individualInfo) {
+          const { firstName, lastName, email } = data.individualInfo;
+          const fullName = `${firstName} ${lastName}`.trim();
+          if (fullName) {
+            dispatch({
+              type: 'SET_COPYRIGHT_RIGHTS',
+              rights: {
+                authors: [{ id: '1', name: fullName, percentage: 100, email: email || '' }],
+                composers: [],
+                publishers: [],
+              },
+            });
+          }
+        }
+
+        // Clear sessionStorage after loading
+        sessionStorage.removeItem('proofy_new_creation');
+      }
+    } catch (error) {
+      console.error('Error loading initial data from sessionStorage:', error);
+    }
+  }, []);
 
   const value: WizardContextType = {
     state,
