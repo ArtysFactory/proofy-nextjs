@@ -262,10 +262,11 @@ export default function Step3Masters() {
                           <select
                             value={master.version_type}
                             onChange={(e) => updateMaster(master.master_id, { version_type: e.target.value as VersionType })}
-                            className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm"
+                            className="w-full px-3 py-2 bg-[#1a1a1a] border border-white/10 rounded-lg text-white text-sm appearance-none cursor-pointer"
+                            style={{ colorScheme: 'dark' }}
                           >
                             {VERSION_TYPES.map((v) => (
-                              <option key={v.value} value={v.value}>{v.label}</option>
+                              <option key={v.value} value={v.value} className="bg-[#1a1a1a] text-white">{v.label}</option>
                             ))}
                           </select>
                         </div>
@@ -438,10 +439,11 @@ export default function Step3Masters() {
                   <select
                     value={newMaster.version_type || 'original'}
                     onChange={(e) => setNewMaster({ ...newMaster, version_type: e.target.value as VersionType })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white"
+                    className="w-full px-4 py-3 bg-[#1a1a1a] border border-white/10 rounded-xl text-white appearance-none cursor-pointer"
+                    style={{ colorScheme: 'dark' }}
                   >
                     {VERSION_TYPES.map((v) => (
-                      <option key={v.value} value={v.value}>{v.label}</option>
+                      <option key={v.value} value={v.value} className="bg-[#1a1a1a] text-white">{v.label}</option>
                     ))}
                   </select>
                 </div>
@@ -516,10 +518,11 @@ export default function Step3Masters() {
                   <select
                     value={newRelease.release_type || 'single'}
                     onChange={(e) => setNewRelease({ ...newRelease, release_type: e.target.value as ReleaseType })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white"
+                    className="w-full px-4 py-3 bg-[#1a1a1a] border border-white/10 rounded-xl text-white appearance-none cursor-pointer"
+                    style={{ colorScheme: 'dark' }}
                   >
                     {RELEASE_TYPES.map((r) => (
-                      <option key={r.value} value={r.value}>{r.label}</option>
+                      <option key={r.value} value={r.value} className="bg-[#1a1a1a] text-white">{r.label}</option>
                     ))}
                   </select>
                 </div>
