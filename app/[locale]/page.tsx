@@ -178,6 +178,8 @@ export default function HomePage() {
                                     {t('hero.subtitle').split(t('hero.subtitleHighlight'))[0]}
                                     <span className="text-[#bff227]">{t('hero.subtitleHighlight')}</span>
                                     {t('hero.subtitle').split(t('hero.subtitleHighlight'))[1]}
+                                    <br />
+                                    <span className="text-gray-300">{t('hero.subtitleLine2')}</span>
                                     <br className="hidden md:block" />
                                     {t('hero.subtitleEnd')}
                                 </motion.p>
@@ -189,11 +191,11 @@ export default function HomePage() {
                                 >
                                     <LocaleLink
                                         href="/signup"
-                                        className="btn-premium text-white font-semibold px-10 py-5 rounded-2xl text-lg flex items-center gap-4 group shadow-2xl shadow-[#bff227]/25 hover:shadow-[#bff227]/40 transition-all duration-300 hover:scale-105 hover:-translate-y-1"
+                                        className="btn-premium !text-black font-semibold px-10 py-5 rounded-2xl text-lg flex items-center gap-4 group shadow-2xl shadow-[#bff227]/25 hover:shadow-[#bff227]/40 transition-all duration-300 hover:scale-105 hover:-translate-y-1"
                                     >
-                                        <i className="fas fa-rocket text-xl"></i>
-                                        <span>{t('hero.cta')}</span>
-                                        <i className="fas fa-arrow-right group-hover:translate-x-2 transition-transform duration-300"></i>
+                                        <i className="fas fa-rocket text-xl !text-black"></i>
+                                        <span className="!text-black">{t('hero.cta')}</span>
+                                        <i className="fas fa-arrow-right !text-black group-hover:translate-x-2 transition-transform duration-300"></i>
                                     </LocaleLink>
                                     <a
                                         href="#how-it-works"

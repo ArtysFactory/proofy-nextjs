@@ -210,7 +210,7 @@ export default function DashboardPage() {
                             <motion.div className="mb-12 flex flex-wrap gap-4" variants={itemVariants}>
                                 <LocaleLink
                                     href="/dashboard/new"
-                                    className="inline-flex items-center gap-3 btn-aurora text-white font-semibold px-8 py-4 rounded-2xl text-lg"
+                                    className="inline-flex items-center gap-3 btn-aurora !text-black font-semibold px-8 py-4 rounded-2xl text-lg"
                                 >
                                     <i className="fas fa-plus"></i>
                                     {t('newCreation')}
@@ -231,7 +231,7 @@ export default function DashboardPage() {
                                         </p>
                                         <LocaleLink
                                             href="/dashboard/new"
-                                            className="inline-flex items-center gap-2 btn-aurora text-white font-semibold px-6 py-3 rounded-xl"
+                                            className="inline-flex items-center gap-2 btn-aurora !text-black font-semibold px-6 py-3 rounded-xl"
                                         >
                                             <i className="fas fa-plus"></i>
                                             {t('newCreation')}

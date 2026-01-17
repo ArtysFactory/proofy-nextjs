@@ -242,7 +242,7 @@
     justify-content: center;
     gap: 0.5rem;
     background: linear-gradient(135deg, #bff227 0%, #9dcc1e 100%);
-    color: #0b0124;
+    color: #000000 !important;
     font-weight: 600;
     padding: 0.875rem 1.75rem;
     border-radius: 0.875rem;
@@ -251,6 +251,10 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+  }
+
+  .btn-aurora * {
+    color: #000000 !important;
   }
 
   .btn-aurora:hover {
@@ -266,13 +270,17 @@
     background: linear-gradient(135deg, #bff227 0%, #9dcc1e 50%, #bff227 100%);
     background-size: 200% 200%;
     animation: premium-bg 4s ease infinite;
-    color: #0b0124;
+    color: #000000 !important;
     font-weight: 700;
     padding: 1.25rem 2.5rem;
     border-radius: 1rem;
     border: none;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-premium * {
+    color: #000000 !important;
   }
 
   .btn-premium:hover {
