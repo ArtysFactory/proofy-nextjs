@@ -110,12 +110,18 @@
       "title": "Connexion",
       "subtitle": "Accédez à votre espace Proofy",
       "email": "Adresse email",
+      "emailPlaceholder": "votre@email.com",
       "password": "Mot de passe",
       "submit": "Se connecter",
       "noAccount": "Pas encore de compte ?",
       "createAccount": "Créer un compte",
       "forgotPassword": "Mot de passe oublié ?",
-      "backToHome": "Retour à l'accueil"
+      "backToHome": "Retour à l'accueil",
+      "orContinueWith": "ou continuer avec",
+      "googleLogin": "Continuer avec Google",
+      "googleAuthFailed": "Erreur lors de la connexion avec Google",
+      "passwordResetSuccess": "Mot de passe réinitialisé avec succès ! Vous pouvez maintenant vous connecter.",
+      "accountCreated": "Compte créé avec succès ! Connectez-vous pour continuer."
     },
     "signup": {
       "title": "Créer un compte",
@@ -130,13 +136,47 @@
       "login": "Se connecter",
       "termsAgree": "En créant un compte, vous acceptez nos",
       "terms": "Conditions d'utilisation",
-      "backToHome": "Retour à l'accueil"
+      "backToHome": "Retour à l'accueil",
+      "orContinueWith": "ou continuer avec",
+      "googleSignup": "S'inscrire avec Google",
+      "generatePassword": "Générer",
+      "passwordGenerated": "Mot de passe généré !",
+      "showPassword": "Afficher",
+      "hidePassword": "Masquer",
+      "characters": "caractères",
+      "uppercase": "Majuscule",
+      "number": "Chiffre",
+      "special": "Spécial (!@#...)"
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié",
+      "subtitle": "Entrez votre email pour recevoir un lien de réinitialisation",
+      "email": "Adresse email",
+      "submit": "Envoyer le lien",
+      "backToLogin": "Retour à la connexion",
+      "successTitle": "Email envoyé !",
+      "successMessage": "Si un compte existe avec cet email, vous recevrez un lien de réinitialisation.",
+      "checkSpam": "Vérifiez aussi vos spams"
+    },
+    "resetPassword": {
+      "title": "Réinitialiser le mot de passe",
+      "subtitle": "Entrez votre nouveau mot de passe",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "submit": "Réinitialiser",
+      "successTitle": "Mot de passe réinitialisé !",
+      "successMessage": "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+      "redirecting": "Redirection vers la page de connexion...",
+      "invalidLink": "Lien invalide ou expiré",
+      "requestNew": "Demander un nouveau lien"
     },
     "errors": {
       "invalidCredentials": "Email ou mot de passe incorrect",
       "emailExists": "Cet email est déjà utilisé",
       "weakPassword": "Le mot de passe doit contenir au moins 8 caractères",
-      "passwordMismatch": "Les mots de passe ne correspondent pas"
+      "passwordMismatch": "Les mots de passe ne correspondent pas",
+      "googleError": "Erreur lors de la connexion avec Google",
+      "emailRequired": "Veuillez entrer votre adresse email"
     }
   },
   "dashboard": {
