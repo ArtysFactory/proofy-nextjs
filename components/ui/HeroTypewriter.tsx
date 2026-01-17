@@ -140,16 +140,9 @@ export function HeroTypewriter({
 
       {/* Line 2: Rotating words (musicales, Vidéos, Images, Documents) */}
       <div className="mb-2 min-h-[1.2em]">
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={currentWord}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-gradient-animated inline-block"
-          >
-            {currentWord}
-          </motion.span>
-        </AnimatePresence>
+        <span className="text-[#bff227] inline-block">
+          {currentWord}
+        </span>
         {line1Complete && (
           <span 
             className="inline-block w-[3px] h-[0.9em] bg-[#bff227] ml-1 align-middle"
