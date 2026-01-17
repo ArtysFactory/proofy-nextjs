@@ -1,0 +1,304 @@
+{
+  "common": {
+    "back": "Back",
+    "continue": "Continue",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "required": "Required",
+    "optional": "optional",
+    "yes": "Yes",
+    "no": "No",
+    "or": "or",
+    "and": "and"
+  },
+  "brand": {
+    "name": "Proofy",
+    "tagline": "Protect your creations on the blockchain",
+    "version": "V3 BETA"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "newCreation": "New creation",
+    "login": "Login",
+    "signup": "Sign up",
+    "logout": "Logout",
+    "backToDashboard": "Back to dashboard"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "subtitle": "Access your Proofy account",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create an account",
+      "forgotPassword": "Forgot password?"
+    },
+    "signup": {
+      "title": "Create an account",
+      "subtitle": "Join Proofy and protect your creations",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email address",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "submit": "Create my account",
+      "hasAccount": "Already have an account?",
+      "login": "Sign in"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "emailExists": "This email is already in use",
+      "weakPassword": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome",
+    "newCreation": "New creation",
+    "myCreations": "My creations",
+    "stats": {
+      "total": "Total creations",
+      "confirmed": "Confirmed",
+      "pending": "Pending"
+    },
+    "empty": {
+      "title": "No creations",
+      "subtitle": "Start by creating your first proof of anteriority"
+    },
+    "creation": {
+      "viewProof": "View proof",
+      "manageRights": "Manage rights",
+      "confirmed": "Confirmed",
+      "pending": "Pending"
+    }
+  },
+  "newCreation": {
+    "title": "New creation",
+    "subtitle": "Protect your work on the blockchain in a few clicks",
+    "section1": {
+      "title": "General information",
+      "madeBy": "Created by",
+      "human": "Human",
+      "humanDesc": "100% human creation",
+      "ai": "AI",
+      "aiDesc": "100% AI-generated",
+      "hybrid": "Hybrid",
+      "hybridDesc": "Human + AI",
+      "aiRatio": "AI vs Human ratio",
+      "aiTools": "AI tools used",
+      "aiToolsPlaceholder": "E.g.: Midjourney v6, Suno, ChatGPT...",
+      "aiToolsHint": "Separate with commas",
+      "humanContribution": "Human contribution",
+      "humanContributionPlaceholder": "E.g.: Original lyrics, arrangement, mixing..."
+    },
+    "section2": {
+      "title": "Depositor type",
+      "individual": "Individual",
+      "individualDesc": "Natural person",
+      "company": "Company",
+      "companyDesc": "Legal entity",
+      "personalInfo": "Personal information",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email address",
+      "publicPseudo": "Public pseudonym",
+      "publicPseudoHint": "Leave empty to use your full name",
+      "companyInfo": "Company information",
+      "companyName": "Company name",
+      "depositorName": "Depositor name",
+      "siret": "Registration number",
+      "address": "Headquarters address"
+    },
+    "section3": {
+      "title": "Project type",
+      "music": "Music",
+      "image": "Image",
+      "video": "Video",
+      "document": "Document",
+      "other": "Other",
+      "nextStepRights": "Next step: File upload, then copyright and neighboring rights management.",
+      "nextStepSimple": "Next step: File upload and creation of proof of anteriority."
+    }
+  },
+  "wizard": {
+    "steps": {
+      "upload": "Upload",
+      "copyright": "Copyright",
+      "neighboring": "Neighboring rights",
+      "masters": "Recordings",
+      "review": "Review"
+    },
+    "upload": {
+      "title": "Your file",
+      "dragDrop": "Drag and drop your file here",
+      "clickSelect": "or click to select",
+      "maxSize": "Max 500 MB",
+      "fileHash": "SHA-256 fingerprint",
+      "hashCalculating": "Calculating...",
+      "hashInfo": "This unique fingerprint identifies your file. It will be recorded on the blockchain.",
+      "supported": "Supported formats: MP3, WAV, FLAC, MP4, MOV, AVI, and more"
+    },
+    "copyright": {
+      "title": "Copyright",
+      "subtitle": "Distribution of rights on the work",
+      "info": "Copyright protects the work (composition, lyrics). In France, they are managed by SACEM.",
+      "workTitle": "Work title",
+      "workTitlePlaceholder": "E.g.: My song",
+      "authors": "Author(s)",
+      "authorsDesc": "Lyricists, text authors",
+      "composers": "Composer(s)",
+      "composersDesc": "Music authors",
+      "publishers": "Publisher(s)",
+      "publishersDesc": "Music publishing rights",
+      "total": "Total",
+      "mustEqual100": "Total must equal 100%",
+      "addHolder": "Add",
+      "holderName": "Name",
+      "holderPercentage": "Percentage",
+      "holderEmail": "Email",
+      "holderIPI": "IPI/CAE number",
+      "noHolders": "No rights holder added"
+    },
+    "neighboring": {
+      "title": "Neighboring rights",
+      "subtitle": "Distribution of rights on the recording",
+      "info": "Neighboring rights protect the recording (performance, production). They are distinct from copyright.",
+      "enable": "Enable neighboring rights",
+      "enableDesc": "Check if you want to declare neighboring rights for this creation",
+      "producers": "Phonographic producer(s)",
+      "producersDesc": "Recording producers",
+      "performers": "Performing artist(s)",
+      "performersDesc": "Musicians, singers",
+      "labels": "Label(s)",
+      "labelsDesc": "Distribution labels",
+      "others": "Other(s)",
+      "othersDesc": "Other rights holders",
+      "holderIPN": "IPN number",
+      "holderRole": "Role"
+    },
+    "masters": {
+      "title": "Recordings",
+      "subtitle": "Information about the master and releases",
+      "addMaster": "Add a recording",
+      "masterTitle": "Recording title",
+      "isrc": "ISRC code",
+      "isrcPlaceholder": "E.g.: US-XXX-24-00001",
+      "duration": "Duration",
+      "durationPlaceholder": "E.g.: 3:45",
+      "recordingDate": "Recording date",
+      "releases": "Releases",
+      "addRelease": "Add a release",
+      "releaseTitle": "Release title",
+      "releaseDate": "Release date",
+      "upc": "UPC/EAN code",
+      "platforms": "Platforms"
+    },
+    "review": {
+      "title": "Review & Submit",
+      "subtitle": "Verify information before blockchain submission",
+      "fileSection": "File",
+      "fileName": "File name",
+      "fileSize": "Size",
+      "fileHash": "SHA-256 fingerprint",
+      "copyrightSection": "Copyright",
+      "neighboringSection": "Neighboring rights",
+      "mastersSection": "Recordings",
+      "termsTitle": "Terms and conditions",
+      "termsAccept": "I accept the terms and conditions of use",
+      "ownershipConfirm": "I confirm that I am the author or have the rights to this creation",
+      "blockchainInfo": "The SHA-256 hash of your file will be permanently recorded on the Polygon blockchain.",
+      "deposit": "Submit my creation",
+      "depositing": "Submitting...",
+      "cost": "Blockchain cost",
+      "free": "Free",
+      "network": "Polygon Mainnet network"
+    }
+  },
+  "simpleForm": {
+    "title": "New submission",
+    "subtitle": "Create a proof of anteriority for your file",
+    "summary": "Summary",
+    "createdBy": "Created by",
+    "depositor": "Depositor",
+    "aiToolsUsed": "AI tools used",
+    "information": "Information",
+    "workTitle": "Work title",
+    "workTitlePlaceholder": "E.g.: My company logo",
+    "description": "Description",
+    "descriptionPlaceholder": "Briefly describe your creation...",
+    "confirmation": "Confirmation",
+    "ownershipConfirm": "I confirm that I am the author or have the rights to this creation, and I accept that the hash will be permanently recorded on the Polygon blockchain.",
+    "createProof": "Create my proof of anteriority",
+    "processing": {
+      "preparing": "Preparing...",
+      "blockchain": "Blockchain anchoring...",
+      "finalizing": "Finalizing...",
+      "title": "Processing...",
+      "success": "Creation recorded!",
+      "redirect": "Redirecting to your certificate..."
+    }
+  },
+  "proof": {
+    "title": "Proof certificate",
+    "subtitle": "Proof of anteriority recorded on the blockchain",
+    "verified": "Verified on blockchain",
+    "pending": "Pending confirmation",
+    "details": {
+      "title": "Title",
+      "createdBy": "Created by",
+      "depositDate": "Deposit date",
+      "projectType": "Project type",
+      "fileHash": "SHA-256 fingerprint",
+      "txHash": "Transaction hash",
+      "blockNumber": "Block number",
+      "network": "Network"
+    },
+    "viewOnExplorer": "View on Polygonscan",
+    "downloadCertificate": "Download certificate",
+    "share": "Share"
+  },
+  "rights": {
+    "title": "Manage rights",
+    "subtitle": "Modify rights distribution",
+    "initialDeposit": "Initial deposit information",
+    "depositDate": "Deposit date",
+    "projectType": "Project type",
+    "fileHash": "Fingerprint",
+    "viewOnBlockchain": "View on blockchain",
+    "saveChanges": "Save changes",
+    "saved": "Changes saved successfully"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "notFound": "Page not found",
+    "unauthorized": "Unauthorized access",
+    "serverError": "Server error",
+    "networkError": "Connection error",
+    "fileRequired": "Please select a file",
+    "titleRequired": "Please enter a title",
+    "ownershipRequired": "Please confirm you are the author or have the rights",
+    "totalMustBe100": "Total percentages must equal 100%",
+    "fileTooLarge": "File too large"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "privacy": "Privacy policy",
+    "terms": "Terms of use",
+    "contact": "Contact",
+    "gdprInfo": "Your data is processed securely and in compliance with GDPR.",
+    "hashInfo": "The SHA-256 hash of your file is calculated locally — your file is never uploaded."
+  }
+}

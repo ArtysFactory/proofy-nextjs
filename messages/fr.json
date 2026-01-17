@@ -1,0 +1,304 @@
+{
+  "common": {
+    "back": "Retour",
+    "continue": "Continuer",
+    "submit": "Valider",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "remove": "Retirer",
+    "close": "Fermer",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "required": "Obligatoire",
+    "optional": "optionnel",
+    "yes": "Oui",
+    "no": "Non",
+    "or": "ou",
+    "and": "et"
+  },
+  "brand": {
+    "name": "Proofy",
+    "tagline": "Protégez vos créations sur la blockchain",
+    "version": "V3 BETA"
+  },
+  "nav": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "newCreation": "Nouvelle création",
+    "login": "Connexion",
+    "signup": "Inscription",
+    "logout": "Déconnexion",
+    "backToDashboard": "Retour au tableau de bord"
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "subtitle": "Accédez à votre espace Proofy",
+      "email": "Adresse email",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "noAccount": "Pas encore de compte ?",
+      "createAccount": "Créer un compte",
+      "forgotPassword": "Mot de passe oublié ?"
+    },
+    "signup": {
+      "title": "Créer un compte",
+      "subtitle": "Rejoignez Proofy et protégez vos créations",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Adresse email",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "submit": "Créer mon compte",
+      "hasAccount": "Déjà un compte ?",
+      "login": "Se connecter"
+    },
+    "errors": {
+      "invalidCredentials": "Email ou mot de passe incorrect",
+      "emailExists": "Cet email est déjà utilisé",
+      "weakPassword": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordMismatch": "Les mots de passe ne correspondent pas"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bienvenue",
+    "newCreation": "Nouvelle création",
+    "myCreations": "Mes créations",
+    "stats": {
+      "total": "Total créations",
+      "confirmed": "Confirmées",
+      "pending": "En attente"
+    },
+    "empty": {
+      "title": "Aucune création",
+      "subtitle": "Commencez par créer votre première preuve d'antériorité"
+    },
+    "creation": {
+      "viewProof": "Voir la preuve",
+      "manageRights": "Gérer les droits",
+      "confirmed": "Confirmée",
+      "pending": "En attente"
+    }
+  },
+  "newCreation": {
+    "title": "Nouvelle création",
+    "subtitle": "Protégez votre œuvre sur la blockchain en quelques clics",
+    "section1": {
+      "title": "Informations générales",
+      "madeBy": "Créé par",
+      "human": "Humain",
+      "humanDesc": "100% création humaine",
+      "ai": "IA",
+      "aiDesc": "100% généré par IA",
+      "hybrid": "Hybride",
+      "hybridDesc": "Humain + IA",
+      "aiRatio": "Proportion IA vs Humain",
+      "aiTools": "Outils IA utilisés",
+      "aiToolsPlaceholder": "Ex: Midjourney v6, Suno, ChatGPT...",
+      "aiToolsHint": "Séparez par des virgules",
+      "humanContribution": "Contribution humaine",
+      "humanContributionPlaceholder": "Ex: Paroles originales, arrangement, mixage..."
+    },
+    "section2": {
+      "title": "Type de déposant",
+      "individual": "Particulier",
+      "individualDesc": "Personne physique",
+      "company": "Entreprise",
+      "companyDesc": "Personne morale",
+      "personalInfo": "Informations personnelles",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Adresse email",
+      "publicPseudo": "Pseudonyme public",
+      "publicPseudoHint": "Laissez vide pour utiliser votre nom complet",
+      "companyInfo": "Informations entreprise",
+      "companyName": "Nom de l'entreprise",
+      "depositorName": "Nom du déposant",
+      "siret": "N° SIRET/SIREN",
+      "address": "Adresse du siège social"
+    },
+    "section3": {
+      "title": "Type de projet",
+      "music": "Musique",
+      "image": "Image",
+      "video": "Vidéo",
+      "document": "Document",
+      "other": "Autre",
+      "nextStepRights": "Prochaine étape : Upload du fichier, puis gestion des droits d'auteur et droits voisins.",
+      "nextStepSimple": "Prochaine étape : Upload du fichier et création de la preuve d'antériorité."
+    }
+  },
+  "wizard": {
+    "steps": {
+      "upload": "Upload",
+      "copyright": "Droits d'auteur",
+      "neighboring": "Droits voisins",
+      "masters": "Enregistrements",
+      "review": "Validation"
+    },
+    "upload": {
+      "title": "Votre fichier",
+      "dragDrop": "Glissez-déposez votre fichier ici",
+      "clickSelect": "ou cliquez pour sélectionner",
+      "maxSize": "Max 500 MB",
+      "fileHash": "Empreinte SHA-256",
+      "hashCalculating": "Calcul en cours...",
+      "hashInfo": "Cette empreinte unique identifie votre fichier. Elle sera enregistrée sur la blockchain.",
+      "supported": "Formats supportés : MP3, WAV, FLAC, MP4, MOV, AVI, et plus"
+    },
+    "copyright": {
+      "title": "Droits d'auteur",
+      "subtitle": "Répartition des droits sur l'œuvre",
+      "info": "Les droits d'auteur protègent l'œuvre (composition, paroles). En France, ils sont gérés par la SACEM.",
+      "workTitle": "Titre de l'œuvre",
+      "workTitlePlaceholder": "Ex: Ma chanson",
+      "authors": "Auteur(s)",
+      "authorsDesc": "Paroliers, auteurs du texte",
+      "composers": "Compositeur(s)",
+      "composersDesc": "Auteurs de la musique",
+      "publishers": "Éditeur(s)",
+      "publishersDesc": "Droits d'édition musicale",
+      "total": "Total",
+      "mustEqual100": "Le total doit être égal à 100%",
+      "addHolder": "Ajouter",
+      "holderName": "Nom",
+      "holderPercentage": "Pourcentage",
+      "holderEmail": "Email",
+      "holderIPI": "N° IPI/CAE",
+      "noHolders": "Aucun titulaire ajouté"
+    },
+    "neighboring": {
+      "title": "Droits voisins",
+      "subtitle": "Répartition des droits sur l'enregistrement",
+      "info": "Les droits voisins protègent l'enregistrement (performance, production). Ils sont distincts des droits d'auteur.",
+      "enable": "Activer les droits voisins",
+      "enableDesc": "Cochez si vous souhaitez déclarer des droits voisins pour cette création",
+      "producers": "Producteur(s) phonographique",
+      "producersDesc": "Producteurs de l'enregistrement",
+      "performers": "Artiste(s)-interprète(s)",
+      "performersDesc": "Musiciens, chanteurs",
+      "labels": "Label(s)",
+      "labelsDesc": "Labels de distribution",
+      "others": "Autre(s)",
+      "othersDesc": "Autres ayants droit",
+      "holderIPN": "N° IPN",
+      "holderRole": "Rôle"
+    },
+    "masters": {
+      "title": "Enregistrements",
+      "subtitle": "Informations sur le master et les sorties",
+      "addMaster": "Ajouter un enregistrement",
+      "masterTitle": "Titre de l'enregistrement",
+      "isrc": "Code ISRC",
+      "isrcPlaceholder": "Ex: FR-XXX-24-00001",
+      "duration": "Durée",
+      "durationPlaceholder": "Ex: 3:45",
+      "recordingDate": "Date d'enregistrement",
+      "releases": "Sorties",
+      "addRelease": "Ajouter une sortie",
+      "releaseTitle": "Titre de la sortie",
+      "releaseDate": "Date de sortie",
+      "upc": "Code UPC/EAN",
+      "platforms": "Plateformes"
+    },
+    "review": {
+      "title": "Validation & Dépôt",
+      "subtitle": "Vérifiez les informations avant le dépôt blockchain",
+      "fileSection": "Fichier",
+      "fileName": "Nom du fichier",
+      "fileSize": "Taille",
+      "fileHash": "Empreinte SHA-256",
+      "copyrightSection": "Droits d'auteur",
+      "neighboringSection": "Droits voisins",
+      "mastersSection": "Enregistrements",
+      "termsTitle": "Conditions générales",
+      "termsAccept": "J'accepte les conditions générales d'utilisation",
+      "ownershipConfirm": "Je confirme être l'auteur ou avoir les droits sur cette création",
+      "blockchainInfo": "Le hash SHA-256 de votre fichier sera enregistré de façon permanente sur la blockchain Polygon.",
+      "deposit": "Déposer ma création",
+      "depositing": "Dépôt en cours...",
+      "cost": "Coût blockchain",
+      "free": "Gratuit",
+      "network": "Réseau Polygon Mainnet"
+    }
+  },
+  "simpleForm": {
+    "title": "Nouveau dépôt",
+    "subtitle": "Créez une preuve d'antériorité pour votre fichier",
+    "summary": "Récapitulatif",
+    "createdBy": "Créé par",
+    "depositor": "Déposant",
+    "aiToolsUsed": "Outils IA utilisés",
+    "information": "Informations",
+    "workTitle": "Titre de l'œuvre",
+    "workTitlePlaceholder": "Ex: Logo de mon entreprise",
+    "description": "Description",
+    "descriptionPlaceholder": "Décrivez brièvement votre création...",
+    "confirmation": "Confirmation",
+    "ownershipConfirm": "Je confirme être l'auteur ou avoir les droits sur cette création, et j'accepte que le hash soit enregistré de façon permanente sur la blockchain Polygon.",
+    "createProof": "Créer ma preuve d'antériorité",
+    "processing": {
+      "preparing": "Préparation...",
+      "blockchain": "Ancrage blockchain...",
+      "finalizing": "Finalisation...",
+      "title": "Traitement en cours...",
+      "success": "Création enregistrée !",
+      "redirect": "Redirection vers votre certificat..."
+    }
+  },
+  "proof": {
+    "title": "Certificat de preuve",
+    "subtitle": "Preuve d'antériorité enregistrée sur la blockchain",
+    "verified": "Vérifié sur blockchain",
+    "pending": "En attente de confirmation",
+    "details": {
+      "title": "Titre",
+      "createdBy": "Créé par",
+      "depositDate": "Date de dépôt",
+      "projectType": "Type de projet",
+      "fileHash": "Empreinte SHA-256",
+      "txHash": "Hash de transaction",
+      "blockNumber": "Numéro de bloc",
+      "network": "Réseau"
+    },
+    "viewOnExplorer": "Voir sur Polygonscan",
+    "downloadCertificate": "Télécharger le certificat",
+    "share": "Partager"
+  },
+  "rights": {
+    "title": "Gérer les droits",
+    "subtitle": "Modifier la répartition des droits",
+    "initialDeposit": "Informations du dépôt initial",
+    "depositDate": "Date de dépôt",
+    "projectType": "Type de projet",
+    "fileHash": "Empreinte",
+    "viewOnBlockchain": "Voir sur blockchain",
+    "saveChanges": "Enregistrer les modifications",
+    "saved": "Modifications enregistrées avec succès"
+  },
+  "errors": {
+    "generic": "Une erreur s'est produite",
+    "notFound": "Page non trouvée",
+    "unauthorized": "Accès non autorisé",
+    "serverError": "Erreur serveur",
+    "networkError": "Erreur de connexion",
+    "fileRequired": "Veuillez sélectionner un fichier",
+    "titleRequired": "Veuillez entrer un titre",
+    "ownershipRequired": "Veuillez confirmer être l'auteur ou avoir les droits",
+    "totalMustBe100": "Le total des pourcentages doit être égal à 100%",
+    "fileTooLarge": "Fichier trop volumineux"
+  },
+  "footer": {
+    "rights": "Tous droits réservés",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "contact": "Contact",
+    "gdprInfo": "Vos données sont traitées de manière sécurisée et conforme au RGPD.",
+    "hashInfo": "Le hash SHA-256 de votre fichier est calculé localement — votre fichier n'est jamais uploadé."
+  }
+}

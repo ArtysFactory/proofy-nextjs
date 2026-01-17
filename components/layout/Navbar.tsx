@@ -1,10 +1,13 @@
 'use client';
 
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import LocaleLink from '@/components/LocaleLink';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Navbar() {
+    const t = useTranslations('nav');
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -28,7 +31,7 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
-                    <Link
+                    <LocaleLink
                         href="/"
                         className="flex items-center gap-2 group"
                     >
@@ -38,90 +41,83 @@ export default function Navbar() {
                         <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                             Proofy
                         </span>
-                    </Link>
+                    </LocaleLink>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center gap-8">
-                        <Link
-                            href="/#features"
-                            className="text-gray-300 hover:text-[#bff227] transition-colors"
+                    <div className="hidden md:flex items-center gap-6">
+                        <a
+                            href="#features"
+                            className="text-gray-300 hover:text-[#bff227] transition-colors text-sm"
                         >
                             Fonctionnalités
-                        </Link>
-                        <Link
-                            href="/#how-it-works"
-                            className="text-gray-300 hover:text-[#bff227] transition-colors"
+                        </a>
+                        <a
+                            href="#how-it-works"
+                            className="text-gray-300 hover:text-[#bff227] transition-colors text-sm"
                         >
                             Comment ça marche
-                        </Link>
-                        <Link
-                            href="/#pricing"
-                            className="text-gray-300 hover:text-[#bff227] transition-colors"
-                        >
-                            Tarifs
-                        </Link>
-                        <Link
+                        </a>
+                        <LocaleLink
                             href="/login"
-                            className="text-gray-300 hover:text-white transition-colors"
+                            className="text-gray-300 hover:text-white transition-colors text-sm"
                         >
-                            Connexion
-                        </Link>
-                        <Link
+                            {t('login')}
+                        </LocaleLink>
+                        <LocaleLink
                             href="/signup"
-                            className="px-5 py-2 bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0b0124] font-semibold rounded-lg hover:shadow-lg hover:shadow-[#bff227]/20 transition-all duration-300"
+                            className="px-5 py-2 bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0b0124] font-semibold rounded-lg hover:shadow-lg hover:shadow-[#bff227]/20 transition-all duration-300 text-sm"
                         >
-                            Commencer
-                        </Link>
+                            {t('newCreation')}
+                        </LocaleLink>
+                        
+                        {/* Language Switcher */}
+                        <LanguageSwitcher />
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="md:hidden text-white p-2"
-                    >
-                        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
+                    <div className="md:hidden flex items-center gap-2">
+                        <LanguageSwitcher />
+                        <button
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className="text-white p-2"
+                        >
+                            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Mobile Menu */}
                 {isMobileMenuOpen && (
                     <div className="md:hidden py-4 border-t border-white/5">
                         <div className="flex flex-col gap-4">
-                            <Link
-                                href="/#features"
+                            <a
+                                href="#features"
                                 className="text-gray-300 hover:text-[#bff227] transition-colors py-2"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 Fonctionnalités
-                            </Link>
-                            <Link
-                                href="/#how-it-works"
+                            </a>
+                            <a
+                                href="#how-it-works"
                                 className="text-gray-300 hover:text-[#bff227] transition-colors py-2"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 Comment ça marche
-                            </Link>
-                            <Link
-                                href="/#pricing"
-                                className="text-gray-300 hover:text-[#bff227] transition-colors py-2"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                                Tarifs
-                            </Link>
-                            <Link
+                            </a>
+                            <LocaleLink
                                 href="/login"
                                 className="text-gray-300 hover:text-white transition-colors py-2"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                Connexion
-                            </Link>
-                            <Link
+                                {t('login')}
+                            </LocaleLink>
+                            <LocaleLink
                                 href="/signup"
                                 className="px-5 py-2 bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0b0124] font-semibold rounded-lg hover:shadow-lg hover:shadow-[#bff227]/20 transition-all duration-300 text-center"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                Commencer
-                            </Link>
+                                {t('newCreation')}
+                            </LocaleLink>
                         </div>
                     </div>
                 )}

@@ -3,7 +3,9 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
+import LocaleLink from '@/components/LocaleLink';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 interface Creation {
     id: number;
@@ -18,6 +20,10 @@ interface Creation {
 
 export default function DashboardPage() {
     const router = useRouter();
+    const t = useTranslations('dashboard');
+    const tCommon = useTranslations('common');
+    const locale = useLocale();
+    
     const [user, setUser] = useState<any>(null);
     const [creations, setCreations] = useState<Creation[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +37,7 @@ export default function DashboardPage() {
         const userData = localStorage.getItem('user');
 
         if (!token || !userData) {
-            router.push('/login');
+            router.push(`/${locale}/login`);
             return;
         }
 
@@ -62,7 +68,7 @@ export default function DashboardPage() {
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        router.push('/');
+        router.push(`/${locale}`);
     };
 
     // Animation variants
@@ -111,7 +117,7 @@ export default function DashboardPage() {
             <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-[#bff227]/10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
-                        <Link href="/" className="flex items-center gap-3">
+                        <LocaleLink href="/" className="flex items-center gap-3">
                             <div className="relative w-10 h-10">
                                 <div className="absolute inset-0 bg-gradient-to-br from-[#bff227] to-[#9dcc1e] rounded-xl"></div>
                                 <div className="absolute inset-0 bg-[#0b0124] rounded-xl flex items-center justify-center m-0.5">
@@ -121,9 +127,10 @@ export default function DashboardPage() {
                             <span className="font-display font-bold text-xl bg-gradient-to-r from-[#bff227] to-white bg-clip-text text-transparent">
                                 Proofy
                             </span>
-                        </Link>
+                        </LocaleLink>
 
                         <div className="flex items-center gap-4">
+                            <LanguageSwitcher />
                             <span className="text-gray-300 hidden sm:block">
                                 {user?.firstName} {user?.lastName}
                             </span>
@@ -150,7 +157,7 @@ export default function DashboardPage() {
                             {/* Header */}
                             <motion.div className="mb-12" variants={itemVariants}>
                                 <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-                                    Tableau de bord
+                                    {t('title')}
                                 </h1>
                                 <p className="text-gray-400 text-lg">
                                     Gérez vos créations et suivez leur statut sur la blockchain
@@ -164,7 +171,7 @@ export default function DashboardPage() {
                                     variants={itemVariants}
                                 >
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-gray-400">Total créations</span>
+                                        <span className="text-gray-400">{t('stats.total')}</span>
                                         <i className="fas fa-file text-[#bff227]"></i>
                                     </div>
                                     <div className="font-display text-3xl font-bold text-white">
@@ -177,7 +184,7 @@ export default function DashboardPage() {
                                     variants={itemVariants}
                                 >
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-gray-400">Confirmées</span>
+                                        <span className="text-gray-400">{t('stats.confirmed')}</span>
                                         <i className="fas fa-check-circle text-emerald-400"></i>
                                     </div>
                                     <div className="font-display text-3xl font-bold text-white">
@@ -190,7 +197,7 @@ export default function DashboardPage() {
                                     variants={itemVariants}
                                 >
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-gray-400">En attente</span>
+                                        <span className="text-gray-400">{t('stats.pending')}</span>
                                         <i className="fas fa-clock text-amber-400"></i>
                                     </div>
                                     <div className="font-display text-3xl font-bold text-white">
@@ -201,34 +208,34 @@ export default function DashboardPage() {
 
                             {/* CTA Button */}
                             <motion.div className="mb-12 flex flex-wrap gap-4" variants={itemVariants}>
-                                <Link
+                                <LocaleLink
                                     href="/dashboard/new"
                                     className="inline-flex items-center gap-3 btn-aurora text-white font-semibold px-8 py-4 rounded-2xl text-lg"
                                 >
                                     <i className="fas fa-plus"></i>
-                                    Nouvelle création
-                                </Link>
+                                    {t('newCreation')}
+                                </LocaleLink>
                             </motion.div>
 
                             {/* Creations List */}
                             <motion.div variants={itemVariants}>
                                 <h2 className="font-display text-2xl font-bold text-white mb-6">
-                                    Mes créations
+                                    {t('myCreations')}
                                 </h2>
 
                                 {creations.length === 0 ? (
                                     <div className="glass-card rounded-2xl p-12 text-center">
                                         <i className="fas fa-folder-open text-6xl text-gray-600 mb-4"></i>
                                         <p className="text-gray-400 text-lg mb-6">
-                                            Vous n'avez pas encore de création enregistrée
+                                            {t('empty.subtitle')}
                                         </p>
-                                        <Link
+                                        <LocaleLink
                                             href="/dashboard/new"
                                             className="inline-flex items-center gap-2 btn-aurora text-white font-semibold px-6 py-3 rounded-xl"
                                         >
                                             <i className="fas fa-plus"></i>
-                                            Créer ma première preuve
-                                        </Link>
+                                            {t('newCreation')}
+                                        </LocaleLink>
                                     </div>
                                 ) : (
                                     <div className="space-y-4">
@@ -252,7 +259,7 @@ export default function DashboardPage() {
                                                             </span>
                                                             <span>
                                                                 <i className="fas fa-calendar mr-2"></i>
-                                                                {new Date(creation.createdAt).toLocaleDateString('fr-FR')}
+                                                                {new Date(creation.createdAt).toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-US')}
                                                             </span>
                                                         </div>
                                                         <div className="text-xs font-mono text-gray-500 bg-[#0b0124]/50 p-2 rounded-lg truncate">
@@ -269,29 +276,29 @@ export default function DashboardPage() {
                                                                 }`}
                                                         >
                                                             {creation.status === 'confirmed'
-                                                                ? 'Confirmé'
+                                                                ? t('creation.confirmed')
                                                                 : creation.status === 'pending'
-                                                                    ? 'En attente'
-                                                                    : 'Échec'}
+                                                                    ? t('creation.pending')
+                                                                    : 'Error'}
                                                         </span>
                                                     </div>
                                                 </div>
 
                                                 <div className="mt-4 flex flex-wrap gap-3">
-                                                    <Link
+                                                    <LocaleLink
                                                         href={`/proof/${creation.publicId}`}
                                                         className="text-[#bff227] hover:underline text-sm"
                                                     >
                                                         <i className="fas fa-eye mr-2"></i>
-                                                        Voir la preuve
-                                                    </Link>
-                                                    <Link
+                                                        {t('creation.viewProof')}
+                                                    </LocaleLink>
+                                                    <LocaleLink
                                                         href={`/dashboard/rights/${creation.publicId}`}
                                                         className="text-purple-400 hover:underline text-sm"
                                                     >
                                                         <i className="fas fa-scale-balanced mr-2"></i>
-                                                        Gérer les droits
-                                                    </Link>
+                                                        {t('creation.manageRights')}
+                                                    </LocaleLink>
                                                     {creation.txHash && (
                                                         <a
                                                             href={`https://polygonscan.com/tx/${creation.txHash}`}

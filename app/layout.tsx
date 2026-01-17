@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <head>
         <link
           rel="stylesheet"

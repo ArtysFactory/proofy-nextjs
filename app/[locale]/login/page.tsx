@@ -2,11 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
+import LocaleLink from '@/components/LocaleLink';
 
 export default function LoginPage() {
     const router = useRouter();
+    const t = useTranslations('auth.login');
+    const tErrors = useTranslations('auth.errors');
+    const tCommon = useTranslations('common');
+    const locale = useLocale();
+    
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -34,15 +40,15 @@ export default function LoginPage() {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Erreur lors de la connexion');
+                throw new Error(data.error || tErrors('invalidCredentials'));
             }
 
             // Store token in localStorage
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
 
-            // Redirect to dashboard
-            router.push('/dashboard');
+            // Redirect to dashboard with locale
+            router.push(`/${locale}/dashboard`);
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -81,7 +87,7 @@ export default function LoginPage() {
                     transition={{ duration: 0.5 }}
                 >
                 {/* Logo */}
-                <Link href="/" className="flex items-center justify-center gap-3 mb-8">
+                <LocaleLink href="/" className="flex items-center justify-center gap-3 mb-8">
                     <div className="relative w-12 h-12">
                         <div className="absolute inset-0 bg-gradient-to-br from-[#bff227] to-[#9dcc1e] rounded-xl rotate-6"></div>
                         <div className="absolute inset-0 bg-[#0b0124] rounded-xl flex items-center justify-center">
@@ -91,15 +97,15 @@ export default function LoginPage() {
                     <span className="font-display font-bold text-2xl bg-gradient-to-r from-[#bff227] to-white bg-clip-text text-transparent">
                         Proofy
                     </span>
-                </Link>
+                </LocaleLink>
 
                 {/* Login Card */}
                 <div className="glass-card rounded-3xl p-8">
                     <h1 className="font-display text-3xl font-bold text-white mb-2 text-center">
-                        Connexion
+                        {t('title')}
                     </h1>
                     <p className="text-gray-400 text-center mb-8">
-                        Accédez à votre espace de gestion
+                        {t('subtitle')}
                     </p>
 
                     {error && (
@@ -116,7 +122,7 @@ export default function LoginPage() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                                Email
+                                {t('email')}
                             </label>
                             <input
                                 id="email"
@@ -131,7 +137,7 @@ export default function LoginPage() {
 
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                                Mot de passe
+                                {t('password')}
                             </label>
                             <input
                                 id="password"
@@ -149,9 +155,9 @@ export default function LoginPage() {
                                 <input type="checkbox" className="mr-2" />
                                 <span className="text-sm text-gray-400">Se souvenir de moi</span>
                             </label>
-                            <Link href="/forgot-password" className="text-sm text-[#bff227] hover:underline">
-                                Mot de passe oublié ?
-                            </Link>
+                            <LocaleLink href="/forgot-password" className="text-sm text-[#bff227] hover:underline">
+                                {t('forgotPassword')}
+                            </LocaleLink>
                         </div>
 
                         <button
@@ -162,12 +168,12 @@ export default function LoginPage() {
                             {isLoading ? (
                                 <>
                                     <div className="loader w-5 h-5 border-2"></div>
-                                    Connexion...
+                                    {tCommon('loading')}
                                 </>
                             ) : (
                                 <>
                                     <i className="fas fa-sign-in-alt"></i>
-                                    Se connecter
+                                    {t('submit')}
                                 </>
                             )}
                         </button>
@@ -175,19 +181,19 @@ export default function LoginPage() {
 
                     <div className="mt-8 text-center">
                         <p className="text-gray-400">
-                            Pas encore de compte ?{' '}
-                            <Link href="/signup" className="text-[#bff227] hover:underline font-semibold">
-                                Créer un compte
-                            </Link>
+                            {t('noAccount')}{' '}
+                            <LocaleLink href="/signup" className="text-[#bff227] hover:underline font-semibold">
+                                {t('createAccount')}
+                            </LocaleLink>
                         </p>
                     </div>
                 </div>
 
                 <div className="mt-6 text-center">
-                    <Link href="/" className="text-gray-400 hover:text-white transition-colors text-sm">
+                    <LocaleLink href="/" className="text-gray-400 hover:text-white transition-colors text-sm">
                         <i className="fas fa-arrow-left mr-2"></i>
-                        Retour à l'accueil
-                    </Link>
+                        {tCommon('back')}
+                    </LocaleLink>
                 </div>
             </motion.div>
             </AnimatePresence>

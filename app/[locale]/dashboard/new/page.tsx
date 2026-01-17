@@ -10,7 +10,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
+import LocaleLink from '@/components/LocaleLink';
 import {
   ArrowLeft,
   User,
@@ -48,6 +49,10 @@ interface IndividualInfo {
 
 export default function NewCreationPage() {
   const router = useRouter();
+  const t = useTranslations('newCreation');
+  const tCommon = useTranslations('common');
+  const locale = useLocale();
+  
   const [isMounted, setIsMounted] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
 
@@ -84,7 +89,7 @@ export default function NewCreationPage() {
     const userData = localStorage.getItem('user');
     
     if (!token) {
-      router.push('/login?redirect=/dashboard/new');
+      router.push(`/${locale}/login?redirect=/${locale}/dashboard/new`);
       return;
     }
 
@@ -135,10 +140,10 @@ export default function NewCreationPage() {
     // Navigate based on project type
     if (projectType === 'music' || projectType === 'video') {
       // Go to Wizard V3 for music/video
-      router.push('/dashboard/new-v3');
+      router.push(`/${locale}/dashboard/new-v3`);
     } else {
       // Go to simple form for image/document/other
-      router.push('/dashboard/new-simple');
+      router.push(`/${locale}/dashboard/new-simple`);
     }
   };
 
@@ -161,13 +166,13 @@ export default function NewCreationPage() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-sm border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/dashboard" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+          <LocaleLink href="/dashboard" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
             <ArrowLeft className="w-5 h-5" />
-            <span>Retour</span>
-          </Link>
-          <Link href="/" className="text-xl font-bold text-[#bff227]">
+            <span>{tCommon('back')}</span>
+          </LocaleLink>
+          <LocaleLink href="/" className="text-xl font-bold text-[#bff227]">
             Proofy
-          </Link>
+          </LocaleLink>
           <div className="w-24" />
         </div>
       </nav>
@@ -181,10 +186,10 @@ export default function NewCreationPage() {
             className="text-center mb-10"
           >
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-              Nouvelle <span className="text-[#bff227]">création</span>
+              {t('title')}
             </h1>
             <p className="text-gray-400">
-              Protégez votre œuvre sur la blockchain en quelques clics
+              {t('subtitle')}
             </p>
           </motion.div>
 
@@ -199,12 +204,12 @@ export default function NewCreationPage() {
               <div className="w-10 h-10 bg-gradient-to-br from-[#bff227] to-[#9dcc1e] rounded-xl flex items-center justify-center text-[#0a0a0a] font-bold">
                 1
               </div>
-              <h2 className="text-lg font-semibold text-white">Informations générales</h2>
+              <h2 className="text-lg font-semibold text-white">{t('section1.title')}</h2>
             </div>
 
             {/* Créé par */}
             <div className="mb-6">
-              <label className="block text-gray-300 text-sm font-medium mb-3">Créé par *</label>
+              <label className="block text-gray-300 text-sm font-medium mb-3">{t('section1.madeBy')} *</label>
               <div className="grid grid-cols-3 gap-3">
                 {[
                   { value: 'human', icon: User, label: 'Humain', sublabel: '100% création humaine', color: 'emerald' },
