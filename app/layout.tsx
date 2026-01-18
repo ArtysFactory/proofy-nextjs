@@ -19,14 +19,6 @@ export const metadata: Metadata = {
   description: "Protégez vos créations sur la blockchain Polygon. Certificat horodaté, immuable et vérifiable par tous.",
   keywords: ["blockchain", "preuve", "antériorité", "polygon", "certificat", "propriété intellectuelle", "UnlmtdProof", "UnlmtdGuilds"],
   authors: [{ name: "Artys Factory" }],
-  icons: {
-    icon: [
-      { url: "/favicon.png", type: "image/png" },
-    ],
-    apple: [
-      { url: "/favicon.png", type: "image/png" },
-    ],
-  },
   openGraph: {
     title: "UnlmtdProof - Preuve d'antériorité blockchain",
     description: "Protégez vos créations sur la blockchain Polygon",
