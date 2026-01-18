@@ -32,6 +32,34 @@ export default function DashboardPage() {
     useEffect(() => {
         setIsMounted(true);
         
+        // First, check for Google OAuth cookies and transfer to localStorage
+        // This handles the redirect from Google OAuth callback
+        const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+            const [key, value] = cookie.trim().split('=');
+            if (key && value) {
+                acc[key] = value;
+            }
+            return acc;
+        }, {} as Record<string, string>);
+        
+        // Transfer Google OAuth cookies to localStorage if present
+        if (cookies.proofy_token && !localStorage.getItem('token')) {
+            localStorage.setItem('token', cookies.proofy_token);
+            
+            if (cookies.proofy_user) {
+                try {
+                    const user = JSON.parse(decodeURIComponent(cookies.proofy_user));
+                    localStorage.setItem('user', JSON.stringify(user));
+                } catch (e) {
+                    console.error('Failed to parse user cookie:', e);
+                }
+            }
+            
+            // Clear the cookies after transferring (optional - keeps things clean)
+            document.cookie = 'proofy_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+            document.cookie = 'proofy_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+        }
+        
         // Check authentication
         const token = localStorage.getItem('token');
         const userData = localStorage.getItem('user');
@@ -43,7 +71,7 @@ export default function DashboardPage() {
 
         setUser(JSON.parse(userData));
         loadCreations();
-    }, [router]);
+    }, [router, locale]);
 
     const loadCreations = async () => {
         try {
