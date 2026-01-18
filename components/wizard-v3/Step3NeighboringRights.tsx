@@ -6,8 +6,7 @@
 // Optionnel - Total = 100% (si activé)
 // ============================================
 
-import { useState, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWizard, NeighboringRightsHolder, NeighboringRights } from './WizardContext';
 import { Plus, Trash2, Mic2, Disc3, Building2, Users, Info, AlertTriangle, CheckCircle2, HelpCircle } from 'lucide-react';
@@ -38,20 +37,6 @@ export default function Step3NeighboringRights() {
   // Modal state
   const [showAddModal, setShowAddModal] = useState<RoleType | null>(null);
   const [newHolder, setNewHolder] = useState({ name: '', percentage: 0, email: '', ipn: '', role: '' });
-  const [isMounted, setIsMounted] = useState(false);
-  const portalRef = useRef<HTMLDivElement | null>(null);
-
-  // Handle SSR - only render portal after mount
-  useEffect(() => {
-    setIsMounted(true);
-    // Create portal container if it doesn't exist
-    if (!document.getElementById('modal-portal')) {
-      const div = document.createElement('div');
-      div.id = 'modal-portal';
-      document.body.appendChild(div);
-    }
-    portalRef.current = document.getElementById('modal-portal') as HTMLDivElement;
-  }, []);
 
   // Calculate totals
   const totalProducers = producers.reduce((sum, h) => sum + h.percentage, 0);
@@ -364,9 +349,9 @@ export default function Step3NeighboringRights() {
         </button>
       </div>
 
-      {/* Add Modal - Using Portal to render at document.body level */}
-      {isMounted && showAddModal && portalRef.current && createPortal(
-        <AnimatePresence>
+      {/* Add Modal - Direct render without portal */}
+      <AnimatePresence>
+        {showAddModal && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -473,9 +458,8 @@ export default function Step3NeighboringRights() {
               </div>
             </motion.div>
           </motion.div>
-        </AnimatePresence>,
-        portalRef.current
-      )}
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
