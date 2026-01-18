@@ -65,7 +65,7 @@ export function HeroTypewriter({
         if (currentWord.length < targetWord.length) {
           setCurrentWord(targetWord.slice(0, currentWord.length + 1));
         } else {
-          // Word complete, wait then delete
+          // Word complete, wait 2 seconds then delete
           setTimeout(() => {
             setIsDeleting(true);
           }, delayBetweenWords);
@@ -104,7 +104,7 @@ export function HeroTypewriter({
   }, [line1Complete]);
 
   return (
-    <div className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+    <div className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
       {/* Line 1: Protégez vos créations */}
       <div className="mb-2">
         <span className="text-white">{line1Text}</span>
@@ -116,9 +116,9 @@ export function HeroTypewriter({
         )}
       </div>
 
-      {/* Line 2: [rotating word] + suffix (sur la blockchain) */}
+      {/* Desktop: Line 2 = rotating word + suffix on same line */}
       {line1Complete && (
-        <div className="min-h-[1.2em] whitespace-nowrap">
+        <div className="hidden md:block min-h-[1.2em] whitespace-nowrap">
           <span className="text-[#bff227] inline-block min-w-[1ch]">
             {currentWord}
           </span>
@@ -127,6 +127,26 @@ export function HeroTypewriter({
             className="inline-block w-[3px] h-[0.9em] bg-[#bff227] ml-1 align-middle"
             style={{ opacity: showCursor2 ? 1 : 0, transition: 'opacity 0.1s' }}
           />
+        </div>
+      )}
+
+      {/* Mobile: Line 2 = rotating word only */}
+      {line1Complete && (
+        <div className="md:hidden mb-2">
+          <span className="text-[#bff227] inline-block min-w-[1ch]">
+            {currentWord}
+          </span>
+          <span 
+            className="inline-block w-[3px] h-[0.9em] bg-[#bff227] ml-1 align-middle"
+            style={{ opacity: showCursor2 ? 1 : 0, transition: 'opacity 0.1s' }}
+          />
+        </div>
+      )}
+
+      {/* Mobile: Line 3 = suffix */}
+      {line1Complete && (
+        <div className="md:hidden">
+          <span className="text-white">{suffix}</span>
         </div>
       )}
     </div>
