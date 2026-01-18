@@ -159,9 +159,15 @@ export default function DashboardPage() {
 
                         <div className="flex items-center gap-4">
                             <LanguageSwitcher />
-                            <span className="text-gray-300 hidden sm:block">
-                                {user?.firstName} {user?.lastName}
-                            </span>
+                            <LocaleLink 
+                                href="/dashboard/profile" 
+                                className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group"
+                            >
+                                <i className="fas fa-user-circle text-lg group-hover:text-[#bff227] transition-colors"></i>
+                                <span className="hidden sm:block">
+                                    {user?.firstName} {user?.lastName}
+                                </span>
+                            </LocaleLink>
                             <button
                                 onClick={handleLogout}
                                 className="text-gray-300 hover:text-white transition-colors"
