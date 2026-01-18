@@ -128,8 +128,9 @@ export default function HomePage() {
                 >
                   <HeroTypewriter
                     line1={t('hero.line1')}
-                    line3={t('hero.line3')}
                     rotatingWords={t.raw('hero.rotatingWords') as string[]}
+                    suffix={t('hero.suffix')}
+                    delayBetweenWords={2000}
                   />
                 </motion.div>
 
