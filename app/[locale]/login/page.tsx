@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import LocaleLink from '@/components/LocaleLink';
+import Logo from '@/components/ui/Logo';
 
 function LoginContent() {
     const router = useRouter();
@@ -152,17 +153,9 @@ function LoginContent() {
                     transition={{ duration: 0.5 }}
                 >
                 {/* Logo */}
-                <LocaleLink href="/" className="flex items-center justify-center gap-3 mb-8">
-                    <div className="relative w-12 h-12">
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#bff227] to-[#9dcc1e] rounded-xl rotate-6"></div>
-                        <div className="absolute inset-0 bg-[#0b0124] rounded-xl flex items-center justify-center">
-                            <i className="fas fa-shield-halved text-[#bff227] text-xl"></i>
-                        </div>
-                    </div>
-                    <span className="font-display font-bold text-2xl bg-gradient-to-r from-[#bff227] to-white bg-clip-text text-transparent">
-                        Proofy
-                    </span>
-                </LocaleLink>
+                <div className="flex justify-center mb-8">
+                    <Logo size="lg" linkTo="/" />
+                </div>
 
                 {/* Login Card */}
                 <div className="glass-card rounded-3xl p-8">

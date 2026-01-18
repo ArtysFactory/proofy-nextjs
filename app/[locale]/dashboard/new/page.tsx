@@ -12,6 +12,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import LocaleLink from '@/components/LocaleLink';
+import Logo from '@/components/ui/Logo';
 import {
   ArrowLeft,
   User,
@@ -170,9 +171,7 @@ export default function NewCreationPage() {
             <ArrowLeft className="w-5 h-5" />
             <span>{tCommon('back')}</span>
           </LocaleLink>
-          <LocaleLink href="/" className="text-xl font-bold text-[#bff227]">
-            Proofy
-          </LocaleLink>
+          <Logo size="sm" linkTo="/" />
           <div className="w-24" />
         </div>
       </nav>

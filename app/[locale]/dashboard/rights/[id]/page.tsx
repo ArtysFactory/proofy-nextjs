@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import Logo from '@/components/ui/Logo';
 import {
   ArrowLeft,
   Loader2,
@@ -397,9 +398,7 @@ export default function RightsManagementPage() {
             <ArrowLeft className="w-5 h-5" />
             <span>Dashboard</span>
           </Link>
-          <Link href="/" className="text-xl font-bold text-[#bff227]">
-            Proofy
-          </Link>
+          <Logo size="sm" linkTo="/" />
           <div className="w-24" />
         </div>
       </nav>

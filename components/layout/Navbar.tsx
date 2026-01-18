@@ -5,6 +5,7 @@ import { Menu, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import LocaleLink from '@/components/LocaleLink';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import Logo from '@/components/ui/Logo';
 
 export default function Navbar() {
     const t = useTranslations('nav');
@@ -31,17 +32,7 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
-                    <LocaleLink
-                        href="/"
-                        className="flex items-center gap-2 group"
-                    >
-                        <div className="w-8 h-8 bg-gradient-to-br from-[#bff227] to-[#9dd11e] rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform">
-                            <span className="text-[#0b0124] font-bold text-lg">P</span>
-                        </div>
-                        <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                            Proofy
-                        </span>
-                    </LocaleLink>
+                    <Logo size="md" linkTo="/" />
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center gap-6">

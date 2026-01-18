@@ -7,6 +7,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Logo from '@/components/ui/Logo';
 import dynamic from 'next/dynamic';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 
@@ -76,17 +77,7 @@ export default function NewCreationV3Page() {
             </Link>
 
             {/* Center: Logo */}
-            <Link href="/" className="flex items-center gap-3">
-              <div className="relative w-10 h-10">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#bff227] to-[#9dcc1e] rounded-xl"></div>
-                <div className="absolute inset-0 bg-[#0a0a0a] rounded-xl flex items-center justify-center m-0.5">
-                  <span className="text-[#bff227] text-lg">🛡️</span>
-                </div>
-              </div>
-              <span className="font-bold text-xl bg-gradient-to-r from-[#bff227] to-white bg-clip-text text-transparent">
-                Proofy
-              </span>
-            </Link>
+            <Logo size="md" linkTo="/" />
 
             {/* Right: V3 Badge */}
             <div className="flex items-center gap-2">

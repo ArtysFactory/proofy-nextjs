@@ -3,6 +3,7 @@
 import { Github, Twitter, Linkedin, Mail } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import LocaleLink from '@/components/LocaleLink';
+import Logo from '@/components/ui/Logo';
 
 export default function Footer() {
     const t = useTranslations('footer');
@@ -16,14 +17,9 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Brand */}
                     <div className="col-span-1 md:col-span-2">
-                        <LocaleLink href="/" className="flex items-center gap-2 mb-4">
-                            <div className="w-8 h-8 bg-gradient-to-br from-[#bff227] to-[#9dd11e] rounded-lg flex items-center justify-center">
-                                <span className="text-[#0b0124] font-bold text-lg">P</span>
-                            </div>
-                            <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                                {tBrand('name')}
-                            </span>
-                        </LocaleLink>
+                        <div className="mb-4">
+                            <Logo size="md" linkTo="/" />
+                        </div>
                         <p className="text-gray-400 max-w-md mb-4">
                             {tBrand('tagline')}
                         </p>
