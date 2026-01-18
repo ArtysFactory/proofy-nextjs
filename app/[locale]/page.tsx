@@ -208,36 +208,6 @@ export default function HomePage() {
                                     </a>
                                 </motion.div>
 
-                                {/* Stats Cards */}
-                                <motion.div
-                                    className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto"
-                                    variants={itemVariants}
-                                >
-                                    <div className="glass-card rounded-2xl p-6 text-center hover:border-[#bff227]/40 transition-all duration-300 hover:-translate-y-1">
-                                        <div className="font-display text-4xl md:text-5xl font-bold mb-2">
-                                            <span className="text-gradient-animated">0.001</span>
-                                            <span className="text-[#bff227]">$</span>
-                                        </div>
-                                        <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">{t('hero.statCost')}</div>
-                                    </div>
-
-                                    <div className="glass-card rounded-2xl p-6 text-center hover:border-[#bff227]/40 transition-all duration-300 hover:-translate-y-1">
-                                        <div className="font-display text-4xl md:text-5xl font-bold mb-2">
-                                            <span className="text-[#bff227]">&lt;</span>
-                                            <span className="text-gradient-animated">30</span>
-                                            <span className="text-white">s</span>
-                                        </div>
-                                        <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">{t('hero.statTime')}</div>
-                                    </div>
-
-                                    <div className="glass-card rounded-2xl p-6 text-center hover:border-[#bff227]/40 transition-all duration-300 hover:-translate-y-1">
-                                        <div className="font-display text-4xl md:text-5xl font-bold mb-2">
-                                            <span className="text-gradient-animated">∞</span>
-                                        </div>
-                                        <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">{t('hero.statValidity')}</div>
-                                    </div>
-                                </motion.div>
-
                                 {/* Scroll Indicator */}
                                 <motion.div
                                     className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
