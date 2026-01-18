@@ -11,13 +11,34 @@ interface AnimatedCtaButtonProps {
 }
 
 export default function AnimatedCtaButton({ href, text, subtext }: AnimatedCtaButtonProps) {
+  // Heartbeat animation: bam-bam (2 quick pulses) then 2 second pause
+  // Total cycle: ~2.6 seconds (0.15 + 0.1 + 0.15 + 0.1 + 2.1 pause)
+  const heartbeatAnimation = {
+    scale: [
+      1,      // Start
+      1.05,   // First beat up
+      1,      // First beat down
+      1.05,   // Second beat up
+      1,      // Second beat down (stay here for pause)
+      1,      // Hold
+    ],
+  };
+
+  const heartbeatTransition = {
+    duration: 2.6,
+    repeat: Infinity,
+    times: [0, 0.06, 0.12, 0.18, 0.24, 1], // Quick beats in first 24%, then hold
+    ease: "easeInOut" as const,
+  };
+
   return (
     <LocaleLink href={href} className="group relative">
       <motion.div
         className="relative overflow-hidden rounded-2xl"
-        whileHover={{ scale: 1.02 }}
+        animate={heartbeatAnimation}
+        transition={heartbeatTransition}
+        whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.98 }}
-        transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
         {/* Glow effect behind button */}
         <div className="absolute -inset-1 bg-gradient-to-r from-[#bff227] via-[#d4ff4a] to-[#bff227] rounded-2xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-500 animate-pulse" />
