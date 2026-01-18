@@ -7,6 +7,7 @@
 // ============================================
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWizard, NeighboringRightsHolder, NeighboringRights } from './WizardContext';
 import { Plus, Trash2, Mic2, Disc3, Building2, Users, Info, AlertTriangle, CheckCircle2, HelpCircle } from 'lucide-react';
@@ -349,14 +350,15 @@ export default function Step3NeighboringRights() {
         </button>
       </div>
 
-      {/* Add Modal */}
-      <AnimatePresence>
-        {showAddModal && (
+      {/* Add Modal - Using Portal to render at document.body level */}
+      {typeof document !== 'undefined' && showAddModal && createPortal(
+        <AnimatePresence>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+            style={{ zIndex: 9999 }}
             onClick={() => setShowAddModal(null)}
           >
             <motion.div
@@ -379,6 +381,7 @@ export default function Step3NeighboringRights() {
                     onChange={(e) => setNewHolder({ ...newHolder, name: e.target.value })}
                     placeholder="Nom complet ou pseudonyme"
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white"
+                    autoFocus
                   />
                 </div>
 
@@ -439,12 +442,14 @@ export default function Step3NeighboringRights() {
 
               <div className="flex gap-3 mt-6">
                 <button
+                  type="button"
                   onClick={() => setShowAddModal(null)}
                   className="flex-1 px-4 py-3 border border-white/10 rounded-xl text-white hover:bg-white/5 transition-colors"
                 >
                   Annuler
                 </button>
                 <button
+                  type="button"
                   onClick={() => addHolder(showAddModal)}
                   disabled={!newHolder.name || newHolder.percentage <= 0 || (showAddModal === 'other' && !newHolder.role)}
                   className="flex-1 px-4 py-3 bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0a0a0a] font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
@@ -454,8 +459,9 @@ export default function Step3NeighboringRights() {
               </div>
             </motion.div>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
     </motion.div>
   );
 }
