@@ -153,13 +153,7 @@ export function HeroTypewriter({
 
       {/* Line 3: sur la blockchain */}
       <div>
-        <span className="text-white">{line3Text.split(' ').slice(0, -1).join(' ')}</span>
-        {line3Text.split(' ').length > 1 && <span className="text-white"> </span>}
-        <span className="relative inline-block">
-          <span className="bg-gradient-to-r from-[#bff227] via-white to-white bg-clip-text text-transparent">
-            {line3Text.split(' ').slice(-1)[0]}
-          </span>
-        </span>
+        <span className="text-white">{line3Text}</span>
         {!line3Complete && line3Text.length > 0 && (
           <span 
             className="inline-block w-[3px] h-[0.9em] bg-[#bff227] ml-1 align-middle"

@@ -7,6 +7,7 @@ import { Lock, Zap, FileText, Palette, Music, Sparkles, Check, ChevronDown, Shie
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import LocaleLink from '@/components/LocaleLink';
+import HeroTypewriter from '@/components/ui/HeroTypewriter';
 
 export default function HomePage() {
     const t = useTranslations('home');
@@ -114,19 +115,17 @@ export default function HomePage() {
                                     </span>
                                 </motion.div>
 
-                                {/* Main Title - Emotional hook */}
-                                <motion.h1
-                                    className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
+                                {/* Main Title - Typewriter effect 3 lines */}
+                                <motion.div
+                                    className="mb-8"
                                     variants={itemVariants}
                                 >
-                                    <span className="text-white">{t('hero.line1')}</span>
-                                    <br />
-                                    <span className="text-white">{t('hero.line2')}</span>
-                                    <br />
-                                    <span className="bg-gradient-to-r from-[#bff227] via-[#d4ff4d] to-[#bff227] bg-clip-text text-transparent">
-                                        {t('hero.line3')}
-                                    </span>
-                                </motion.h1>
+                                    <HeroTypewriter
+                                        line1={t('hero.line1')}
+                                        line3={t('hero.line3')}
+                                        rotatingWords={t.raw('hero.rotatingWords') as string[]}
+                                    />
+                                </motion.div>
 
                                 {/* Subtitle */}
                                 <motion.p
