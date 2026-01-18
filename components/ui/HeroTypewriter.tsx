@@ -117,20 +117,18 @@ export function HeroTypewriter({
       </div>
 
       {/* Line 2: [rotating word] + suffix (sur la blockchain) */}
-      <div className="min-h-[1.2em]">
-        <span className="text-[#bff227] inline-block">
-          {currentWord}
-        </span>
-        {line1Complete && currentWord.length > 0 && (
+      {line1Complete && (
+        <div className="min-h-[1.2em]">
+          <span className="text-[#bff227] inline-block min-w-[1ch]">
+            {currentWord}
+          </span>
           <span className="text-white"> {suffix}</span>
-        )}
-        {line1Complete && (
           <span 
             className="inline-block w-[3px] h-[0.9em] bg-[#bff227] ml-1 align-middle"
             style={{ opacity: showCursor2 ? 1 : 0, transition: 'opacity 0.1s' }}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
