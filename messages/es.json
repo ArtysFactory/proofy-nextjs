@@ -19,48 +19,230 @@
     "no": "No",
     "or": "o",
     "and": "y",
-    "rememberMe": "Recordarme"
+    "rememberMe": "Recuérdame",
+    "free": "Gratis"
   },
   "brand": {
-    "name": "Proofy",
+    "name": "UnlmtdProof",
     "tagline": "Protege tus creaciones en la blockchain",
-    "version": "V3 BETA"
+    "version": "BETA"
   },
   "nav": {
     "home": "Inicio",
-    "dashboard": "Panel de control",
+    "dashboard": "Panel",
     "newCreation": "Nueva creación",
     "login": "Iniciar sesión",
     "signup": "Registrarse",
     "logout": "Cerrar sesión",
     "backToDashboard": "Volver al panel",
-    "features": "Funcionalidades",
+    "features": "Características",
     "howItWorks": "Cómo funciona",
     "pricing": "Precios",
-    "getStarted": "Empezar"
+    "getStarted": "Empezar",
+    "artists": "Artistas",
+    "aiCreators": "Creadores IA",
+    "faq": "FAQ"
   },
   "home": {
     "hero": {
-      "badge": "Anclado en",
-      "badgeFast": "Ultra rápido",
-      "badgeCheap": "Económico",
-      "line1": "Protege tus creaciones",
-      "line3": "en la blockchain",
-      "rotatingWords": ["musicales", "de video", "de imagen", "documentales"],
-      "title1": "Protege tus",
-      "title2": "creaciones",
-      "title3": "en la",
-      "title4": "blockchain",
-      "subtitle": "Demuestra la anterioridad de tus obras en pocos clics.",
-      "subtitleHighlight": "anterioridad",
-      "subtitleLine2": "Registro de derechos de autor/conexos (música, video)",
-      "subtitleEnd": "Certificado con marca de tiempo, inmutable y verificable por todos.",
-      "cta": "Depositar una creación",
+      "badge": "Blockchain Polygon",
+      "badgeFast": "Certificado en -1 min",
+      "badgeCheap": "Desde 0,50€/depósito",
+      "line1": "En 6 meses, alguien afirmará",
+      "line2": "que tu creación es suya.",
+      "line3": "¿Cómo te defenderás?",
+      "rotatingWords": ["música", "visuales", "contenido IA", "documentos"],
+      "subtitle": "UnlmtdProof crea una huella fechada e infalsificable de tus archivos en la blockchain.",
+      "subtitleHighlight": "infalsificable",
+      "subtitleEnd": "Música, visuales, contenido IA — una prueba legalmente reconocida, en menos de un minuto.",
+      "cta": "Proteger mi primera obra — es gratis",
       "ctaSecondary": "Cómo funciona",
-      "statCost": "por depósito",
-      "statTime": "confirmación",
-      "statValidity": "duración de validez",
+      "microText": "Sin tarjeta requerida • 3 depósitos gratis",
       "discover": "Descubrir"
+    },
+    "problem": {
+      "title": "El plagio no espera.",
+      "titleHighlight": "Tus pruebas tampoco.",
+      "subtitle": "Cada día, creadores descubren sus obras robadas, copiadas o reclamadas por otros. Sin prueba de anterioridad, solo tienes tu palabra. Con UnlmtdProof, tienes un sello temporal blockchain imposible de falsificar.",
+      "pillar1": {
+        "icon": "lock",
+        "title": "Prueba infalsificable",
+        "description": "Tu archivo genera una huella única (hash) inscrita en Polygon. Nadie puede borrarla, modificarla ni pretender haberla creado antes que tú."
+      },
+      "pillar2": {
+        "icon": "zap",
+        "title": "47 segundos, no 47 días",
+        "description": "Olvida los trámites de registro o los envíos certificados. Arrastra tu archivo, valida, recibe tu certificado. Listo."
+      },
+      "pillar3": {
+        "icon": "file-text",
+        "title": "Certificado legalmente sólido",
+        "description": "Descargable en PDF, con hash, fecha, hora y enlace de verificación blockchain. Aceptado por abogados, sellos y organizaciones de gestión."
+      },
+      "pillar4": {
+        "icon": "palette",
+        "title": "Todos los formatos, todos los creadores",
+        "description": "Audio, video, imagen, texto, código, prompts IA. Ya seas beatmaker, diseñador gráfico o creador de Midjourney."
+      }
+    },
+    "artists": {
+      "title": "Tu música merece más",
+      "titleHighlight": "que un \"confía en mí\"",
+      "subtitle": "Demos, masters, stems, letras, partituras — cada archivo depositado se convierte en una prueba de anterioridad que nadie puede disputar.",
+      "block1": {
+        "title": "Antes del leak, antes del robo",
+        "description": "Envías una demo a un productor. Se \"inspira\" en tu melodía 6 meses después. Con UnlmtdProof, pruebas que era tuya primero. Fin de la discusión."
+      },
+      "block2": {
+        "title": "Splits y colaboraciones blindadas",
+        "description": "Añade a tus coautores, beatmakers, productores directamente en el depósito. Se acabó el \"él dijo / ella dijo\" sobre quién hizo qué."
+      },
+      "block3": {
+        "title": "Un portafolio de creador completo",
+        "description": "Todos tus depósitos en un historial fechado. Compartible con un clic con un abogado, un sello o una sociedad de derechos."
+      },
+      "block4": {
+        "title": "Compatible con todo tu ecosistema",
+        "description": "UnlmtdProof no reemplaza tus sociedades de derechos o distribuidores. Es una capa adicional e independiente de prueba que refuerza tu posición."
+      },
+      "cta": "Proteger mi primer tema — Gratis"
+    },
+    "aiCreators": {
+      "title": "Para creadores IA:",
+      "titleHighlight": "la herramienta genera, pero tú creas",
+      "subtitle": "En un mundo donde todos pueden \"promptear\", documenta lo que te hace irremplazable: tu dirección artística, tus elecciones, tu visión, tus prompts, tu trabajo.",
+      "block1": {
+        "title": "100% IA o Híbrido: tú eliges",
+        "description": "Indica claramente si tu obra es puramente generada o si aportaste una contribución humana significativa. Esta es la clave de los debates legales actuales sobre copyright IA."
+      },
+      "block2": {
+        "title": "Cursor IA vs Humano",
+        "description": "Declara el porcentaje: ¿70% IA / 30% humano? Documentas tu rol real (dirección artística, selección, retoque, iteraciones). Se acabaron las zonas grises."
+      },
+      "block3": {
+        "title": "Tus prompts = tu propiedad intelectual",
+        "description": "Registra tus prompts, el modelo utilizado (Midjourney, DALL-E, Stable Diffusion...), los parámetros. Crea una trazabilidad completa que puedas probar."
+      },
+      "block4": {
+        "title": "Tranquiliza a tus clientes",
+        "description": "¿Vendes visuales IA a marcas? Un certificado UnlmtdProof muestra que el proceso está documentado, es transparente, y que tu trabajo va más allá de simplemente \"clicar generar\"."
+      },
+      "punchline": "\"La IA es una herramienta. Tu creatividad es la obra. Demuéstralo.\"",
+      "cta": "Documentar mi creación IA"
+    },
+    "howItWorks": {
+      "title": "3 pasos. 47 segundos.",
+      "titleHighlight": "Eso es todo.",
+      "subtitle": "",
+      "step1": {
+        "badge": "Paso 1",
+        "title": "Deposita",
+        "subtitle": "Arrastra tu archivo",
+        "description": "Audio, video, imagen, documento, prompt IA... todos los formatos aceptados hasta 500 MB.",
+        "extra": "Para creaciones IA: indica \"100% IA\" o \"Híbrido\" e introduce tus prompts."
+      },
+      "step2": {
+        "badge": "Paso 2",
+        "title": "Anclaje blockchain",
+        "subtitle": "Nosotros nos encargamos",
+        "description": "La huella única de tu archivo (hash SHA-256) se inscribe en la blockchain Polygon con sello temporal preciso al segundo."
+      },
+      "step3": {
+        "badge": "Paso 3",
+        "title": "Certificado",
+        "subtitle": "Descarga tu prueba",
+        "description": "PDF con: fecha, hora, hash, enlace de verificación on-chain, y tus metadatos (co-creadores, prompts, etc.)."
+      },
+      "reassurance": "Tu archivo permanece privado — solo la huella se publica en la blockchain.",
+      "cta": "Probar ahora — 1er depósito gratis"
+    },
+    "pricing": {
+      "title": "Pruebas blockchain.",
+      "titleHighlight": "Sin suscripción. Sin trampa.",
+      "subtitle": "Compra un pack, úsalo a tu ritmo. Tus créditos nunca caducan.",
+      "perDeposit": "por depósito",
+      "deposits": "depósitos",
+      "idealFor": "Ideal para",
+      "starter": {
+        "name": "Starter",
+        "price": "15",
+        "pricePerDeposit": "1,50",
+        "deposits": "10",
+        "idealFor": "Probar, primeras obras"
+      },
+      "creator": {
+        "name": "Creator",
+        "price": "60",
+        "pricePerDeposit": "1,20",
+        "deposits": "50",
+        "idealFor": "Creadores regulares",
+        "popular": true
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "100",
+        "pricePerDeposit": "1,00",
+        "deposits": "100",
+        "idealFor": "Catálogos, artistas prolíficos"
+      },
+      "studio": {
+        "name": "Studio",
+        "price": "250",
+        "pricePerDeposit": "0,50",
+        "deposits": "500",
+        "idealFor": "Sellos, agencias, estudios"
+      },
+      "comparison": {
+        "title": "Comparación",
+        "inpi": "Un depósito INPI = 65€ mínimo + demoras.",
+        "unlmtdproof": "Un pack UnlmtdProof 100 depósitos = 100€, inmediato."
+      },
+      "reassurance": {
+        "noSubscription": "Sin suscripción",
+        "noHiddenFees": "Sin costes ocultos",
+        "noExpiration": "Créditos sin caducidad",
+        "frenchBilling": "Facturación francesa"
+      },
+      "cta": "Elegir mi pack",
+      "ctaSecondary": "Empezar gratis (1 depósito gratis)"
+    },
+    "faq": {
+      "title": "Preguntas",
+      "titleHighlight": "frecuentes",
+      "q1": {
+        "question": "¿Tiene valor legal?",
+        "answer": "Sí. Un sello temporal blockchain constituye una prueba de anterioridad admisible ante tribunales franceses y europeos. Nuestro certificado incluye todos los elementos necesarios para presentar a un abogado o juez."
+      },
+      "q2": {
+        "question": "¿Mi archivo se almacena en la blockchain?",
+        "answer": "No. Solo la huella criptográfica (hash) de tu archivo se inscribe on-chain. Tu obra permanece privada, almacenada en nuestros servidores seguros o en los tuyos."
+      },
+      "q3": {
+        "question": "¿Cuál es la diferencia con SACEM o el depósito INPI?",
+        "answer": "UnlmtdProof es complementario. SACEM gestiona tus derechos de explotación, INPI protege creaciones específicas con un procedimiento largo. UnlmtdProof te da una prueba de anterioridad instantánea, para todo tipo de archivos, a una fracción del coste."
+      },
+      "q4": {
+        "question": "¿Funciona para creaciones generadas por IA?",
+        "answer": "Absolutamente. Es incluso uno de nuestros casos de uso principales. Puedes documentar tus prompts, el porcentaje IA/humano, y crear una trazabilidad completa de tu proceso creativo."
+      },
+      "q5": {
+        "question": "¿Mis créditos caducan?",
+        "answer": "No. Tus créditos son válidos de por vida. Úsalos cuando quieras."
+      }
+    },
+    "trust": {
+      "title": "Socio y miembro",
+      "titleHighlight": "de Artys Network",
+      "description": "UnlmtdProof está desarrollado con el equipo de Artys Network, el ecosistema dedicado a proteger y empoderar a los creadores independientes. Nuestra misión: devolver el control a los creadores a través de la transparencia Web3.",
+      "badge1": "No almacenamos ningún dato",
+      "badge2": "Blockchain Polygon (segura, ecológica)"
+    },
+    "finalCta": {
+      "title": "La próxima vez que alguien cuestione tus derechos,",
+      "titleHighlight": "¿qué prueba tendrás?",
+      "subtitle": "Únete a 2.400+ creadores que eligieron probar, no rezar.",
+      "cta": "Crear mi primera prueba gratis",
+      "microText": "Sin tarjeta de crédito requerida • Certificado descargable inmediatamente"
     },
     "features": {
       "title": "Todo lo que",
@@ -76,72 +258,55 @@
       },
       "certificate": {
         "title": "Certificado PDF",
-        "description": "Descarga un certificado oficial con código QR para demostrar tu anterioridad."
+        "description": "Descarga un certificado oficial con código QR para probar tu anterioridad."
       },
       "timestamp": {
-        "title": "Marca de tiempo UTC",
-        "description": "Fecha y hora precisas registradas on-chain. Prueba legal indiscutible."
+        "title": "Sello temporal UTC",
+        "description": "Fecha y hora precisas registradas on-chain. Prueba legal innegable."
       },
       "gdpr": {
-        "title": "Cumple con RGPD",
+        "title": "Cumple RGPD",
         "description": "Tus datos personales están protegidos. Solo el hash es público."
       },
       "noWallet": {
         "title": "Sin Wallet",
-        "description": "No se requiere conocimiento de Web3. Nosotros lo gestionamos todo."
-      }
-    },
-    "howItWorks": {
-      "title": "Cómo",
-      "titleHighlight": "funciona",
-      "subtitle": "3 pasos simples para proteger tus creaciones",
-      "step1": {
-        "title": "Sube tu archivo",
-        "description": "Música, imagen, vídeo, texto, PDF... Arrastra y suelta tu creación."
-      },
-      "step2": {
-        "title": "Rellena los metadatos",
-        "description": "Título, descripción, tipo de proyecto, autores... Personaliza tu depósito."
-      },
-      "step3": {
-        "title": "Obtén tu certificado",
-        "description": "Tu prueba está anclada en la blockchain. Descarga tu certificado PDF."
+        "description": "No se requiere conocimiento Web3. Nosotros nos encargamos de todo."
       }
     }
   },
   "auth": {
     "login": {
       "title": "Iniciar sesión",
-      "subtitle": "Accede a tu cuenta Proofy",
+      "subtitle": "Accede a tu espacio UnlmtdProof",
       "email": "Correo electrónico",
-      "emailPlaceholder": "tu@correo.com",
+      "emailPlaceholder": "tu@email.com",
       "password": "Contraseña",
       "submit": "Iniciar sesión",
       "noAccount": "¿No tienes cuenta?",
-      "createAccount": "Crear una cuenta",
+      "createAccount": "Crear cuenta",
       "forgotPassword": "¿Olvidaste tu contraseña?",
       "backToHome": "Volver al inicio",
-      "orContinueWith": "o continúa con",
+      "orContinueWith": "o continuar con",
       "googleLogin": "Continuar con Google",
       "googleAuthFailed": "Error al iniciar sesión con Google",
-      "passwordResetSuccess": "¡Contraseña restablecida con éxito! Ahora puedes iniciar sesión.",
+      "passwordResetSuccess": "¡Contraseña restablecida con éxito! Ya puedes iniciar sesión.",
       "accountCreated": "¡Cuenta creada con éxito! Inicia sesión para continuar."
     },
     "signup": {
-      "title": "Crear una cuenta",
-      "subtitle": "Únete a Proofy y protege tus creaciones",
+      "title": "Crear cuenta",
+      "subtitle": "Únete a UnlmtdProof y protege tus creaciones",
       "firstName": "Nombre",
       "lastName": "Apellido",
       "email": "Correo electrónico",
       "password": "Contraseña",
       "confirmPassword": "Confirmar contraseña",
       "submit": "Crear mi cuenta",
-      "hasAccount": "¿Ya tienes una cuenta?",
+      "hasAccount": "¿Ya tienes cuenta?",
       "login": "Iniciar sesión",
       "termsAgree": "Al crear una cuenta, aceptas nuestros",
-      "terms": "Términos de servicio",
+      "terms": "Términos de uso",
       "backToHome": "Volver al inicio",
-      "orContinueWith": "o continúa con",
+      "orContinueWith": "o continuar con",
       "googleSignup": "Registrarse con Google",
       "generatePassword": "Generar",
       "passwordGenerated": "¡Contraseña generada!",
@@ -153,14 +318,14 @@
       "special": "Especial (!@#...)"
     },
     "forgotPassword": {
-      "title": "Olvidaste tu contraseña",
-      "subtitle": "Introduce tu correo para recibir un enlace de restablecimiento",
+      "title": "Olvidé mi contraseña",
+      "subtitle": "Introduce tu email para recibir un enlace de restablecimiento",
       "email": "Correo electrónico",
       "submit": "Enviar enlace",
-      "backToLogin": "Volver al inicio de sesión",
-      "successTitle": "¡Correo enviado!",
-      "successMessage": "Si existe una cuenta con este correo, recibirás un enlace de restablecimiento.",
-      "checkSpam": "Revisa también tu carpeta de spam"
+      "backToLogin": "Volver a iniciar sesión",
+      "successTitle": "¡Email enviado!",
+      "successMessage": "Si existe una cuenta con este email, recibirás un enlace de restablecimiento.",
+      "checkSpam": "Revisa también tu spam"
     },
     "resetPassword": {
       "title": "Restablecer contraseña",
@@ -169,14 +334,14 @@
       "confirmPassword": "Confirmar contraseña",
       "submit": "Restablecer",
       "successTitle": "¡Contraseña restablecida!",
-      "successMessage": "Ahora puedes iniciar sesión con tu nueva contraseña.",
+      "successMessage": "Ya puedes iniciar sesión con tu nueva contraseña.",
       "redirecting": "Redirigiendo a la página de inicio de sesión...",
-      "invalidLink": "Enlace inválido o expirado",
-      "requestNew": "Solicitar un nuevo enlace"
+      "invalidLink": "Enlace inválido o caducado",
+      "requestNew": "Solicitar nuevo enlace"
     },
     "errors": {
-      "invalidCredentials": "Correo o contraseña incorrectos",
-      "emailExists": "Este correo ya está en uso",
+      "invalidCredentials": "Email o contraseña incorrectos",
+      "emailExists": "Este email ya está en uso",
       "weakPassword": "La contraseña debe tener al menos 8 caracteres",
       "passwordMismatch": "Las contraseñas no coinciden",
       "googleError": "Error al iniciar sesión con Google",
@@ -184,19 +349,19 @@
     }
   },
   "dashboard": {
-    "title": "Panel de control",
+    "title": "Panel",
     "subtitle": "Gestiona tus creaciones y sigue su estado en la blockchain",
     "welcome": "Bienvenido",
     "newCreation": "Nueva creación",
     "myCreations": "Mis creaciones",
     "stats": {
-      "total": "Total de creaciones",
+      "total": "Total creaciones",
       "confirmed": "Confirmadas",
       "pending": "Pendientes"
     },
     "empty": {
       "title": "Sin creaciones",
-      "subtitle": "Comienza creando tu primera prueba de anterioridad",
+      "subtitle": "Empieza creando tu primera prueba de anterioridad",
       "cta": "Crear mi primera prueba"
     },
     "creation": {
@@ -204,12 +369,12 @@
       "manageRights": "Gestionar derechos",
       "confirmed": "Confirmada",
       "pending": "Pendiente",
-      "failed": "Fallido"
+      "failed": "Fallida"
     }
   },
   "newCreation": {
     "title": "Nueva creación",
-    "subtitle": "Protege tu obra en la blockchain en pocos clics",
+    "subtitle": "Protege tu obra en la blockchain en unos clics",
     "section1": {
       "title": "Información general",
       "madeBy": "Creado por",
@@ -220,11 +385,11 @@
       "hybrid": "Híbrido",
       "hybridDesc": "Humano + IA",
       "aiRatio": "Proporción IA vs Humano",
-      "aiTools": "Herramientas de IA utilizadas",
+      "aiTools": "Herramientas IA utilizadas",
       "aiToolsPlaceholder": "Ej: Midjourney v6, Suno, ChatGPT...",
-      "aiToolsHint": "Separar con comas",
+      "aiToolsHint": "Separa con comas",
       "humanContribution": "Contribución humana",
-      "humanContributionPlaceholder": "Ej: Letras originales, arreglos, mezcla..."
+      "humanContributionPlaceholder": "Ej: Letras originales, arreglo, mezcla..."
     },
     "section2": {
       "title": "Tipo de depositante",
@@ -237,22 +402,22 @@
       "lastName": "Apellido",
       "email": "Correo electrónico",
       "publicPseudo": "Seudónimo público",
-      "publicPseudoHint": "Dejar vacío para usar tu nombre completo",
-      "companyInfo": "Información de la empresa",
-      "companyName": "Nombre de la empresa",
+      "publicPseudoHint": "Déjalo vacío para usar tu nombre completo",
+      "companyInfo": "Información de empresa",
+      "companyName": "Nombre de empresa",
       "depositorName": "Nombre del depositante",
-      "siret": "Número de registro",
-      "address": "Dirección de la sede"
+      "siret": "Número SIRET/SIREN",
+      "address": "Dirección de la sede social"
     },
     "section3": {
       "title": "Tipo de proyecto",
       "music": "Música",
       "image": "Imagen",
-      "video": "Vídeo",
+      "video": "Video",
       "document": "Documento",
       "other": "Otro",
-      "nextStepRights": "Siguiente paso: Subir archivo, luego gestión de derechos de autor y derechos conexos.",
-      "nextStepSimple": "Siguiente paso: Subir archivo y creación de prueba de anterioridad."
+      "nextStepRights": "Siguiente paso: Subir archivo, luego gestionar derechos de autor y derechos conexos.",
+      "nextStepSimple": "Siguiente paso: Subir archivo y crear prueba de anterioridad."
     }
   },
   "wizard": {
@@ -278,7 +443,7 @@
     "copyright": {
       "title": "Derechos de autor",
       "subtitle": "Distribución de derechos sobre la obra",
-      "info": "Los derechos de autor protegen la obra (composición, letras). En España, son gestionados por la SGAE.",
+      "info": "Los derechos de autor protegen la obra (composición, letras). En Francia, son gestionados por SACEM.",
       "workTitle": "Título de la obra",
       "workTitlePlaceholder": "Ej: Mi canción",
       "authors": "Autor(es)",
@@ -292,9 +457,9 @@
       "addHolder": "Añadir",
       "holderName": "Nombre",
       "holderPercentage": "Porcentaje",
-      "holderEmail": "Correo",
+      "holderEmail": "Email",
       "holderIPI": "Número IPI/CAE",
-      "noHolders": "Ningún titular añadido"
+      "noHolders": "Sin titular añadido"
     },
     "neighboring": {
       "title": "Derechos conexos",
@@ -317,11 +482,11 @@
     },
     "masters": {
       "title": "Grabaciones",
-      "subtitle": "Información sobre el master y los lanzamientos",
+      "subtitle": "Información sobre el master y lanzamientos",
       "addMaster": "Añadir grabación",
       "masterTitle": "Título de la grabación",
       "isrc": "Código ISRC",
-      "isrcPlaceholder": "Ej: ES-XXX-24-00001",
+      "isrcPlaceholder": "Ej: FR-XXX-24-00001",
       "duration": "Duración",
       "durationPlaceholder": "Ej: 3:45",
       "recordingDate": "Fecha de grabación",
@@ -335,8 +500,8 @@
       "skip": "Saltar este paso"
     },
     "review": {
-      "title": "Revisión y Envío",
-      "subtitle": "Verifica la información antes del envío a blockchain",
+      "title": "Revisión y Depósito",
+      "subtitle": "Verifica la información antes del depósito blockchain",
       "fileSection": "Archivo",
       "fileName": "Nombre del archivo",
       "fileSize": "Tamaño",
@@ -345,11 +510,11 @@
       "neighboringSection": "Derechos conexos",
       "mastersSection": "Grabaciones",
       "termsTitle": "Términos y condiciones",
-      "termsAccept": "Acepto los términos y condiciones de uso",
-      "ownershipConfirm": "Confirmo que soy el autor o tengo los derechos sobre esta creación",
+      "termsAccept": "Acepto los términos de uso",
+      "ownershipConfirm": "Confirmo ser el autor o tener derechos sobre esta creación",
       "blockchainInfo": "El hash SHA-256 de tu archivo se registrará permanentemente en la blockchain Polygon.",
-      "deposit": "Enviar mi creación",
-      "depositing": "Enviando...",
+      "deposit": "Depositar mi creación",
+      "depositing": "Depositando...",
       "cost": "Coste blockchain",
       "free": "Gratis",
       "network": "Red Polygon Mainnet",
@@ -370,14 +535,14 @@
     "summary": "Resumen",
     "createdBy": "Creado por",
     "depositor": "Depositante",
-    "aiToolsUsed": "Herramientas de IA utilizadas",
+    "aiToolsUsed": "Herramientas IA utilizadas",
     "information": "Información",
     "workTitle": "Título de la obra",
     "workTitlePlaceholder": "Ej: Logo de mi empresa",
     "description": "Descripción",
     "descriptionPlaceholder": "Describe brevemente tu creación...",
     "confirmation": "Confirmación",
-    "ownershipConfirm": "Confirmo que soy el autor o tengo los derechos sobre esta creación, y acepto que el hash se registre permanentemente en la blockchain Polygon.",
+    "ownershipConfirm": "Confirmo ser el autor o tener derechos sobre esta creación, y acepto que el hash se registre permanentemente en la blockchain Polygon.",
     "createProof": "Crear mi prueba de anterioridad",
     "processing": {
       "preparing": "Preparando...",
@@ -415,20 +580,20 @@
   },
   "rights": {
     "title": "Gestionar derechos",
-    "subtitle": "Modificar la distribución de derechos",
+    "subtitle": "Modificar distribución de derechos",
     "initialDeposit": "Información del depósito inicial",
     "depositDate": "Fecha de depósito",
     "projectType": "Tipo de proyecto",
     "fileHash": "Huella",
     "viewOnBlockchain": "Ver en blockchain",
     "saveChanges": "Guardar cambios",
-    "saved": "Cambios guardados correctamente",
+    "saved": "Cambios guardados con éxito",
     "saving": "Guardando...",
     "copyrightRights": "Derechos de autor",
     "neighboringRights": "Derechos conexos"
   },
   "errors": {
-    "generic": "Se ha producido un error",
+    "generic": "Ha ocurrido un error",
     "notFound": "Página no encontrada",
     "unauthorized": "Acceso no autorizado",
     "serverError": "Error del servidor",
@@ -436,7 +601,7 @@
     "fileRequired": "Por favor selecciona un archivo",
     "titleRequired": "Por favor introduce un título",
     "ownershipRequired": "Por favor confirma que eres el autor o tienes los derechos",
-    "totalMustBe100": "Los porcentajes totales deben sumar 100%",
+    "totalMustBe100": "El total de porcentajes debe ser igual a 100%",
     "fileTooLarge": "Archivo demasiado grande"
   },
   "footer": {
@@ -445,6 +610,7 @@
     "terms": "Términos de uso",
     "contact": "Contacto",
     "gdprInfo": "Tus datos se procesan de forma segura y conforme al RGPD.",
-    "hashInfo": "El hash SHA-256 de tu archivo se calcula localmente — tu archivo nunca se sube."
+    "hashInfo": "El hash SHA-256 de tu archivo se calcula localmente — tu archivo nunca se sube.",
+    "artysNetwork": "Miembro de Artys Network"
   }
 }

@@ -16,15 +16,16 @@
     "required": "Obligatoire",
     "optional": "optionnel",
     "yes": "Oui",
-    "no": "No",
+    "no": "Non",
     "or": "ou",
     "and": "et",
-    "rememberMe": "Se souvenir de moi"
+    "rememberMe": "Se souvenir de moi",
+    "free": "Gratuit"
   },
   "brand": {
-    "name": "Proofy",
+    "name": "UnlmtdProof",
     "tagline": "Protégez vos créations sur la blockchain",
-    "version": "V3 BETA"
+    "version": "BETA"
   },
   "nav": {
     "home": "Accueil",
@@ -37,30 +38,211 @@
     "features": "Fonctionnalités",
     "howItWorks": "Comment ça marche",
     "pricing": "Tarifs",
-    "getStarted": "Commencer"
+    "getStarted": "Commencer",
+    "artists": "Artistes",
+    "aiCreators": "Créateurs IA",
+    "faq": "FAQ"
   },
   "home": {
     "hero": {
-      "badge": "Ancré sur",
-      "badgeFast": "Ultra rapide",
-      "badgeCheap": "Économique",
-      "line1": "Protégez vos créations",
-      "line3": "sur la blockchain",
-      "rotatingWords": ["musicales", "vidéos", "images", "documents"],
-      "title1": "Protégez vos",
-      "title2": "créations",
-      "title3": "sur la",
-      "title4": "blockchain",
-      "subtitle": "Prouvez l'antériorité de vos œuvres en quelques clics.",
-      "subtitleHighlight": "antériorité",
-      "subtitleLine2": "Enregistrement des droits d'auteur/voisin (musique, vidéo)",
-      "subtitleEnd": "Certificat horodaté, immuable et vérifiable par tous.",
-      "cta": "Déposer une création",
+      "badge": "Blockchain Polygon",
+      "badgeFast": "Certificat en -1 min",
+      "badgeCheap": "Dès 0,50€/dépôt",
+      "line1": "Dans 6 mois, quelqu'un prétendra",
+      "line2": "que votre création est la sienne.",
+      "line3": "Comment vous défendrez-vous ?",
+      "rotatingWords": ["musique", "visuels", "contenus IA", "documents"],
+      "subtitle": "UnlmtdProof crée une empreinte horodatée et infalsifiable de vos fichiers sur la blockchain.",
+      "subtitleHighlight": "infalsifiable",
+      "subtitleEnd": "Musique, visuels, contenus IA — une preuve juridiquement reconnue, en moins d'une minute.",
+      "cta": "Protéger ma première œuvre — c'est gratuit",
       "ctaSecondary": "Comment ça marche",
-      "statCost": "par dépôt",
-      "statTime": "confirmation",
-      "statValidity": "durée de validité",
+      "microText": "Aucune carte requise • 3 dépôts offerts",
       "discover": "Découvrir"
+    },
+    "problem": {
+      "title": "Le plagiat n'attend pas.",
+      "titleHighlight": "Vos preuves non plus.",
+      "subtitle": "Chaque jour, des créateurs découvrent leurs œuvres volées, copiées, ou revendiquées par d'autres. Sans preuve d'antériorité, vous n'avez que votre parole. Avec UnlmtdProof, vous avez un horodatage blockchain impossible à falsifier.",
+      "pillar1": {
+        "icon": "lock",
+        "title": "Preuve infalsifiable",
+        "description": "Votre fichier génère une empreinte unique (hash) inscrite sur Polygon. Personne ne peut l'effacer, la modifier ou prétendre l'avoir créée avant vous."
+      },
+      "pillar2": {
+        "icon": "zap",
+        "title": "47 secondes, pas 47 jours",
+        "description": "Oubliez les démarches INPI ou les envois recommandés. Glissez votre fichier, validez, recevez votre certificat. Terminé."
+      },
+      "pillar3": {
+        "icon": "file-text",
+        "title": "Certificat juridiquement solide",
+        "description": "Téléchargeable en PDF, avec hash, date, heure et lien de vérification blockchain. Accepté par avocats, labels et organismes de gestion."
+      },
+      "pillar4": {
+        "icon": "palette",
+        "title": "Tous formats, tous créateurs",
+        "description": "Audio, vidéo, image, texte, code, prompts IA. Que vous soyez beatmaker, graphiste ou créateur Midjourney."
+      }
+    },
+    "artists": {
+      "title": "Votre musique mérite plus",
+      "titleHighlight": "qu'un \"crois-moi\"",
+      "subtitle": "Maquettes, masters, stems, paroles, partitions — chaque fichier déposé devient une preuve d'antériorité que personne ne peut contester.",
+      "block1": {
+        "title": "Avant le leak, avant le vol",
+        "description": "Vous envoyez une maquette à un producteur. Il \"s'inspire\" de votre mélodie 6 mois plus tard. Avec UnlmtdProof, vous prouvez que c'était la vôtre en premier. Fin de la discussion."
+      },
+      "block2": {
+        "title": "Splits et collaborations blindés",
+        "description": "Ajoutez vos co-auteurs, beatmakers, producteurs directement sur le dépôt. Plus de \"il a dit / elle a dit\" sur qui a fait quoi."
+      },
+      "block3": {
+        "title": "Un dossier créateur complet",
+        "description": "Tous vos dépôts dans un historique horodaté. Partageable en un clic avec un avocat, un label, ou la SACEM."
+      },
+      "block4": {
+        "title": "Compatible avec tout votre écosystème",
+        "description": "UnlmtdProof ne remplace pas vos sociétés d'auteurs ou distributeurs. C'est une couche de preuve supplémentaire, indépendante, qui renforce votre position."
+      },
+      "cta": "Protéger mon premier titre — Gratuit"
+    },
+    "aiCreators": {
+      "title": "Pour les créateurs IA :",
+      "titleHighlight": "l'outil génère, mais c'est vous qui créez",
+      "subtitle": "Dans un monde où tout le monde peut \"prompter\", documentez ce qui vous rend irremplaçable : votre direction artistique, vos choix, votre vision, vos prompts, votre travail.",
+      "block1": {
+        "title": "100% IA ou Hybride : vous choisissez",
+        "description": "Indiquez clairement si votre œuvre est purement générée ou si vous avez apporté une contribution humaine significative. C'est la clé des débats juridiques actuels sur le copyright IA."
+      },
+      "block2": {
+        "title": "Curseur IA vs Humain",
+        "description": "Déclarez le pourcentage : 70% IA / 30% humain ? Vous documentez votre rôle réel (direction artistique, sélection, retouche, itérations). Fini les zones grises."
+      },
+      "block3": {
+        "title": "Vos prompts = votre propriété intellectuelle",
+        "description": "Enregistrez vos prompts, le modèle utilisé (Midjourney, DALL-E, Stable Diffusion…), les paramètres. Créez une traçabilité complète que vous pouvez prouver."
+      },
+      "block4": {
+        "title": "Rassurez vos clients",
+        "description": "Vous vendez des visuels IA à des marques ? Un certificat UnlmtdProof montre que le processus est documenté, transparent, et que votre travail dépasse le simple \"clic sur générer\"."
+      },
+      "punchline": "\"L'IA est un outil. Votre créativité est l'œuvre. Prouvez-le.\"",
+      "cta": "Documenter ma création IA"
+    },
+    "howItWorks": {
+      "title": "3 étapes. 47 secondes.",
+      "titleHighlight": "C'est tout.",
+      "subtitle": "",
+      "step1": {
+        "badge": "Étape 1",
+        "title": "Déposez",
+        "subtitle": "Glissez votre fichier",
+        "description": "Audio, vidéo, image, document, prompt IA… tout format accepté jusqu'à 500 Mo.",
+        "extra": "Pour les créations IA : indiquez \"100% IA\" ou \"Hybride\" et renseignez vos prompts."
+      },
+      "step2": {
+        "badge": "Étape 2",
+        "title": "Ancrage blockchain",
+        "subtitle": "On s'occupe du reste",
+        "description": "L'empreinte unique de votre fichier (hash SHA-256) est inscrite sur la blockchain Polygon avec horodatage précis à la seconde."
+      },
+      "step3": {
+        "badge": "Étape 3",
+        "title": "Certificat",
+        "subtitle": "Téléchargez votre preuve",
+        "description": "PDF avec : date, heure, hash, lien de vérification on-chain, et vos métadonnées (co-créateurs, prompts, etc.)."
+      },
+      "reassurance": "Votre fichier reste privé — seule l'empreinte est publiée sur la blockchain.",
+      "cta": "Essayer maintenant — 1er dépôt gratuit"
+    },
+    "pricing": {
+      "title": "Des preuves blockchain.",
+      "titleHighlight": "Pas d'abonnement. Pas de piège.",
+      "subtitle": "Achetez un pack, utilisez-le à votre rythme. Vos crédits n'expirent jamais.",
+      "perDeposit": "par dépôt",
+      "deposits": "dépôts",
+      "idealFor": "Idéal pour",
+      "starter": {
+        "name": "Starter",
+        "price": "15",
+        "pricePerDeposit": "1,50",
+        "deposits": "10",
+        "idealFor": "Tester, premières œuvres"
+      },
+      "creator": {
+        "name": "Creator",
+        "price": "60",
+        "pricePerDeposit": "1,20",
+        "deposits": "50",
+        "idealFor": "Créateurs réguliers",
+        "popular": true
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "100",
+        "pricePerDeposit": "1,00",
+        "deposits": "100",
+        "idealFor": "Catalogues, artistes prolifiques"
+      },
+      "studio": {
+        "name": "Studio",
+        "price": "250",
+        "pricePerDeposit": "0,50",
+        "deposits": "500",
+        "idealFor": "Labels, agences, studios"
+      },
+      "comparison": {
+        "title": "Comparaison",
+        "inpi": "Un dépôt INPI = 65€ minimum + délais.",
+        "unlmtdproof": "Un pack UnlmtdProof 100 dépôts = 100€, immédiat."
+      },
+      "reassurance": {
+        "noSubscription": "Aucun abonnement",
+        "noHiddenFees": "Aucun frais caché",
+        "noExpiration": "Crédits sans expiration",
+        "frenchBilling": "Facturation française"
+      },
+      "cta": "Choisir mon pack",
+      "ctaSecondary": "Commencer gratuitement (1 dépôt offert)"
+    },
+    "faq": {
+      "title": "Questions",
+      "titleHighlight": "fréquentes",
+      "q1": {
+        "question": "Est-ce que ça a une valeur juridique ?",
+        "answer": "Oui. Un horodatage blockchain constitue une preuve d'antériorité recevable devant les tribunaux français et européens. Notre certificat inclut tous les éléments nécessaires pour être présenté à un avocat ou à un juge."
+      },
+      "q2": {
+        "question": "Mon fichier est-il stocké sur la blockchain ?",
+        "answer": "Non. Seule l'empreinte cryptographique (hash) de votre fichier est inscrite on-chain. Votre œuvre reste privée, stockée sur nos serveurs sécurisés ou sur les vôtres."
+      },
+      "q3": {
+        "question": "Quelle différence avec la SACEM ou le dépôt INPI ?",
+        "answer": "UnlmtdProof est complémentaire. La SACEM gère vos droits d'exploitation, l'INPI protège des créations spécifiques avec une procédure longue. UnlmtdProof vous donne une preuve d'antériorité instantanée, pour tous types de fichiers, à une fraction du coût."
+      },
+      "q4": {
+        "question": "Ça marche pour les créations générées par IA ?",
+        "answer": "Absolument. C'est même l'un de nos cas d'usage principaux. Vous pouvez documenter vos prompts, le pourcentage IA/humain, et créer une traçabilité complète de votre processus créatif."
+      },
+      "q5": {
+        "question": "Mes crédits expirent-ils ?",
+        "answer": "Non. Vos crédits sont valables à vie. Utilisez-les quand vous voulez."
+      }
+    },
+    "trust": {
+      "title": "Partenaire et membre",
+      "titleHighlight": "d'Artys Network",
+      "description": "UnlmtdProof est développé avec l'équipe d'Artys Network, l'écosystème dédié à la protection et la valorisation des créateurs indépendants. Notre mission : redonner le contrôle aux créateurs grâce à la transparence du Web3.",
+      "badge1": "Nous ne stockons aucune donnée",
+      "badge2": "Blockchain Polygon (sécurisée, écologique)"
+    },
+    "finalCta": {
+      "title": "La prochaine fois que quelqu'un contestera vos droits,",
+      "titleHighlight": "vous aurez quoi comme preuve ?",
+      "subtitle": "Rejoignez 2 400+ créateurs qui ont choisi de prouver, pas de prier.",
+      "cta": "Créer ma première preuve gratuite",
+      "microText": "Aucune carte bancaire requise • Certificat téléchargeable immédiatement"
     },
     "features": {
       "title": "Tout ce dont vous avez",
@@ -90,29 +272,12 @@
         "title": "Sans Wallet",
         "description": "Aucune connaissance Web3 requise. Nous gérons tout pour vous."
       }
-    },
-    "howItWorks": {
-      "title": "Comment ça",
-      "titleHighlight": "marche",
-      "subtitle": "3 étapes simples pour protéger vos créations",
-      "step1": {
-        "title": "Uploadez votre fichier",
-        "description": "Musique, image, vidéo, texte, PDF... Glissez-déposez votre création."
-      },
-      "step2": {
-        "title": "Remplissez les métadonnées",
-        "description": "Titre, description, type de projet, auteurs... Personnalisez votre dépôt."
-      },
-      "step3": {
-        "title": "Obtenez votre certificat",
-        "description": "Votre preuve est ancrée sur la blockchain. Téléchargez votre certificat PDF."
-      }
     }
   },
   "auth": {
     "login": {
       "title": "Connexion",
-      "subtitle": "Accédez à votre espace Proofy",
+      "subtitle": "Accédez à votre espace UnlmtdProof",
       "email": "Adresse email",
       "emailPlaceholder": "votre@email.com",
       "password": "Mot de passe",
@@ -129,7 +294,7 @@
     },
     "signup": {
       "title": "Créer un compte",
-      "subtitle": "Rejoignez Proofy et protégez vos créations",
+      "subtitle": "Rejoignez UnlmtdProof et protégez vos créations",
       "firstName": "Prénom",
       "lastName": "Nom",
       "email": "Adresse email",
@@ -445,6 +610,7 @@
     "terms": "Conditions d'utilisation",
     "contact": "Contact",
     "gdprInfo": "Vos données sont traitées de manière sécurisée et conforme au RGPD.",
-    "hashInfo": "Le hash SHA-256 de votre fichier est calculé localement — votre fichier n'est jamais uploadé."
+    "hashInfo": "Le hash SHA-256 de votre fichier est calculé localement — votre fichier n'est jamais uploadé.",
+    "artysNetwork": "Membre d'Artys Network"
   }
 }

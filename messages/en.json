@@ -19,12 +19,13 @@
     "no": "No",
     "or": "or",
     "and": "and",
-    "rememberMe": "Remember me"
+    "rememberMe": "Remember me",
+    "free": "Free"
   },
   "brand": {
-    "name": "Proofy",
+    "name": "UnlmtdProof",
     "tagline": "Protect your creations on the blockchain",
-    "version": "V3 BETA"
+    "version": "BETA"
   },
   "nav": {
     "home": "Home",
@@ -37,30 +38,211 @@
     "features": "Features",
     "howItWorks": "How it works",
     "pricing": "Pricing",
-    "getStarted": "Get started"
+    "getStarted": "Get started",
+    "artists": "Artists",
+    "aiCreators": "AI Creators",
+    "faq": "FAQ"
   },
   "home": {
     "hero": {
-      "badge": "Anchored on",
-      "badgeFast": "Ultra fast",
-      "badgeCheap": "Cost-effective",
-      "line1": "Protect your creations",
-      "line3": "on the blockchain",
-      "rotatingWords": ["musical", "video", "image", "document"],
-      "title1": "Protect your",
-      "title2": "creations",
-      "title3": "on the",
-      "title4": "blockchain",
-      "subtitle": "Prove the anteriority of your works in a few clicks.",
-      "subtitleHighlight": "anteriority",
-      "subtitleLine2": "Copyright/neighboring rights registration (music, video)",
-      "subtitleEnd": "Timestamped certificate, immutable and verifiable by everyone.",
-      "cta": "Submit a creation",
+      "badge": "Blockchain Polygon",
+      "badgeFast": "Certificate in -1 min",
+      "badgeCheap": "From €0.50/deposit",
+      "line1": "In 6 months, someone will claim",
+      "line2": "that your creation is theirs.",
+      "line3": "How will you defend yourself?",
+      "rotatingWords": ["music", "visuals", "AI content", "documents"],
+      "subtitle": "UnlmtdProof creates a timestamped, unfalsifiable fingerprint of your files on the blockchain.",
+      "subtitleHighlight": "unfalsifiable",
+      "subtitleEnd": "Music, visuals, AI content — legally recognized proof, in less than a minute.",
+      "cta": "Protect my first work — it's free",
       "ctaSecondary": "How it works",
-      "statCost": "per deposit",
-      "statTime": "confirmation",
-      "statValidity": "validity period",
+      "microText": "No card required • 3 free deposits",
       "discover": "Discover"
+    },
+    "problem": {
+      "title": "Plagiarism doesn't wait.",
+      "titleHighlight": "Neither should your proof.",
+      "subtitle": "Every day, creators discover their works stolen, copied, or claimed by others. Without proof of priority, you only have your word. With UnlmtdProof, you have blockchain timestamping that's impossible to falsify.",
+      "pillar1": {
+        "icon": "lock",
+        "title": "Unfalsifiable proof",
+        "description": "Your file generates a unique fingerprint (hash) recorded on Polygon. No one can erase it, modify it, or claim they created it before you."
+      },
+      "pillar2": {
+        "icon": "zap",
+        "title": "47 seconds, not 47 days",
+        "description": "Forget INPI procedures or registered mail. Drop your file, validate, receive your certificate. Done."
+      },
+      "pillar3": {
+        "icon": "file-text",
+        "title": "Legally solid certificate",
+        "description": "Downloadable as PDF, with hash, date, time, and blockchain verification link. Accepted by lawyers, labels, and management organizations."
+      },
+      "pillar4": {
+        "icon": "palette",
+        "title": "All formats, all creators",
+        "description": "Audio, video, image, text, code, AI prompts. Whether you're a beatmaker, graphic designer, or Midjourney creator."
+      }
+    },
+    "artists": {
+      "title": "Your music deserves more",
+      "titleHighlight": "than a \"trust me\"",
+      "subtitle": "Demos, masters, stems, lyrics, sheet music — every file deposited becomes proof of priority that no one can dispute.",
+      "block1": {
+        "title": "Before the leak, before the theft",
+        "description": "You send a demo to a producer. They \"get inspired\" by your melody 6 months later. With UnlmtdProof, you prove it was yours first. End of discussion."
+      },
+      "block2": {
+        "title": "Ironclad splits and collaborations",
+        "description": "Add your co-writers, beatmakers, producers directly to the deposit. No more \"he said / she said\" about who did what."
+      },
+      "block3": {
+        "title": "A complete creator portfolio",
+        "description": "All your deposits in a timestamped history. Shareable with one click to a lawyer, a label, or a rights society."
+      },
+      "block4": {
+        "title": "Compatible with your entire ecosystem",
+        "description": "UnlmtdProof doesn't replace your rights societies or distributors. It's an additional, independent layer of proof that strengthens your position."
+      },
+      "cta": "Protect my first track — Free"
+    },
+    "aiCreators": {
+      "title": "For AI creators:",
+      "titleHighlight": "the tool generates, but you create",
+      "subtitle": "In a world where everyone can \"prompt\", document what makes you irreplaceable: your artistic direction, your choices, your vision, your prompts, your work.",
+      "block1": {
+        "title": "100% AI or Hybrid: you choose",
+        "description": "Clearly indicate whether your work is purely generated or if you made a significant human contribution. This is key to current legal debates on AI copyright."
+      },
+      "block2": {
+        "title": "AI vs Human slider",
+        "description": "Declare the percentage: 70% AI / 30% human? You document your real role (artistic direction, selection, retouching, iterations). No more gray areas."
+      },
+      "block3": {
+        "title": "Your prompts = your intellectual property",
+        "description": "Register your prompts, the model used (Midjourney, DALL-E, Stable Diffusion...), the parameters. Create complete traceability that you can prove."
+      },
+      "block4": {
+        "title": "Reassure your clients",
+        "description": "Selling AI visuals to brands? An UnlmtdProof certificate shows that the process is documented, transparent, and that your work goes beyond just \"clicking generate\"."
+      },
+      "punchline": "\"AI is a tool. Your creativity is the work. Prove it.\"",
+      "cta": "Document my AI creation"
+    },
+    "howItWorks": {
+      "title": "3 steps. 47 seconds.",
+      "titleHighlight": "That's it.",
+      "subtitle": "",
+      "step1": {
+        "badge": "Step 1",
+        "title": "Deposit",
+        "subtitle": "Drop your file",
+        "description": "Audio, video, image, document, AI prompt... all formats accepted up to 500 MB.",
+        "extra": "For AI creations: indicate \"100% AI\" or \"Hybrid\" and enter your prompts."
+      },
+      "step2": {
+        "badge": "Step 2",
+        "title": "Blockchain anchoring",
+        "subtitle": "We handle the rest",
+        "description": "The unique fingerprint of your file (SHA-256 hash) is recorded on the Polygon blockchain with timestamp accurate to the second."
+      },
+      "step3": {
+        "badge": "Step 3",
+        "title": "Certificate",
+        "subtitle": "Download your proof",
+        "description": "PDF with: date, time, hash, on-chain verification link, and your metadata (co-creators, prompts, etc.)."
+      },
+      "reassurance": "Your file remains private — only the fingerprint is published on the blockchain.",
+      "cta": "Try now — 1st deposit free"
+    },
+    "pricing": {
+      "title": "Blockchain proofs.",
+      "titleHighlight": "No subscription. No trap.",
+      "subtitle": "Buy a pack, use it at your pace. Your credits never expire.",
+      "perDeposit": "per deposit",
+      "deposits": "deposits",
+      "idealFor": "Ideal for",
+      "starter": {
+        "name": "Starter",
+        "price": "15",
+        "pricePerDeposit": "1.50",
+        "deposits": "10",
+        "idealFor": "Testing, first works"
+      },
+      "creator": {
+        "name": "Creator",
+        "price": "60",
+        "pricePerDeposit": "1.20",
+        "deposits": "50",
+        "idealFor": "Regular creators",
+        "popular": true
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "100",
+        "pricePerDeposit": "1.00",
+        "deposits": "100",
+        "idealFor": "Catalogs, prolific artists"
+      },
+      "studio": {
+        "name": "Studio",
+        "price": "250",
+        "pricePerDeposit": "0.50",
+        "deposits": "500",
+        "idealFor": "Labels, agencies, studios"
+      },
+      "comparison": {
+        "title": "Comparison",
+        "inpi": "One INPI deposit = €65 minimum + delays.",
+        "unlmtdproof": "One UnlmtdProof 100-deposit pack = €100, instant."
+      },
+      "reassurance": {
+        "noSubscription": "No subscription",
+        "noHiddenFees": "No hidden fees",
+        "noExpiration": "Credits never expire",
+        "frenchBilling": "French billing"
+      },
+      "cta": "Choose my pack",
+      "ctaSecondary": "Start free (1 free deposit)"
+    },
+    "faq": {
+      "title": "Frequently",
+      "titleHighlight": "asked questions",
+      "q1": {
+        "question": "Does this have legal value?",
+        "answer": "Yes. A blockchain timestamp constitutes proof of priority admissible in French and European courts. Our certificate includes all elements necessary to present to a lawyer or judge."
+      },
+      "q2": {
+        "question": "Is my file stored on the blockchain?",
+        "answer": "No. Only the cryptographic fingerprint (hash) of your file is recorded on-chain. Your work remains private, stored on our secure servers or yours."
+      },
+      "q3": {
+        "question": "What's the difference with SACEM or INPI filing?",
+        "answer": "UnlmtdProof is complementary. SACEM manages your exploitation rights, INPI protects specific creations with a lengthy procedure. UnlmtdProof gives you instant proof of priority, for all file types, at a fraction of the cost."
+      },
+      "q4": {
+        "question": "Does it work for AI-generated creations?",
+        "answer": "Absolutely. It's even one of our main use cases. You can document your prompts, the AI/human percentage, and create complete traceability of your creative process."
+      },
+      "q5": {
+        "question": "Do my credits expire?",
+        "answer": "No. Your credits are valid for life. Use them whenever you want."
+      }
+    },
+    "trust": {
+      "title": "Partner and member",
+      "titleHighlight": "of Artys Network",
+      "description": "UnlmtdProof is developed with the Artys Network team, the ecosystem dedicated to protecting and empowering independent creators. Our mission: give control back to creators through Web3 transparency.",
+      "badge1": "We don't store any data",
+      "badge2": "Polygon Blockchain (secure, ecological)"
+    },
+    "finalCta": {
+      "title": "Next time someone challenges your rights,",
+      "titleHighlight": "what proof will you have?",
+      "subtitle": "Join 2,400+ creators who chose to prove, not pray.",
+      "cta": "Create my first free proof",
+      "microText": "No credit card required • Certificate downloadable immediately"
     },
     "features": {
       "title": "Everything you",
@@ -72,15 +254,15 @@
       },
       "blockchain": {
         "title": "Blockchain Anchoring",
-        "description": "Your proof is recorded on Polygon, a secure and eco-friendly blockchain."
+        "description": "Your proof is recorded on Polygon, a secure and ecological blockchain."
       },
       "certificate": {
         "title": "PDF Certificate",
-        "description": "Download an official certificate with QR code to prove your anteriority."
+        "description": "Download an official certificate with QR code to prove your priority."
       },
       "timestamp": {
         "title": "UTC Timestamp",
-        "description": "Precise date and time recorded on-chain. Indisputable legal proof."
+        "description": "Precise date and time recorded on-chain. Undeniable legal proof."
       },
       "gdpr": {
         "title": "GDPR Compliant",
@@ -90,46 +272,29 @@
         "title": "No Wallet Needed",
         "description": "No Web3 knowledge required. We handle everything for you."
       }
-    },
-    "howItWorks": {
-      "title": "How it",
-      "titleHighlight": "works",
-      "subtitle": "3 simple steps to protect your creations",
-      "step1": {
-        "title": "Upload your file",
-        "description": "Music, image, video, text, PDF... Drag and drop your creation."
-      },
-      "step2": {
-        "title": "Fill in the metadata",
-        "description": "Title, description, project type, authors... Customize your deposit."
-      },
-      "step3": {
-        "title": "Get your certificate",
-        "description": "Your proof is anchored on the blockchain. Download your PDF certificate."
-      }
     }
   },
   "auth": {
     "login": {
       "title": "Login",
-      "subtitle": "Access your Proofy account",
+      "subtitle": "Access your UnlmtdProof space",
       "email": "Email address",
       "emailPlaceholder": "your@email.com",
       "password": "Password",
       "submit": "Sign in",
       "noAccount": "Don't have an account?",
-      "createAccount": "Create an account",
+      "createAccount": "Create account",
       "forgotPassword": "Forgot password?",
       "backToHome": "Back to home",
       "orContinueWith": "or continue with",
       "googleLogin": "Continue with Google",
-      "googleAuthFailed": "Error signing in with Google",
-      "passwordResetSuccess": "Password reset successful! You can now sign in.",
-      "accountCreated": "Account created successfully! Sign in to continue."
+      "googleAuthFailed": "Error during Google login",
+      "passwordResetSuccess": "Password reset successfully! You can now log in.",
+      "accountCreated": "Account created successfully! Log in to continue."
     },
     "signup": {
-      "title": "Create an account",
-      "subtitle": "Join Proofy and protect your creations",
+      "title": "Create account",
+      "subtitle": "Join UnlmtdProof and protect your creations",
       "firstName": "First name",
       "lastName": "Last name",
       "email": "Email address",
@@ -138,8 +303,8 @@
       "submit": "Create my account",
       "hasAccount": "Already have an account?",
       "login": "Sign in",
-      "termsAgree": "By creating an account, you agree to our",
-      "terms": "Terms of Service",
+      "termsAgree": "By creating an account, you accept our",
+      "terms": "Terms of use",
       "backToHome": "Back to home",
       "orContinueWith": "or continue with",
       "googleSignup": "Sign up with Google",
@@ -156,30 +321,30 @@
       "title": "Forgot password",
       "subtitle": "Enter your email to receive a reset link",
       "email": "Email address",
-      "submit": "Send reset link",
+      "submit": "Send link",
       "backToLogin": "Back to login",
       "successTitle": "Email sent!",
       "successMessage": "If an account exists with this email, you will receive a reset link.",
-      "checkSpam": "Also check your spam folder"
+      "checkSpam": "Also check your spam"
     },
     "resetPassword": {
       "title": "Reset password",
       "subtitle": "Enter your new password",
       "newPassword": "New password",
       "confirmPassword": "Confirm password",
-      "submit": "Reset password",
+      "submit": "Reset",
       "successTitle": "Password reset!",
       "successMessage": "You can now log in with your new password.",
       "redirecting": "Redirecting to login page...",
       "invalidLink": "Invalid or expired link",
-      "requestNew": "Request a new link"
+      "requestNew": "Request new link"
     },
     "errors": {
       "invalidCredentials": "Invalid email or password",
       "emailExists": "This email is already in use",
       "weakPassword": "Password must be at least 8 characters",
-      "passwordMismatch": "Passwords do not match",
-      "googleError": "Error signing in with Google",
+      "passwordMismatch": "Passwords don't match",
+      "googleError": "Error during Google login",
       "emailRequired": "Please enter your email address"
     }
   },
@@ -196,7 +361,7 @@
     },
     "empty": {
       "title": "No creations",
-      "subtitle": "Start by creating your first proof of anteriority",
+      "subtitle": "Start by creating your first proof of priority",
       "cta": "Create my first proof"
     },
     "creation": {
@@ -216,15 +381,15 @@
       "human": "Human",
       "humanDesc": "100% human creation",
       "ai": "AI",
-      "aiDesc": "100% AI-generated",
+      "aiDesc": "100% AI generated",
       "hybrid": "Hybrid",
       "hybridDesc": "Human + AI",
       "aiRatio": "AI vs Human ratio",
       "aiTools": "AI tools used",
-      "aiToolsPlaceholder": "E.g.: Midjourney v6, Suno, ChatGPT...",
+      "aiToolsPlaceholder": "Ex: Midjourney v6, Suno, ChatGPT...",
       "aiToolsHint": "Separate with commas",
       "humanContribution": "Human contribution",
-      "humanContributionPlaceholder": "E.g.: Original lyrics, arrangement, mixing..."
+      "humanContributionPlaceholder": "Ex: Original lyrics, arrangement, mixing..."
     },
     "section2": {
       "title": "Depositor type",
@@ -241,8 +406,8 @@
       "companyInfo": "Company information",
       "companyName": "Company name",
       "depositorName": "Depositor name",
-      "siret": "Registration number",
-      "address": "Headquarters address"
+      "siret": "SIRET/SIREN number",
+      "address": "Registered office address"
     },
     "section3": {
       "title": "Project type",
@@ -251,8 +416,8 @@
       "video": "Video",
       "document": "Document",
       "other": "Other",
-      "nextStepRights": "Next step: File upload, then copyright and neighboring rights management.",
-      "nextStepSimple": "Next step: File upload and creation of proof of anteriority."
+      "nextStepRights": "Next step: Upload file, then manage copyright and neighboring rights.",
+      "nextStepSimple": "Next step: Upload file and create proof of priority."
     }
   },
   "wizard": {
@@ -277,10 +442,10 @@
     },
     "copyright": {
       "title": "Copyright",
-      "subtitle": "Distribution of rights on the work",
+      "subtitle": "Rights distribution on the work",
       "info": "Copyright protects the work (composition, lyrics). In France, they are managed by SACEM.",
       "workTitle": "Work title",
-      "workTitlePlaceholder": "E.g.: My song",
+      "workTitlePlaceholder": "Ex: My song",
       "authors": "Author(s)",
       "authorsDesc": "Lyricists, text authors",
       "composers": "Composer(s)",
@@ -294,11 +459,11 @@
       "holderPercentage": "Percentage",
       "holderEmail": "Email",
       "holderIPI": "IPI/CAE number",
-      "noHolders": "No rights holder added"
+      "noHolders": "No holder added"
     },
     "neighboring": {
       "title": "Neighboring rights",
-      "subtitle": "Distribution of rights on the recording",
+      "subtitle": "Rights distribution on the recording",
       "info": "Neighboring rights protect the recording (performance, production). They are distinct from copyright.",
       "enable": "Enable neighboring rights",
       "enableDesc": "Check if you want to declare neighboring rights for this creation",
@@ -318,15 +483,15 @@
     "masters": {
       "title": "Recordings",
       "subtitle": "Information about the master and releases",
-      "addMaster": "Add a recording",
+      "addMaster": "Add recording",
       "masterTitle": "Recording title",
       "isrc": "ISRC code",
-      "isrcPlaceholder": "E.g.: US-XXX-24-00001",
+      "isrcPlaceholder": "Ex: FR-XXX-24-00001",
       "duration": "Duration",
-      "durationPlaceholder": "E.g.: 3:45",
+      "durationPlaceholder": "Ex: 3:45",
       "recordingDate": "Recording date",
       "releases": "Releases",
-      "addRelease": "Add a release",
+      "addRelease": "Add release",
       "releaseTitle": "Release title",
       "releaseDate": "Release date",
       "upc": "UPC/EAN code",
@@ -335,8 +500,8 @@
       "skip": "Skip this step"
     },
     "review": {
-      "title": "Review & Submit",
-      "subtitle": "Verify information before blockchain submission",
+      "title": "Review & Deposit",
+      "subtitle": "Verify information before blockchain deposit",
       "fileSection": "File",
       "fileName": "File name",
       "fileSize": "Size",
@@ -345,14 +510,14 @@
       "neighboringSection": "Neighboring rights",
       "mastersSection": "Recordings",
       "termsTitle": "Terms and conditions",
-      "termsAccept": "I accept the terms and conditions of use",
-      "ownershipConfirm": "I confirm that I am the author or have the rights to this creation",
+      "termsAccept": "I accept the terms of use",
+      "ownershipConfirm": "I confirm being the author or having rights to this creation",
       "blockchainInfo": "The SHA-256 hash of your file will be permanently recorded on the Polygon blockchain.",
-      "deposit": "Submit my creation",
-      "depositing": "Submitting...",
+      "deposit": "Deposit my creation",
+      "depositing": "Depositing...",
       "cost": "Blockchain cost",
       "free": "Free",
-      "network": "Polygon Mainnet network",
+      "network": "Polygon Mainnet Network",
       "summary": "Summary",
       "authors": "author(s)",
       "recordings": "recording(s)",
@@ -365,20 +530,20 @@
     }
   },
   "simpleForm": {
-    "title": "New submission",
-    "subtitle": "Create a proof of anteriority for your file",
+    "title": "New deposit",
+    "subtitle": "Create a proof of priority for your file",
     "summary": "Summary",
     "createdBy": "Created by",
     "depositor": "Depositor",
     "aiToolsUsed": "AI tools used",
     "information": "Information",
     "workTitle": "Work title",
-    "workTitlePlaceholder": "E.g.: My company logo",
+    "workTitlePlaceholder": "Ex: My company logo",
     "description": "Description",
     "descriptionPlaceholder": "Briefly describe your creation...",
     "confirmation": "Confirmation",
-    "ownershipConfirm": "I confirm that I am the author or have the rights to this creation, and I accept that the hash will be permanently recorded on the Polygon blockchain.",
-    "createProof": "Create my proof of anteriority",
+    "ownershipConfirm": "I confirm being the author or having rights to this creation, and I accept that the hash will be permanently recorded on the Polygon blockchain.",
+    "createProof": "Create my proof of priority",
     "processing": {
       "preparing": "Preparing...",
       "blockchain": "Blockchain anchoring...",
@@ -393,7 +558,7 @@
   },
   "proof": {
     "title": "Proof certificate",
-    "subtitle": "Proof of anteriority recorded on the blockchain",
+    "subtitle": "Proof of priority recorded on the blockchain",
     "verified": "Verified on blockchain",
     "pending": "Pending confirmation",
     "details": {
@@ -411,7 +576,7 @@
     "downloadCertificate": "Download certificate",
     "share": "Share",
     "backToDashboard": "Back to dashboard",
-    "proofInfo": "This proof of anteriority is permanently and immutably recorded on the Polygon blockchain."
+    "proofInfo": "This proof of priority is permanently and immutably recorded on the Polygon blockchain."
   },
   "rights": {
     "title": "Manage rights",
@@ -444,7 +609,8 @@
     "privacy": "Privacy policy",
     "terms": "Terms of use",
     "contact": "Contact",
-    "gdprInfo": "Your data is processed securely and in compliance with GDPR.",
-    "hashInfo": "The SHA-256 hash of your file is calculated locally — your file is never uploaded."
+    "gdprInfo": "Your data is processed securely and GDPR compliant.",
+    "hashInfo": "The SHA-256 hash of your file is calculated locally — your file is never uploaded.",
+    "artysNetwork": "Member of Artys Network"
   }
 }
