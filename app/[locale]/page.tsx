@@ -14,6 +14,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import LocaleLink from '@/components/LocaleLink';
 import HeroTypewriter from '@/components/ui/HeroTypewriter';
+import AnimatedCtaButton from '@/components/ui/AnimatedCtaButton';
 
 // Section components with Motion System
 import {
@@ -153,17 +154,14 @@ export default function HomePage() {
                   className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6"
                   variants={heroItemVariants}
                 >
-                  <LocaleLink
+                  <AnimatedCtaButton
                     href="/signup"
-                    className="group relative overflow-hidden bg-gradient-to-r from-[#bff227] to-[#9dcc1e] !text-black font-bold px-8 py-4 rounded-2xl text-lg flex items-center gap-3 shadow-2xl shadow-[#bff227]/30 hover:shadow-[#bff227]/50 transition-all duration-300 hover:scale-105"
-                  >
-                    <Shield className="w-5 h-5" />
-                    <span>{t('hero.cta')}</span>
-                    <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
-                  </LocaleLink>
+                    text={t('hero.cta')}
+                    subtext={t('hero.ctaSubtext')}
+                  />
                   <a
                     href="#how-it-works"
-                    className="glass-card text-white font-semibold px-8 py-4 rounded-2xl text-lg flex items-center gap-3 hover:border-[#bff227]/50 transition-all duration-300 group"
+                    className="glass-card text-white font-semibold px-6 py-3 rounded-xl text-base flex items-center gap-3 hover:border-[#bff227]/50 transition-all duration-300 group"
                   >
                     <div className="w-8 h-8 rounded-full bg-[#bff227]/20 flex items-center justify-center group-hover:bg-[#bff227]/30 transition-colors">
                       <i className="fas fa-play text-[#bff227] text-sm"></i>
