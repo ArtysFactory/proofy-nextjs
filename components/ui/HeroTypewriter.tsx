@@ -104,7 +104,7 @@ export function HeroTypewriter({
   }, [line1Complete]);
 
   return (
-    <div className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
+    <div className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
       {/* Line 1: Protégez vos créations */}
       <div className="mb-2">
         <span className="text-white">{line1Text}</span>
@@ -118,7 +118,7 @@ export function HeroTypewriter({
 
       {/* Line 2: [rotating word] + suffix (sur la blockchain) */}
       {line1Complete && (
-        <div className="min-h-[1.2em]">
+        <div className="min-h-[1.2em] whitespace-nowrap">
           <span className="text-[#bff227] inline-block min-w-[1ch]">
             {currentWord}
           </span>
