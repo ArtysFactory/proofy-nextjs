@@ -22,7 +22,7 @@ interface Creation {
 export default function DashboardPage() {
     const router = useRouter();
     const t = useTranslations('dashboard');
-    const tCommon = useTranslations('common');
+    const tNav = useTranslations('nav');
     const locale = useLocale();
     
     const [user, setUser] = useState<any>(null);
@@ -161,9 +161,11 @@ export default function DashboardPage() {
                             </LocaleLink>
                             <button
                                 onClick={handleLogout}
-                                className="text-gray-300 hover:text-white transition-colors"
+                                className="flex items-center gap-2 text-gray-300 hover:text-red-400 transition-colors px-3 py-2 rounded-lg hover:bg-white/5"
+                                title={tNav('logout')}
                             >
                                 <i className="fas fa-sign-out-alt"></i>
+                                <span className="hidden sm:inline text-sm">{tNav('logout')}</span>
                             </button>
                         </div>
                     </div>
