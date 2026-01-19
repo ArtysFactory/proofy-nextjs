@@ -29,6 +29,11 @@ import {
   Building,
   BookOpen,
   Music2,
+  Users,
+  X,
+  CreditCard,
+  Mail,
+  Info,
 } from 'lucide-react';
 
 export default function Step5Review() {
@@ -39,6 +44,8 @@ export default function Step5Review() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptMandate, setAcceptMandate] = useState(false);
+  const [showCosignPopup, setShowCosignPopup] = useState(false);
+  const [hasSeenCosignPopup, setHasSeenCosignPopup] = useState(false);
 
   // Calculate totals for rights
   const copyrightTotal = 
@@ -51,6 +58,30 @@ export default function Step5Review() {
     state.neighboringRights.performers.reduce((sum, h) => sum + h.percentage, 0) +
     state.neighboringRights.labels.reduce((sum, h) => sum + h.percentage, 0) +
     state.neighboringRights.others.reduce((sum, h) => sum + h.percentage, 0) : 0;
+
+  // Count unique co-signatories (people with emails)
+  const getCosignatories = () => {
+    const emails = new Set<string>();
+    
+    // Copyright holders with emails
+    [...state.copyrightRights.authors, ...state.copyrightRights.composers, ...state.copyrightRights.publishers]
+      .forEach(h => { if (h.email) emails.add(h.email.toLowerCase()); });
+    
+    // Neighboring rights holders with emails
+    if (state.neighboringRights.enabled) {
+      [...state.neighboringRights.producers, ...state.neighboringRights.performers, ...state.neighboringRights.labels, ...state.neighboringRights.others]
+        .forEach(h => { if (h.email) emails.add(h.email.toLowerCase()); });
+    }
+    
+    return emails;
+  };
+
+  const cosignatoryEmails = getCosignatories();
+  const cosignatoryCount = cosignatoryEmails.size;
+  const hasMultipleCosignatories = cosignatoryCount > 0;
+
+  // Calculate deposit cost (1 deposit per co-signatory)
+  const depositCost = hasMultipleCosignatories ? cosignatoryCount + 1 : 1; // +1 for the main depositor
 
   // Validation checks
   const validations = {
@@ -526,6 +557,60 @@ export default function Step5Review() {
         </ReviewSection>
       </div>
 
+      {/* Co-signatories Cost Card - Show only if there are co-signatories */}
+      {hasMultipleCosignatories && (
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Users className="w-6 h-6 text-blue-400" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-white flex items-center gap-2 mb-2">
+                Co-signature requise
+                <button
+                  onClick={() => setShowCosignPopup(true)}
+                  className="text-blue-400 hover:text-blue-300"
+                >
+                  <Info className="w-4 h-4" />
+                </button>
+              </h3>
+              <p className="text-gray-400 text-sm mb-4">
+                {cosignatoryCount} ayant(s) droit devront valider ce dépôt avant l'enregistrement blockchain.
+              </p>
+              
+              {/* Cost breakdown */}
+              <div className="bg-white/5 rounded-lg p-4 space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-400">Déposant principal</span>
+                  <span className="text-white">1 dépôt</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-400">Co-signataires ({cosignatoryCount})</span>
+                  <span className="text-white">{cosignatoryCount} dépôt(s)</span>
+                </div>
+                <div className="border-t border-white/10 pt-2 flex items-center justify-between">
+                  <span className="text-white font-medium">Total consommé</span>
+                  <span className="text-[#bff227] font-bold text-lg">{depositCost} dépôt(s)</span>
+                </div>
+              </div>
+              
+              {/* Email list */}
+              <div className="mt-4">
+                <p className="text-xs text-gray-500 mb-2">Invitations envoyées à :</p>
+                <div className="flex flex-wrap gap-2">
+                  {Array.from(cosignatoryEmails).map((email) => (
+                    <span key={email} className="inline-flex items-center gap-1 px-2 py-1 bg-white/5 rounded-lg text-xs text-gray-300">
+                      <Mail className="w-3 h-3" />
+                      {email}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Terms & Conditions */}
       <div className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-4">
         <h3 className="font-semibold text-white flex items-center gap-2">
@@ -629,7 +714,13 @@ export default function Step5Review() {
         </button>
 
         <button
-          onClick={handleSubmit}
+          onClick={() => {
+            if (hasMultipleCosignatories && !hasSeenCosignPopup) {
+              setShowCosignPopup(true);
+            } else {
+              handleSubmit();
+            }
+          }}
           disabled={!canSubmit || isSubmitting}
           className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 ${
             canSubmit && !isSubmitting
@@ -640,7 +731,12 @@ export default function Step5Review() {
           {isSubmitting ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              Dépôt en cours...
+              Envoi des invitations...
+            </>
+          ) : hasMultipleCosignatories ? (
+            <>
+              <Mail className="w-5 h-5" />
+              Envoyer les invitations
             </>
           ) : (
             <>
@@ -654,18 +750,135 @@ export default function Step5Review() {
       {/* Blockchain Info */}
       <div className="text-center pt-4">
         <p className="text-xs text-gray-500">
-          Votre preuve sera enregistrée sur{' '}
-          <a
-            href="https://polygonscan.com/address/0x33623122f8B30c6988bb27Dd865e95A38Fe0Ef48"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#bff227] hover:underline inline-flex items-center gap-1"
-          >
-            Polygon Mainnet
-            <ExternalLink className="w-3 h-3" />
-          </a>
+          {hasMultipleCosignatories ? (
+            <>Le dépôt sera enregistré sur la blockchain une fois toutes les signatures collectées.</>
+          ) : (
+            <>
+              Votre preuve sera enregistrée sur{' '}
+              <a
+                href="https://polygonscan.com/address/0x33623122f8B30c6988bb27Dd865e95A38Fe0Ef48"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#bff227] hover:underline inline-flex items-center gap-1"
+              >
+                Polygon Mainnet
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </>
+          )}
         </p>
       </div>
+
+      {/* Co-signature Popup - 7 days rule */}
+      <AnimatePresence>
+        {showCosignPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            onClick={() => setShowCosignPopup(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 w-full max-w-lg"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                    <Users className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Co-signature requise</h3>
+                    <p className="text-gray-400 text-sm">Règle importante à connaître</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowCosignPopup(false)}
+                  className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="space-y-4 mb-6">
+                {/* 7 days rule */}
+                <div className="bg-orange-500/10 border border-orange-500/30 rounded-xl p-4">
+                  <div className="flex items-start gap-3">
+                    <Clock className="w-6 h-6 text-orange-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-orange-400 font-semibold">Règle des 7 jours</p>
+                      <p className="text-orange-400/80 text-sm mt-1">
+                        Tous les co-signataires doivent valider le dépôt dans un délai de <strong>7 jours</strong>. 
+                        Passé ce délai, le dépôt sera <strong>automatiquement annulé</strong> et vos crédits seront restitués.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* How it works */}
+                <div className="bg-white/5 rounded-xl p-4 space-y-3">
+                  <p className="text-white font-medium">Comment ça fonctionne :</p>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-[#bff227]/20 rounded-full flex items-center justify-center text-[#bff227] text-xs flex-shrink-0">1</span>
+                      <span className="text-gray-300">Un email d'invitation sera envoyé à chaque co-signataire</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-[#bff227]/20 rounded-full flex items-center justify-center text-[#bff227] text-xs flex-shrink-0">2</span>
+                      <span className="text-gray-300">Ils devront créer un compte et valider leur participation</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-[#bff227]/20 rounded-full flex items-center justify-center text-[#bff227] text-xs flex-shrink-0">3</span>
+                      <span className="text-gray-300">Une fois toutes les signatures collectées, le dépôt sera enregistré sur la blockchain</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cost reminder */}
+                <div className="bg-[#bff227]/10 border border-[#bff227]/30 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <CreditCard className="w-5 h-5 text-[#bff227]" />
+                      <span className="text-white">Coût total</span>
+                    </div>
+                    <span className="text-[#bff227] font-bold text-lg">{depositCost} dépôt(s)</span>
+                  </div>
+                  <p className="text-gray-400 text-xs mt-2">
+                    1 dépôt par personne (vous + {cosignatoryCount} co-signataire{cosignatoryCount > 1 ? 's' : ''})
+                  </p>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowCosignPopup(false)}
+                  className="flex-1 px-4 py-3 border border-white/10 rounded-xl text-white hover:bg-white/5 transition-colors"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={() => {
+                    setHasSeenCosignPopup(true);
+                    setShowCosignPopup(false);
+                    handleSubmit();
+                  }}
+                  className="flex-1 px-4 py-3 bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0a0a0a] font-semibold rounded-xl hover:shadow-lg hover:shadow-[#bff227]/30 transition-all flex items-center justify-center gap-2"
+                >
+                  <Mail className="w-5 h-5" />
+                  Confirmer et envoyer
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

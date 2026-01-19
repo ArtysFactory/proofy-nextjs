@@ -120,9 +120,12 @@ function AddHolderModal({ role, onClose, onAdd }: AddHolderModalProps) {
 
   const config = ROLE_CONFIG[role];
 
+  // Email is required for co-signature validation
+  const isValidEmail = email.trim().length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   const handleSubmit = useCallback(() => {
-    if (!name || percentage <= 0) return;
-    onAdd(role, { name, percentage, email: email || undefined, ipi: ipi || undefined });
+    if (!name || percentage <= 0 || !isValidEmail) return;
+    onAdd(role, { name, percentage, email, ipi: ipi || undefined });
   }, [role, name, percentage, email, ipi, onAdd]);
 
   return (
@@ -175,15 +178,19 @@ function AddHolderModal({ role, onClose, onAdd }: AddHolderModalProps) {
 
           <div>
             <label className="block text-sm text-gray-300 mb-2">
-              Email <span className="text-gray-500">(optionnel)</span>
+              Email * <span className="text-[#bff227] text-xs">(requis pour co-signature)</span>
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="email@exemple.com"
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none"
+              className={`w-full px-4 py-3 bg-white/5 border rounded-xl text-white placeholder-gray-500 focus:outline-none ${email && !isValidEmail ? 'border-red-500' : 'border-white/10 focus:border-[#bff227]'}`}
             />
+            {email && !isValidEmail && (
+              <p className="text-red-400 text-xs mt-1">Email invalide</p>
+            )}
+            <p className="text-gray-500 text-xs mt-2">Une invitation sera envoyée pour validation du dépôt</p>
           </div>
 
           <div>
@@ -211,7 +218,7 @@ function AddHolderModal({ role, onClose, onAdd }: AddHolderModalProps) {
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={!name || percentage <= 0}
+            disabled={!name || percentage <= 0 || !isValidEmail}
             className="flex-1 px-4 py-3 bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0a0a0a] font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Ajouter

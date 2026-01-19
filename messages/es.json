@@ -657,5 +657,62 @@
     "gdprInfo": "Tus datos se procesan de forma segura y conforme al RGPD.",
     "hashInfo": "El hash SHA-256 de tu archivo se calcula localmente — tu archivo nunca se sube.",
     "artysNetwork": "Miembro de Artys Network"
+  },
+  "cosign": {
+    "error": {
+      "title": "Invitación inválida",
+      "backHome": "Volver al inicio"
+    },
+    "success": {
+      "signedTitle": "¡Firma confirmada!",
+      "signedMessage": "Tu acuerdo ha sido registrado. Recibirás una notificación cuando el depósito esté finalizado en la blockchain.",
+      "rejectedTitle": "Rechazo registrado",
+      "rejectedMessage": "Tu rechazo ha sido enviado al depositante. Puede modificar la distribución y enviarte una nueva invitación.",
+      "goToDashboard": "Ir al panel"
+    },
+    "alreadySigned": {
+      "title": "Ya firmado",
+      "message": "Ya has validado esta invitación."
+    },
+    "alreadyRejected": {
+      "title": "Ya rechazado",
+      "message": "Ya has rechazado esta invitación."
+    },
+    "expired": {
+      "title": "Invitación expirada",
+      "message": "Esta invitación ha expirado después de 7 días sin respuesta. El depositante puede enviarte una nueva invitación."
+    },
+    "warning": {
+      "expiresIn": "Esta invitación expira en {days} día(s)",
+      "expiresMessage": "Pasado este plazo, el depósito será cancelado automáticamente."
+    },
+    "invitedBy": "Invitación de {name}",
+    "yourRole": "Tu rol y participación",
+    "workDetails": "Detalles de la obra",
+    "type": "Tipo",
+    "hash": "Huella digital",
+    "createdAt": "Fecha de creación",
+    "allSignatories": "Todos los co-firmantes",
+    "status": {
+      "signed": "Firmado",
+      "rejected": "Rechazado",
+      "pending": "Pendiente"
+    },
+    "rule7days": {
+      "title": "Regla de los 7 días",
+      "description": "Si todos los co-firmantes no han validado dentro de 7 días, el depósito será cancelado automáticamente. El depositante puede modificar la información y reenviar las invitaciones."
+    },
+    "authRequired": "Para firmar este depósito, debes iniciar sesión o crear una cuenta.",
+    "login": "Iniciar sesión",
+    "signup": "Crear cuenta",
+    "sign": "Firmar y validar",
+    "reject": "Rechazar",
+    "rejectModal": {
+      "title": "Rechazar co-firma",
+      "description": "Puedes indicar el motivo de tu rechazo. El depositante recibirá tu mensaje y podrá modificar la distribución.",
+      "placeholder": "Motivo del rechazo (opcional)...",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar rechazo"
+    }
   }
 }

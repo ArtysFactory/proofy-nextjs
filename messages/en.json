@@ -657,5 +657,62 @@
     "gdprInfo": "Your data is processed securely and GDPR compliant.",
     "hashInfo": "The SHA-256 hash of your file is calculated locally — your file is never uploaded.",
     "artysNetwork": "Member of Artys Network"
+  },
+  "cosign": {
+    "error": {
+      "title": "Invalid invitation",
+      "backHome": "Back to home"
+    },
+    "success": {
+      "signedTitle": "Signature confirmed!",
+      "signedMessage": "Your agreement has been recorded. You will receive a notification once the deposit is finalized on the blockchain.",
+      "rejectedTitle": "Rejection recorded",
+      "rejectedMessage": "Your rejection has been sent to the depositor. They can modify the distribution and send you a new invitation.",
+      "goToDashboard": "Go to dashboard"
+    },
+    "alreadySigned": {
+      "title": "Already signed",
+      "message": "You have already validated this invitation."
+    },
+    "alreadyRejected": {
+      "title": "Already rejected",
+      "message": "You have already rejected this invitation."
+    },
+    "expired": {
+      "title": "Invitation expired",
+      "message": "This invitation has expired after 7 days without response. The depositor can send you a new invitation."
+    },
+    "warning": {
+      "expiresIn": "This invitation expires in {days} day(s)",
+      "expiresMessage": "After this delay, the deposit will be automatically cancelled."
+    },
+    "invitedBy": "Invitation from {name}",
+    "yourRole": "Your role and share",
+    "workDetails": "Work details",
+    "type": "Type",
+    "hash": "Digital fingerprint",
+    "createdAt": "Creation date",
+    "allSignatories": "All co-signatories",
+    "status": {
+      "signed": "Signed",
+      "rejected": "Rejected",
+      "pending": "Pending"
+    },
+    "rule7days": {
+      "title": "7-day rule",
+      "description": "If all co-signatories have not validated within 7 days, the deposit will be automatically cancelled. The depositor can modify the information and resend invitations."
+    },
+    "authRequired": "To sign this deposit, you must be logged in or create an account.",
+    "login": "Log in",
+    "signup": "Create account",
+    "sign": "Sign and validate",
+    "reject": "Reject",
+    "rejectModal": {
+      "title": "Reject co-signature",
+      "description": "You can indicate the reason for your rejection. The depositor will receive your message and can modify the distribution.",
+      "placeholder": "Reason for rejection (optional)...",
+      "cancel": "Cancel",
+      "confirm": "Confirm rejection"
+    }
   }
 }

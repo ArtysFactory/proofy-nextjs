@@ -657,5 +657,62 @@
     "gdprInfo": "Vos données sont traitées de manière sécurisée et conforme au RGPD.",
     "hashInfo": "Le hash SHA-256 de votre fichier est calculé localement — votre fichier n'est jamais uploadé.",
     "artysNetwork": "Membre d'Artys Network"
+  },
+  "cosign": {
+    "error": {
+      "title": "Invitation invalide",
+      "backHome": "Retour à l'accueil"
+    },
+    "success": {
+      "signedTitle": "Signature confirmée !",
+      "signedMessage": "Votre accord a été enregistré. Vous recevrez une notification une fois le dépôt finalisé sur la blockchain.",
+      "rejectedTitle": "Refus enregistré",
+      "rejectedMessage": "Votre refus a été transmis au déposant. Il pourra modifier la répartition et vous renvoyer une invitation.",
+      "goToDashboard": "Accéder au tableau de bord"
+    },
+    "alreadySigned": {
+      "title": "Déjà signé",
+      "message": "Vous avez déjà validé cette invitation."
+    },
+    "alreadyRejected": {
+      "title": "Déjà refusé",
+      "message": "Vous avez déjà refusé cette invitation."
+    },
+    "expired": {
+      "title": "Invitation expirée",
+      "message": "Cette invitation a expiré après 7 jours sans réponse. Le déposant peut vous renvoyer une nouvelle invitation."
+    },
+    "warning": {
+      "expiresIn": "Cette invitation expire dans {days} jour(s)",
+      "expiresMessage": "Passé ce délai, le dépôt sera automatiquement annulé."
+    },
+    "invitedBy": "Invitation de {name}",
+    "yourRole": "Votre rôle et part",
+    "workDetails": "Détails de l'œuvre",
+    "type": "Type",
+    "hash": "Empreinte numérique",
+    "createdAt": "Date de création",
+    "allSignatories": "Tous les co-signataires",
+    "status": {
+      "signed": "Signé",
+      "rejected": "Refusé",
+      "pending": "En attente"
+    },
+    "rule7days": {
+      "title": "Règle des 7 jours",
+      "description": "Si tous les co-signataires n'ont pas validé dans les 7 jours, le dépôt sera automatiquement annulé. Le déposant pourra modifier les informations et renvoyer les invitations."
+    },
+    "authRequired": "Pour signer ce dépôt, vous devez être connecté ou créer un compte.",
+    "login": "Se connecter",
+    "signup": "Créer un compte",
+    "sign": "Signer et valider",
+    "reject": "Refuser",
+    "rejectModal": {
+      "title": "Refuser la co-signature",
+      "description": "Vous pouvez indiquer la raison de votre refus. Le déposant recevra votre message et pourra modifier la répartition.",
+      "placeholder": "Raison du refus (optionnel)...",
+      "cancel": "Annuler",
+      "confirm": "Confirmer le refus"
+    }
   }
 }
