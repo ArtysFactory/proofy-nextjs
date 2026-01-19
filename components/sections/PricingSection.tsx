@@ -43,7 +43,8 @@ export function PricingSection() {
         {/* Pricing Cards Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {packKeys.map((pack) => {
-            const isPopular = t.raw(`${pack}.popular`) === true;
+            // Only 'creator' pack has popular: true
+            const isPopular = pack === 'creator';
             
             return (
               <motion.article
