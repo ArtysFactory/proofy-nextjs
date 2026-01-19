@@ -9,7 +9,7 @@
 // sont déjà collectées dans /dashboard/new (étape 1)
 // ============================================
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWizard, CopyrightHolder } from './WizardContext';
 import { 
@@ -24,11 +24,207 @@ const ROLE_CONFIG: Record<RoleType, { label: string; sublabel: string; icon: Rea
   publisher: { label: 'Éditeur(s)', sublabel: 'droits d\'édition', icon: BookOpen, color: 'text-orange-400' },
 };
 
+// ===== ROLE SECTION COMPONENT (extracted outside) =====
+interface RoleSectionProps {
+  role: RoleType;
+  holders: CopyrightHolder[];
+  onAddClick: (role: RoleType) => void;
+  onRemove: (role: RoleType, id: string) => void;
+  onUpdateField: (role: RoleType, id: string, field: keyof CopyrightHolder, value: string | number) => void;
+}
+
+function RoleSection({ role, holders, onAddClick, onRemove, onUpdateField }: RoleSectionProps) {
+  const config = ROLE_CONFIG[role];
+  const Icon = config.icon;
+
+  const handleAddClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Add button clicked for role:', role);
+    onAddClick(role);
+  }, [role, onAddClick]);
+
+  return (
+    <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <Icon className={`w-5 h-5 ${config.color}`} />
+          <div>
+            <span className="text-white font-medium">{config.label}</span>
+            <span className="text-gray-500 text-sm ml-2">({config.sublabel})</span>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={handleAddClick}
+          className="flex items-center gap-2 px-3 py-1.5 bg-[#bff227]/10 border border-[#bff227]/30 rounded-lg text-[#bff227] text-sm hover:bg-[#bff227]/20 transition-colors cursor-pointer z-10"
+        >
+          <Plus className="w-4 h-4" />
+          Ajouter
+        </button>
+      </div>
+
+      {holders.length === 0 ? (
+        <p className="text-gray-500 text-sm text-center py-4">Aucun {config.label.toLowerCase()} ajouté</p>
+      ) : (
+        <div className="space-y-2">
+          {holders.map((holder) => (
+            <div key={holder.id} className="flex items-center gap-3 bg-white/5 rounded-lg p-3">
+              <div className="flex-1 min-w-0">
+                <input
+                  type="text"
+                  value={holder.name}
+                  onChange={(e) => onUpdateField(role, holder.id, 'name', e.target.value)}
+                  placeholder="Nom"
+                  className="w-full bg-transparent text-white text-sm focus:outline-none"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={holder.percentage}
+                  onChange={(e) => onUpdateField(role, holder.id, 'percentage', Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))}
+                  className="w-16 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm text-center"
+                />
+                <span className="text-gray-400 text-sm">%</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => onRemove(role, holder.id)}
+                className="p-1.5 text-red-400 hover:bg-red-500/10 rounded transition-colors"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ===== ADD HOLDER MODAL =====
+interface AddHolderModalProps {
+  role: RoleType;
+  onClose: () => void;
+  onAdd: (role: RoleType, holder: Omit<CopyrightHolder, 'id'>) => void;
+}
+
+function AddHolderModal({ role, onClose, onAdd }: AddHolderModalProps) {
+  const [name, setName] = useState('');
+  const [percentage, setPercentage] = useState(0);
+  const [email, setEmail] = useState('');
+  const [ipi, setIpi] = useState('');
+
+  const config = ROLE_CONFIG[role];
+
+  const handleSubmit = useCallback(() => {
+    if (!name || percentage <= 0) return;
+    onAdd(role, { name, percentage, email: email || undefined, ipi: ipi || undefined });
+  }, [role, name, percentage, email, ipi, onAdd]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+      style={{ zIndex: 9999 }}
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 w-full max-w-md"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3 className="text-lg font-bold text-white mb-4">
+          Ajouter un {config.label.slice(0, -1).toLowerCase()}
+        </h3>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-300 mb-2">Nom *</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Nom complet ou pseudonyme"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none"
+              autoFocus
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-300 mb-2">Pourcentage *</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={percentage}
+                onChange={(e) => setPercentage(Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))}
+                className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#bff227] focus:outline-none"
+              />
+              <span className="text-gray-400">%</span>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-300 mb-2">
+              Email <span className="text-gray-500">(optionnel)</span>
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="email@exemple.com"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-300 mb-2">
+              IPI/CAE <span className="text-gray-500">(optionnel)</span>
+            </label>
+            <input
+              type="text"
+              value={ipi}
+              onChange={(e) => setIpi(e.target.value)}
+              placeholder="00000000000"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-3 mt-6">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 px-4 py-3 border border-white/10 rounded-xl text-white hover:bg-white/5 transition-colors"
+          >
+            Annuler
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={!name || percentage <= 0}
+            className="flex-1 px-4 py-3 bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0a0a0a] font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Ajouter
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ===== MAIN COMPONENT =====
 export default function Step2CopyrightRights() {
   const { state, setWorkTitle, setCopyrightRights, nextStep, prevStep } = useWizard();
-  
-  // NOTE: General Info (madeBy, depositorType, etc.) is already collected in /dashboard/new
-  // We only handle copyright rights here
   
   // Copyright state synced with context
   const [authors, setAuthors] = useState<CopyrightHolder[]>(state.copyrightRights.authors);
@@ -37,8 +233,7 @@ export default function Step2CopyrightRights() {
   const [workTitle, setLocalWorkTitle] = useState(state.workTitle);
   
   // Modal state
-  const [showAddModal, setShowAddModal] = useState<RoleType | null>(null);
-  const [newHolder, setNewHolder] = useState({ name: '', percentage: 0, email: '', ipi: '' });
+  const [modalRole, setModalRole] = useState<RoleType | null>(null);
 
   // Calculate totals
   const totalAuthors = authors.reduce((sum, h) => sum + h.percentage, 0);
@@ -54,331 +249,209 @@ export default function Step2CopyrightRights() {
   }, [authors, composers, publishers, setCopyrightRights]);
 
   // Handlers
-  const handleTitleChange = (title: string) => {
+  const handleTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const title = e.target.value;
     setLocalWorkTitle(title);
     setWorkTitle(title);
-  };
+  }, [setWorkTitle]);
 
-  const addHolder = (role: RoleType) => {
-    if (!newHolder.name) return;
-    
+  const handleAddClick = useCallback((role: RoleType) => {
+    console.log('Opening modal for role:', role);
+    setModalRole(role);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setModalRole(null);
+  }, []);
+
+  const handleAddHolder = useCallback((role: RoleType, holderData: Omit<CopyrightHolder, 'id'>) => {
     const holder: CopyrightHolder = {
       id: Date.now().toString(),
-      name: newHolder.name,
-      percentage: newHolder.percentage,
-      email: newHolder.email || undefined,
-      ipi: newHolder.ipi || undefined,
+      ...holderData,
     };
 
     switch (role) {
       case 'author':
-        setAuthors([...authors, holder]);
+        setAuthors(prev => [...prev, holder]);
         break;
       case 'composer':
-        setComposers([...composers, holder]);
+        setComposers(prev => [...prev, holder]);
         break;
       case 'publisher':
-        setPublishers([...publishers, holder]);
+        setPublishers(prev => [...prev, holder]);
         break;
     }
 
-    setNewHolder({ name: '', percentage: 0, email: '', ipi: '' });
-    setShowAddModal(null);
-  };
+    setModalRole(null);
+  }, []);
 
-  const removeHolder = (role: RoleType, id: string) => {
+  const handleRemoveHolder = useCallback((role: RoleType, id: string) => {
     switch (role) {
       case 'author':
-        setAuthors(authors.filter(h => h.id !== id));
+        setAuthors(prev => prev.filter(h => h.id !== id));
         break;
       case 'composer':
-        setComposers(composers.filter(h => h.id !== id));
+        setComposers(prev => prev.filter(h => h.id !== id));
         break;
       case 'publisher':
-        setPublishers(publishers.filter(h => h.id !== id));
+        setPublishers(prev => prev.filter(h => h.id !== id));
         break;
     }
-  };
+  }, []);
 
-  const updateHolderField = (role: RoleType, id: string, field: keyof CopyrightHolder, value: string | number) => {
+  const handleUpdateField = useCallback((role: RoleType, id: string, field: keyof CopyrightHolder, value: string | number) => {
     const update = (holders: CopyrightHolder[]) =>
       holders.map(h => h.id === id ? { ...h, [field]: value } : h);
 
     switch (role) {
       case 'author':
-        setAuthors(update(authors));
+        setAuthors(update);
         break;
       case 'composer':
-        setComposers(update(composers));
+        setComposers(update);
         break;
       case 'publisher':
-        setPublishers(update(publishers));
+        setPublishers(update);
         break;
     }
-  };
-
-  // Render a role section
-  const RoleSection = ({ role, holders }: { role: RoleType; holders: CopyrightHolder[] }) => {
-    const config = ROLE_CONFIG[role];
-    const Icon = config.icon;
-
-    return (
-      <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <Icon className={`w-5 h-5 ${config.color}`} />
-            <div>
-              <span className="text-white font-medium">{config.label}</span>
-              <span className="text-gray-500 text-sm ml-2">({config.sublabel})</span>
-            </div>
-          </div>
-          <button
-            onClick={() => setShowAddModal(role)}
-            className="flex items-center gap-2 px-3 py-1.5 bg-[#bff227]/10 border border-[#bff227]/30 rounded-lg text-[#bff227] text-sm hover:bg-[#bff227]/20 transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-            Ajouter
-          </button>
-        </div>
-
-        {holders.length === 0 ? (
-          <p className="text-gray-500 text-sm text-center py-4">Aucun {config.label.toLowerCase()} ajouté</p>
-        ) : (
-          <div className="space-y-2">
-            {holders.map((holder) => (
-              <div key={holder.id} className="flex items-center gap-3 bg-white/5 rounded-lg p-3">
-                <div className="flex-1 min-w-0">
-                  <input
-                    type="text"
-                    value={holder.name}
-                    onChange={(e) => updateHolderField(role, holder.id, 'name', e.target.value)}
-                    placeholder="Nom"
-                    className="w-full bg-transparent text-white text-sm focus:outline-none"
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={holder.percentage}
-                    onChange={(e) => updateHolderField(role, holder.id, 'percentage', Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))}
-                    className="w-16 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm text-center"
-                  />
-                  <span className="text-gray-400 text-sm">%</span>
-                </div>
-                <button
-                  onClick={() => removeHolder(role, holder.id)}
-                  className="p-1.5 text-red-400 hover:bg-red-500/10 rounded transition-colors"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
+  }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="space-y-6"
-    >
-      {/* Header */}
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-white mb-2">Droits d'auteur</h2>
-        <p className="text-gray-400">
-          Répartition des droits sur l'œuvre
-        </p>
-      </div>
-
-      {/* ==================== Droits d'auteur ==================== */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-
-        {/* Work Title */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Titre de l'œuvre *
-          </label>
-          <input
-            type="text"
-            value={workTitle}
-            onChange={(e) => handleTitleChange(e.target.value)}
-            placeholder="Ex: Ma Chanson"
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none transition-colors"
-          />
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        className="space-y-6"
+      >
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-white mb-2">Droits d'auteur</h2>
+          <p className="text-gray-400">
+            Répartition des droits sur l'œuvre
+          </p>
         </div>
 
-        {/* Info Box */}
-        <div className="flex items-start gap-3 p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl mb-6">
-          <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-blue-300">
-            <p className="font-medium mb-1">Total = 100%</p>
-            <p className="text-blue-300/80">
-              La somme des pourcentages (auteurs + compositeurs + éditeurs) doit égaler <strong>100%</strong>.
-            </p>
+        {/* Droits d'auteur */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+
+          {/* Work Title */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Titre de l'œuvre *
+            </label>
+            <input
+              type="text"
+              value={workTitle}
+              onChange={handleTitleChange}
+              placeholder="Ex: Ma Chanson"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-[#bff227] focus:outline-none transition-colors"
+            />
+          </div>
+
+          {/* Info Box */}
+          <div className="flex items-start gap-3 p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl mb-6">
+            <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-blue-300">
+              <p className="font-medium mb-1">Total = 100%</p>
+              <p className="text-blue-300/80">
+                La somme des pourcentages (auteurs + compositeurs + éditeurs) doit égaler <strong>100%</strong>.
+              </p>
+            </div>
+          </div>
+
+          {/* Rights Sections */}
+          <div className="space-y-4">
+            <RoleSection 
+              role="author" 
+              holders={authors} 
+              onAddClick={handleAddClick}
+              onRemove={handleRemoveHolder}
+              onUpdateField={handleUpdateField}
+            />
+            <RoleSection 
+              role="composer" 
+              holders={composers} 
+              onAddClick={handleAddClick}
+              onRemove={handleRemoveHolder}
+              onUpdateField={handleUpdateField}
+            />
+            <RoleSection 
+              role="publisher" 
+              holders={publishers} 
+              onAddClick={handleAddClick}
+              onRemove={handleRemoveHolder}
+              onUpdateField={handleUpdateField}
+            />
+          </div>
+
+          {/* Total Display */}
+          <div className={`mt-4 flex items-center justify-between p-4 rounded-xl border-2 ${
+            grandTotal === 100 
+              ? 'bg-green-500/10 border-green-500/50' 
+              : grandTotal > 100 
+              ? 'bg-red-500/10 border-red-500/50'
+              : 'bg-yellow-500/10 border-yellow-500/50'
+          }`}>
+            <div className="flex items-center gap-3">
+              {grandTotal === 100 ? (
+                <CheckCircle2 className="w-6 h-6 text-green-400" />
+              ) : (
+                <AlertTriangle className="w-6 h-6 text-yellow-400" />
+              )}
+              <span className="text-white font-medium">Total des droits d'auteur</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={`text-2xl font-bold ${
+                grandTotal === 100 ? 'text-green-400' : grandTotal > 100 ? 'text-red-400' : 'text-yellow-400'
+              }`}>
+                {grandTotal}
+              </span>
+              <span className="text-gray-400">%</span>
+            </div>
           </div>
         </div>
 
-        {/* Rights Sections */}
-        <div className="space-y-4">
-          <RoleSection role="author" holders={authors} />
-          <RoleSection role="composer" holders={composers} />
-          <RoleSection role="publisher" holders={publishers} />
-        </div>
-
-        {/* Total Display */}
-        <div className={`mt-4 flex items-center justify-between p-4 rounded-xl border-2 ${
-          grandTotal === 100 
-            ? 'bg-green-500/10 border-green-500/50' 
-            : grandTotal > 100 
-            ? 'bg-red-500/10 border-red-500/50'
-            : 'bg-yellow-500/10 border-yellow-500/50'
-        }`}>
-          <div className="flex items-center gap-3">
-            {grandTotal === 100 ? (
-              <CheckCircle2 className="w-6 h-6 text-green-400" />
-            ) : (
-              <AlertTriangle className="w-6 h-6 text-yellow-400" />
-            )}
-            <span className="text-white font-medium">Total des droits d'auteur</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className={`text-2xl font-bold ${
-              grandTotal === 100 ? 'text-green-400' : grandTotal > 100 ? 'text-red-400' : 'text-yellow-400'
-            }`}>
-              {grandTotal}
-            </span>
-            <span className="text-gray-400">%</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Navigation */}
-      <div className="flex justify-between pt-6 border-t border-white/10">
-        <button
-          onClick={prevStep}
-          className="px-6 py-3 border border-white/20 rounded-xl text-white hover:bg-white/5 transition-colors flex items-center gap-2"
-        >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Retour
-        </button>
-        <button
-          onClick={nextStep}
-          disabled={!isValid}
-          className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 ${
-            isValid
-              ? 'bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0a0a0a] hover:shadow-lg hover:shadow-[#bff227]/30'
-              : 'bg-white/10 text-white/40 cursor-not-allowed'
-          }`}
-        >
-          Continuer
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Add Modal */}
-      <AnimatePresence>
-        {showAddModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setShowAddModal(null)}
+        {/* Navigation */}
+        <div className="flex justify-between pt-6 border-t border-white/10">
+          <button
+            type="button"
+            onClick={prevStep}
+            className="px-6 py-3 border border-white/20 rounded-xl text-white hover:bg-white/5 transition-colors flex items-center gap-2"
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 w-full max-w-md"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h3 className="text-lg font-bold text-white mb-4">
-                Ajouter un {ROLE_CONFIG[showAddModal].label.slice(0, -1).toLowerCase()}
-              </h3>
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Retour
+          </button>
+          <button
+            type="button"
+            onClick={nextStep}
+            disabled={!isValid}
+            className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 ${
+              isValid
+                ? 'bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0a0a0a] hover:shadow-lg hover:shadow-[#bff227]/30'
+                : 'bg-white/10 text-white/40 cursor-not-allowed'
+            }`}
+          >
+            Continuer
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </motion.div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm text-gray-300 mb-2">Nom *</label>
-                  <input
-                    type="text"
-                    value={newHolder.name}
-                    onChange={(e) => setNewHolder({ ...newHolder, name: e.target.value })}
-                    placeholder="Nom complet ou pseudonyme"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm text-gray-300 mb-2">Pourcentage *</label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      min="0"
-                      max="100"
-                      value={newHolder.percentage}
-                      onChange={(e) => setNewHolder({ ...newHolder, percentage: Math.min(100, Math.max(0, parseInt(e.target.value) || 0)) })}
-                      className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white"
-                    />
-                    <span className="text-gray-400">%</span>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm text-gray-300 mb-2">
-                    Email <span className="text-gray-500">(optionnel)</span>
-                  </label>
-                  <input
-                    type="email"
-                    value={newHolder.email}
-                    onChange={(e) => setNewHolder({ ...newHolder, email: e.target.value })}
-                    placeholder="email@exemple.com"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm text-gray-300 mb-2">
-                    IPI/CAE <span className="text-gray-500">(optionnel)</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={newHolder.ipi}
-                    onChange={(e) => setNewHolder({ ...newHolder, ipi: e.target.value })}
-                    placeholder="00000000000"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white"
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-3 mt-6">
-                <button
-                  onClick={() => setShowAddModal(null)}
-                  className="flex-1 px-4 py-3 border border-white/10 rounded-xl text-white hover:bg-white/5 transition-colors"
-                >
-                  Annuler
-                </button>
-                <button
-                  onClick={() => addHolder(showAddModal)}
-                  disabled={!newHolder.name || newHolder.percentage <= 0}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-[#bff227] to-[#9dd11e] text-[#0a0a0a] font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Ajouter
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
+      {/* Modal - OUTSIDE of motion.div to avoid animation issues */}
+      <AnimatePresence>
+        {modalRole && (
+          <AddHolderModal
+            role={modalRole}
+            onClose={handleCloseModal}
+            onAdd={handleAddHolder}
+          />
         )}
       </AnimatePresence>
-    </motion.div>
+    </>
   );
 }
