@@ -79,7 +79,8 @@ export function StoryBlocksSection({
           {/* Title & Subtitle */}
           <div className="text-center lg:text-left">
             <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-              {t('title')}{' '}
+              {t('title')}
+              <br />
               <span style={{ color: accentColor }}>{t('titleHighlight')}</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl">

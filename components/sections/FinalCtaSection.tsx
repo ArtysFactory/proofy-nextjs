@@ -31,7 +31,8 @@ export function FinalCtaSection() {
         <motion.div variants={fadeInUpItem}>
           {/* Title */}
           <h2 className="font-display text-3xl md:text-5xl font-bold text-white mb-4">
-            {t('title')}{' '}
+            {t('title')}
+            <br />
             <span className="text-[#bff227]">{t('titleHighlight')}</span>
           </h2>
           
