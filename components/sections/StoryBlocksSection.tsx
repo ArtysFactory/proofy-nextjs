@@ -72,7 +72,7 @@ export function StoryBlocksSection({
               className={`w-24 h-24 ${iconGradient} rounded-3xl flex items-center justify-center shadow-2xl`}
               style={{ boxShadow: `0 25px 50px -12px ${iconShadow}` }}
             >
-              <Icon className={`w-12 h-12 ${translationKey === 'artists' ? 'text-black' : 'text-white'}`} />
+              <Icon className="w-12 h-12 text-black" />
             </div>
           </div>
           
@@ -137,7 +137,7 @@ export function StoryBlocksSection({
         >
           <LocaleLink
             href="/signup"
-            className={`inline-flex items-center gap-3 ${iconGradient} ${translationKey === 'artists' ? '!text-black' : 'text-white'} font-bold px-8 py-4 rounded-2xl text-lg shadow-xl transition-all duration-300 hover:scale-105`}
+            className={`inline-flex items-center gap-3 ${iconGradient} !text-black font-bold px-8 py-4 rounded-2xl text-lg shadow-xl transition-all duration-300 hover:scale-105`}
             style={{ boxShadow: `0 20px 40px -12px ${iconShadow}` }}
           >
             <Icon className="w-5 h-5" />
@@ -171,11 +171,11 @@ export function AICreatorsSection() {
       id="ai-creators"
       translationKey="aiCreators"
       icon={Sparkles}
-      iconGradient="bg-gradient-to-br from-purple-500 to-violet-600"
-      iconShadow="rgba(168, 85, 247, 0.3)"
-      accentColor="#a855f7"
-      progressGradient="bg-gradient-to-r from-purple-500/0 via-purple-500/70 to-purple-500/0"
-      bgDecorationColor="rgba(168, 85, 247, 0.05)"
+      iconGradient="bg-gradient-to-br from-[#bff227] to-[#9dcc1e]"
+      iconShadow="rgba(191, 242, 39, 0.3)"
+      accentColor="#bff227"
+      progressGradient="bg-gradient-to-r from-[#bff227]/0 via-[#bff227]/70 to-[#bff227]/0"
+      bgDecorationColor="rgba(191, 242, 39, 0.05)"
       showPunchline
     />
   );
