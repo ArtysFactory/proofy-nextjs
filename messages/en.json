@@ -205,7 +205,25 @@
         "frenchBilling": "French billing"
       },
       "cta": "Choose my pack",
-      "ctaSecondary": "Protect 1 creation (€3)"
+      "ctaSecondary": "Protect 1 creation (€3)",
+      "simulator": {
+        "title": "Pricing Simulator",
+        "subtitle": "Estimate the cost for your deposit volume",
+        "depositsLabel": "Number of deposits",
+        "depositsUnit": "deposits",
+        "totalPrice": "Estimated total price",
+        "pricePerDeposit": "Price per deposit",
+        "onQuote": "(on quote)",
+        "savings": "Save {amount}€ ({percent}% vs single deposit)",
+        "recommendation": "Our recommendation",
+        "enterpriseUnlocked": "Enterprise rate unlocked: €0.30/deposit",
+        "enterpriseDesc": "For high volumes (+2,000 deposits), get a preferential rate of €0.30 per deposit. Contact us for a custom quote.",
+        "packRecommendation": "For {deposits} deposits, we recommend buying packs to optimize your budget.",
+        "contactUs": "Contact us",
+        "getStarted": "Get started",
+        "inpiComparison": "INPI equivalent (€65/deposit)",
+        "youSave": "You save {amount}€"
+      }
     },
     "faq": {
       "title": "Frequently",

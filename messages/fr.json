@@ -205,7 +205,25 @@
         "frenchBilling": "Facturation française"
       },
       "cta": "Choisir mon pack",
-      "ctaSecondary": "Protège 1 création (3€)"
+      "ctaSecondary": "Protège 1 création (3€)",
+      "simulator": {
+        "title": "Simulateur de tarifs",
+        "subtitle": "Estimez le coût pour votre volume de dépôts",
+        "depositsLabel": "Nombre de dépôts",
+        "depositsUnit": "dépôts",
+        "totalPrice": "Prix total estimé",
+        "pricePerDeposit": "Prix par dépôt",
+        "onQuote": "(sur devis)",
+        "savings": "Économie de {amount}€ ({percent}% vs dépôt unitaire)",
+        "recommendation": "Notre recommandation",
+        "enterpriseUnlocked": "Tarif Enterprise débloqué : 0,30€/dépôt",
+        "enterpriseDesc": "Pour les gros volumes (+2 000 dépôts), bénéficiez d'un tarif préférentiel de 0,30€ par dépôt. Contactez-nous pour un devis personnalisé.",
+        "packRecommendation": "Pour {deposits} dépôts, nous vous recommandons d'acheter des packs pour optimiser votre budget.",
+        "contactUs": "Nous contacter",
+        "getStarted": "Commencer",
+        "inpiComparison": "Équivalent INPI (65€/dépôt)",
+        "youSave": "Vous économisez {amount}€"
+      }
     },
     "faq": {
       "title": "Questions",

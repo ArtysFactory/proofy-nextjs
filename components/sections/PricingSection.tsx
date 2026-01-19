@@ -11,6 +11,7 @@ import { Check } from 'lucide-react';
 import { AnimatedSection } from '@/components/motion/AnimatedSection';
 import { fadeInUpItem, cardHover } from '@/lib/motionConfig';
 import LocaleLink from '@/components/LocaleLink';
+import { PricingSimulator } from './PricingSimulator';
 
 const packKeys = ['starter', 'creator', 'pro', 'studio'] as const;
 const reassuranceKeys = ['noSubscription', 'noHiddenFees', 'noExpiration', 'frenchBilling'] as const;
@@ -104,6 +105,9 @@ export function PricingSection() {
             );
           })}
         </div>
+
+        {/* Pricing Simulator */}
+        <PricingSimulator />
 
         {/* INPI Comparison */}
         <motion.div

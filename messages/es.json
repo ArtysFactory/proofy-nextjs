@@ -205,7 +205,25 @@
         "frenchBilling": "Facturación francesa"
       },
       "cta": "Elegir mi pack",
-      "ctaSecondary": "Protege 1 creación (3€)"
+      "ctaSecondary": "Protege 1 creación (3€)",
+      "simulator": {
+        "title": "Simulador de precios",
+        "subtitle": "Estima el coste para tu volumen de depósitos",
+        "depositsLabel": "Número de depósitos",
+        "depositsUnit": "depósitos",
+        "totalPrice": "Precio total estimado",
+        "pricePerDeposit": "Precio por depósito",
+        "onQuote": "(presupuesto)",
+        "savings": "Ahorro de {amount}€ ({percent}% vs depósito unitario)",
+        "recommendation": "Nuestra recomendación",
+        "enterpriseUnlocked": "Tarifa Enterprise desbloqueada: 0,30€/depósito",
+        "enterpriseDesc": "Para grandes volúmenes (+2.000 depósitos), obtén una tarifa preferencial de 0,30€ por depósito. Contáctanos para un presupuesto personalizado.",
+        "packRecommendation": "Para {deposits} depósitos, te recomendamos comprar packs para optimizar tu presupuesto.",
+        "contactUs": "Contactarnos",
+        "getStarted": "Empezar",
+        "inpiComparison": "Equivalente INPI (65€/depósito)",
+        "youSave": "Ahorras {amount}€"
+      }
     },
     "faq": {
       "title": "Preguntas",
