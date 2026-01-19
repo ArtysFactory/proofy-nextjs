@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useParams } from 'next/navigation';
-import Link from 'next/link';
+import LocaleLink from '@/components/LocaleLink';
 import Logo from '@/components/ui/Logo';
 import {
   ArrowLeft,
@@ -381,9 +381,9 @@ export default function RightsManagementPage() {
           <AlertTriangle className="w-12 h-12 text-red-400 mx-auto mb-4" />
           <h1 className="text-xl font-bold text-white mb-2">Erreur</h1>
           <p className="text-gray-400 mb-6">{error}</p>
-          <Link href="/dashboard" className="text-[#bff227] hover:underline">
+          <LocaleLink href="/dashboard" className="text-[#bff227] hover:underline">
             Retour au dashboard
-          </Link>
+          </LocaleLink>
         </div>
       </div>
     );
@@ -394,10 +394,10 @@ export default function RightsManagementPage() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-sm border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/dashboard" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+          <LocaleLink href="/dashboard" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
             <ArrowLeft className="w-5 h-5" />
             <span>Dashboard</span>
-          </Link>
+          </LocaleLink>
           <Logo size="sm" linkTo="/" />
           <div className="w-24" />
         </div>

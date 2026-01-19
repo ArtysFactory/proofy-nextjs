@@ -272,7 +272,7 @@ export default function ProofPage() {
                                 </a>
 
                                 <LocaleLink
-                                    href="/"
+                                    href="/dashboard"
                                     className="glass-card flex items-center justify-center gap-2 px-6 py-3 rounded-xl hover:border-[#bff227]/50 transition-all flex-1 text-center"
                                 >
                                     <i className="fas fa-home"></i>

@@ -514,7 +514,7 @@ export async function GET(
         <button onclick="window.print()" class="download-btn">
             📥 Télécharger en PDF
         </button>
-        <a href="https://proofy-nextjs.vercel.app/dashboard" class="back-btn">
+        <a href="/fr/dashboard" class="back-btn" onclick="event.preventDefault(); window.location.href = '/fr/dashboard';">
             ← Retour au tableau de bord
         </a>
     </div>
