@@ -612,10 +612,6 @@ export default function Step5Review() {
             <p className="text-2xl font-bold text-white">{state.releases.length}</p>
             <p className="text-xs text-gray-400">Sorties</p>
           </div>
-          <div>
-            <p className="text-2xl font-bold text-[#bff227]">0.001 $</p>
-            <p className="text-xs text-gray-400">Coût blockchain</p>
-          </div>
         </div>
       </div>
 
