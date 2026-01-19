@@ -157,9 +157,10 @@
       "cta": "Try now — 1st deposit free"
     },
     "pricing": {
-      "title": "Blockchain proofs.",
-      "titleHighlight": "No subscription. No trap.",
-      "subtitle": "Buy a pack, use it at your pace. Your credits never expire.",
+      "title": "Your legal blockchain proofs.",
+      "titleHighlight": "No subscription. No constraints.",
+      "subtitle": "Buy a pack, use it at your pace. Your credits never expire. Or protect 1 creation for €3.",
+      "singleDeposit": "Protect 1 creation (€3)",
       "perDeposit": "per deposit",
       "deposits": "deposits",
       "idealFor": "Ideal for",
@@ -204,7 +205,7 @@
         "frenchBilling": "French billing"
       },
       "cta": "Choose my pack",
-      "ctaSecondary": "Start free (1 free deposit)"
+      "ctaSecondary": "Protect 1 creation (€3)"
     },
     "faq": {
       "title": "Frequently",

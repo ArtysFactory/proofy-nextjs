@@ -30,7 +30,8 @@ export function PricingSection() {
           className="text-center mb-16"
         >
           <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-            {t('title')}{' '}
+            {t('title')}
+            <br />
             <span className="text-[#bff227]">{t('titleHighlight')}</span>
           </h2>
           <p className="text-gray-400 text-lg">

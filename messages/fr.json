@@ -157,9 +157,10 @@
       "cta": "Essayer maintenant — 1er dépôt gratuit"
     },
     "pricing": {
-      "title": "Des preuves blockchain.",
-      "titleHighlight": "Pas d'abonnement. Pas de piège.",
-      "subtitle": "Achetez un pack, utilisez-le à votre rythme. Vos crédits n'expirent jamais.",
+      "title": "Vos preuves juridiques blockchain.",
+      "titleHighlight": "Pas d'abonnement. Pas de contrainte.",
+      "subtitle": "Achetez un pack, utilisez-le à votre rythme. Vos crédits n'expirent jamais. Ou protégez 1 création pour 3€.",
+      "singleDeposit": "Protège 1 création (3€)",
       "perDeposit": "par dépôt",
       "deposits": "dépôts",
       "idealFor": "Idéal pour",
@@ -204,7 +205,7 @@
         "frenchBilling": "Facturation française"
       },
       "cta": "Choisir mon pack",
-      "ctaSecondary": "Commencer gratuitement (1 dépôt offert)"
+      "ctaSecondary": "Protège 1 création (3€)"
     },
     "faq": {
       "title": "Questions",
