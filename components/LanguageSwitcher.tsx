@@ -29,7 +29,7 @@ export default function LanguageSwitcher() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Get the path without the current locale
+  // Get the path with the new locale
   const getLocalizedPath = useCallback((newLocale: Locale) => {
     // Remove leading slash and split
     const pathWithoutLeadingSlash = pathname.startsWith('/') ? pathname.slice(1) : pathname;
@@ -37,24 +37,15 @@ export default function LanguageSwitcher() {
     
     // Check if first segment is a locale
     if (segments[0] && locales.includes(segments[0] as Locale)) {
-      // For default locale (fr), remove the prefix entirely (as-needed mode)
-      if (newLocale === defaultLocale) {
-        segments.shift(); // Remove the locale segment
-        return '/' + segments.filter(Boolean).join('/') || '/';
-      }
-      // Replace existing locale
+      // Replace existing locale with new one
       segments[0] = newLocale;
     } else {
-      // No locale in path - this means we're already on default locale
-      if (newLocale === defaultLocale) {
-        // Stay on the same path (no prefix needed)
-        return pathname || '/';
-      }
-      // Prepend new locale for non-default
+      // No locale in path, prepend the new locale
       segments.unshift(newLocale);
     }
     
-    // Rebuild path
+    // Always return path with explicit locale prefix
+    // This ensures the middleware correctly sets the locale cookie
     const newPath = '/' + segments.filter(Boolean).join('/');
     return newPath || `/${newLocale}`;
   }, [pathname]);
