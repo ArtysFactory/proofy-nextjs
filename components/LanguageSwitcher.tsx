@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import { locales, localeNames, localeFlags, type Locale } from '@/i18n/config';
+import { locales, localeNames, localeFlags, defaultLocale, type Locale } from '@/i18n/config';
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
@@ -37,10 +37,20 @@ export default function LanguageSwitcher() {
     
     // Check if first segment is a locale
     if (segments[0] && locales.includes(segments[0] as Locale)) {
+      // For default locale (fr), remove the prefix entirely (as-needed mode)
+      if (newLocale === defaultLocale) {
+        segments.shift(); // Remove the locale segment
+        return '/' + segments.filter(Boolean).join('/') || '/';
+      }
       // Replace existing locale
       segments[0] = newLocale;
     } else {
-      // No locale in path, prepend new locale
+      // No locale in path - this means we're already on default locale
+      if (newLocale === defaultLocale) {
+        // Stay on the same path (no prefix needed)
+        return pathname || '/';
+      }
+      // Prepend new locale for non-default
       segments.unshift(newLocale);
     }
     
