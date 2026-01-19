@@ -55,9 +55,9 @@
       "subtitleHighlight": "infalsifiable",
       "subtitleEnd": "Musique, visuels, contenus IA — une preuve juridiquement reconnue, en moins d'une minute.",
       "cta": "Protège ton œuvre",
-      "ctaSubtext": "C'est gratuit",
+      "ctaSubtext": "Dès 0,50€/dépôt",
       "ctaSecondary": "Comment ça marche",
-      "microText": "Aucune carte requise • 3 dépôts offerts",
+      "microText": "1 dépôt = 3€ • Packs dès 1,50€/dépôt",
       "discover": "Découvrir"
     },
     "problem": {
@@ -105,7 +105,7 @@
         "title": "Compatible avec tout votre écosystème",
         "description": "UnlmtdProof ne remplace pas vos sociétés d'auteurs ou distributeurs. C'est une couche de preuve supplémentaire, indépendante, qui renforce votre position."
       },
-      "cta": "Protéger mon premier titre — Gratuit"
+      "cta": "Protéger mon premier titre"
     },
     "aiCreators": {
       "title": "Pour les créateurs IA :",
@@ -154,7 +154,7 @@
         "description": "PDF avec : date, heure, hash, lien de vérification on-chain, et vos métadonnées (co-créateurs, prompts, etc.)."
       },
       "reassurance": "Votre fichier reste privé — seule l'empreinte est publiée sur la blockchain.",
-      "cta": "Essayer maintenant — 1er dépôt gratuit"
+      "cta": "Essayer maintenant — Dès 3€"
     },
     "pricing": {
       "title": "Vos preuves juridiques blockchain.",
@@ -242,8 +242,8 @@
       "title": "La prochaine fois que quelqu'un contestera vos droits,",
       "titleHighlight": "vous aurez quoi comme preuve ?",
       "subtitle": "Rejoignez 2 400+ créateurs qui ont choisi de prouver, pas de prier.",
-      "cta": "Créer ma première preuve gratuite",
-      "microText": "Aucune carte bancaire requise • Certificat téléchargeable immédiatement"
+      "cta": "Créer ma première preuve",
+      "microText": "1 dépôt = 3€ • Certificat téléchargeable immédiatement"
     },
     "features": {
       "title": "Tout ce dont vous avez",

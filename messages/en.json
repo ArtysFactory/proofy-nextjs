@@ -55,9 +55,9 @@
       "subtitleHighlight": "unfalsifiable",
       "subtitleEnd": "Music, visuals, AI content — legally recognized proof, in less than a minute.",
       "cta": "Protect your work",
-      "ctaSubtext": "It's free",
+      "ctaSubtext": "From €0.50/deposit",
       "ctaSecondary": "How it works",
-      "microText": "No card required • 3 free deposits",
+      "microText": "1 deposit = €3 • Packs from €1.50/deposit",
       "discover": "Discover"
     },
     "problem": {
@@ -105,7 +105,7 @@
         "title": "Compatible with your entire ecosystem",
         "description": "UnlmtdProof doesn't replace your rights societies or distributors. It's an additional, independent layer of proof that strengthens your position."
       },
-      "cta": "Protect my first track — Free"
+      "cta": "Protect my first track"
     },
     "aiCreators": {
       "title": "For AI creators:",
@@ -154,7 +154,7 @@
         "description": "PDF with: date, time, hash, on-chain verification link, and your metadata (co-creators, prompts, etc.)."
       },
       "reassurance": "Your file remains private — only the fingerprint is published on the blockchain.",
-      "cta": "Try now — 1st deposit free"
+      "cta": "Try now — From €3"
     },
     "pricing": {
       "title": "Your legal blockchain proofs.",
@@ -242,8 +242,8 @@
       "title": "Next time someone challenges your rights,",
       "titleHighlight": "what proof will you have?",
       "subtitle": "Join 2,400+ creators who chose to prove, not pray.",
-      "cta": "Create my first free proof",
-      "microText": "No credit card required • Certificate downloadable immediately"
+      "cta": "Create my first proof",
+      "microText": "1 deposit = €3 • Certificate downloadable immediately"
     },
     "features": {
       "title": "Everything you",
