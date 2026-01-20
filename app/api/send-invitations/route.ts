@@ -180,10 +180,12 @@ export async function POST(request: Request) {
 
     // Verify the creation belongs to the user
     const creation = await sql`
-      SELECT c.id, c.title, c.status, u.name as depositor_name, u.email as depositor_email
+      SELECT c.id, c.title, c.status, 
+             COALESCE(u.first_name || ' ' || u.last_name, u.email) as depositor_name, 
+             u.email as depositor_email
       FROM creations c
       JOIN users u ON c.user_id = u.id
-      WHERE c.id = ${creationId} AND c.user_id = ${user.userId}
+      WHERE c.id = ${creationId} AND c.user_id = ${parseInt(user.userId)}
     `;
 
     if (creation.length === 0) {
@@ -214,10 +216,11 @@ export async function POST(request: Request) {
           INSERT INTO deposit_invitations (
             creation_id, inviter_id, invitee_email, role_type, role_label, percentage, token, status, expires_at
           ) VALUES (
-            ${creationId}, ${user.userId}, ${email.toLowerCase()}, ${rightsType || 'copyright'}, ${role}, ${percentage}, 
+            ${creationId}, ${parseInt(user.userId)}, ${email.toLowerCase()}, ${rightsType || 'copyright'}, ${role}, ${percentage}, 
             ${token}, 'pending', ${expiresAt.toISOString()}
           )
         `;
+        console.log('[Send Invitations] Invitation created for:', email, 'token:', token.substring(0, 8) + '...');
 
         // Send email
         const signUrl = `${baseUrl}/sign/${token}`;

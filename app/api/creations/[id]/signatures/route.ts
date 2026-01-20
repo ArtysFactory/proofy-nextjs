@@ -23,7 +23,7 @@ async function verifyToken(token: string): Promise<{ userId: number; email: stri
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
         // Verify authentication
@@ -38,10 +38,12 @@ export async function GET(
             return NextResponse.json({ error: 'Token invalide' }, { status: 401 });
         }
 
-        const creationId = params.id;
+        const { id: creationId } = await context.params;
         if (!creationId) {
             return NextResponse.json({ error: 'ID de création requis' }, { status: 400 });
         }
+        
+        console.log('[Signatures API] Fetching signatures for creation:', creationId, 'user:', user.userId);
 
         const databaseUrl = process.env.DATABASE_URL;
         if (!databaseUrl) {
@@ -140,9 +142,9 @@ export async function GET(
             stats,
         });
     } catch (error: any) {
-        console.error('[Signatures API] Error:', error);
+        console.error('[Signatures API] Error:', error.message, error.stack);
         return NextResponse.json(
-            { error: 'Erreur serveur', details: error.message },
+            { error: 'Erreur serveur', details: error.message, stack: process.env.NODE_ENV === 'development' ? error.stack : undefined },
             { status: 500 }
         );
     }
