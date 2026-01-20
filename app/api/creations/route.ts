@@ -53,7 +53,11 @@ export async function GET(request: NextRequest) {
                 tx_hash as "txHash", 
                 block_number as "blockNumber",
                 chain,
-                contract_address as "contractAddress"
+                contract_address as "contractAddress",
+                cosignature_required as "cosignatureRequired",
+                cosignature_count as "cosignatureCount",
+                cosignature_signed_count as "cosignatureSignedCount",
+                cosignature_expires_at as "cosignatureExpiresAt"
             FROM creations
             WHERE user_id = ${payload.userId}
             ORDER BY created_at DESC

@@ -212,9 +212,9 @@ export async function POST(request: Request) {
       try {
         await sql`
           INSERT INTO deposit_invitations (
-            creation_id, email, role, percentage, rights_type, token, status, expires_at
+            creation_id, inviter_id, invitee_email, role_type, role_label, percentage, token, status, expires_at
           ) VALUES (
-            ${creationId}, ${email.toLowerCase()}, ${role}, ${percentage}, ${rightsType || 'copyright'}, 
+            ${creationId}, ${user.userId}, ${email.toLowerCase()}, ${rightsType || 'copyright'}, ${role}, ${percentage}, 
             ${token}, 'pending', ${expiresAt.toISOString()}
           )
         `;
@@ -238,10 +238,17 @@ export async function POST(request: Request) {
       }
     }
 
-    // Update creation status to pending_signatures
+    // Update creation status and co-signature tracking
+    const successCount = results.filter(r => r.success).length;
     await sql`
       UPDATE creations 
-      SET status = 'pending_signatures', updated_at = NOW()
+      SET 
+        status = 'pending_signatures', 
+        cosignature_required = true,
+        cosignature_count = ${successCount},
+        cosignature_signed_count = 0,
+        cosignature_expires_at = ${expiresAt.toISOString()},
+        updated_at = NOW()
       WHERE id = ${creationId}
     `;
 

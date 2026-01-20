@@ -7,6 +7,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import LocaleLink from '@/components/LocaleLink';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import Logo from '@/components/ui/Logo';
+import SignatureTracker from '@/components/dashboard/SignatureTracker';
 
 interface Creation {
     id: number;
@@ -17,6 +18,9 @@ interface Creation {
     status: string;
     createdAt: string;
     txHash?: string;
+    cosignatureRequired?: boolean;
+    cosignatureCount?: number;
+    cosignatureSignedCount?: number;
 }
 
 // Wrapper component to handle Suspense for useSearchParams
@@ -33,6 +37,7 @@ function DashboardContent() {
     const [isMounted, setIsMounted] = useState(false);
     const [showCosignSuccess, setShowCosignSuccess] = useState(false);
     const [cosignTitle, setCosignTitle] = useState('');
+    const [expandedTracker, setExpandedTracker] = useState<string | null>(null);
 
     // Check for cosign success message
     useEffect(() => {
@@ -415,6 +420,18 @@ function DashboardContent() {
                                                         </a>
                                                     )}
                                                 </div>
+
+                                                {/* Signature Tracker for pending_signatures */}
+                                                {creation.status === 'pending_signatures' && (
+                                                    <SignatureTracker
+                                                        creationId={creation.publicId}
+                                                        creationTitle={creation.title}
+                                                        isExpanded={expandedTracker === creation.publicId}
+                                                        onToggle={() => setExpandedTracker(
+                                                            expandedTracker === creation.publicId ? null : creation.publicId
+                                                        )}
+                                                    />
+                                                )}
                                             </motion.div>
                                         ))}
                                     </div>
