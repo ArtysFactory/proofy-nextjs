@@ -160,6 +160,10 @@ export default function Step5Review() {
         
         // Authors (flatten for backward compatibility)
         authors: authorsNames,
+
+        // Co-signature info
+        requiresCosignature: hasMultipleCosignatories,
+        cosignatoryEmails: Array.from(cosignatoryEmails),
       };
 
       const token = localStorage.getItem('token');

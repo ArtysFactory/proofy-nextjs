@@ -107,6 +107,9 @@ export async function POST(request: NextRequest) {
             musicParties,
             musicMasters,
             musicReleases,
+            // Co-signature flag
+            requiresCosignature,
+            cosignatoryEmails,
         } = body;
 
         // Validation
@@ -127,30 +130,46 @@ export async function POST(request: NextRequest) {
         // Generate unique public ID
         const publicId = generatePublicId();
 
-        // Perform blockchain anchoring
         let blockchainResult;
-        const privateKey = process.env.POLYGON_PRIVATE_KEY;
-        const rpcUrl = process.env.POLYGON_RPC_URL || 'https://polygon-rpc.com';
+        let status: string;
+        let chain: string;
 
-        if (privateKey && privateKey.length > 0) {
-            // Real blockchain anchoring
-            console.log(`[Creation] Anchoring to Polygon Mainnet...`);
-            blockchainResult = await anchorToBlockchain(
-                fileHash,
-                publicId,
-                projectType,
-                privateKey,
-                rpcUrl
-            );
+        // If co-signature required, don't anchor yet - wait for all signatures
+        if (requiresCosignature && cosignatoryEmails && cosignatoryEmails.length > 1) {
+            console.log(`[Creation] Co-signature required for ${cosignatoryEmails.length} people - deferring blockchain anchoring`);
+            blockchainResult = {
+                success: false,
+                simulated: true,
+                txHash: null,
+                blockNumber: null,
+            };
+            status = 'pending_signatures';
+            chain = 'polygon_mainnet'; // Will be anchored later
         } else {
-            // Simulation mode
-            console.log(`[Creation] No POLYGON_PRIVATE_KEY - using simulation mode`);
-            blockchainResult = await simulateAnchor(fileHash, publicId, projectType);
-        }
+            // Perform blockchain anchoring immediately
+            const privateKey = process.env.POLYGON_PRIVATE_KEY;
+            const rpcUrl = process.env.POLYGON_RPC_URL || 'https://polygon-rpc.com';
 
-        // Determine status and chain info
-        const status = blockchainResult.success ? 'confirmed' : 'pending';
-        const chain = blockchainResult.simulated ? 'polygon_mainnet_simulated' : 'polygon_mainnet';
+            if (privateKey && privateKey.length > 0) {
+                // Real blockchain anchoring
+                console.log(`[Creation] Anchoring to Polygon Mainnet...`);
+                blockchainResult = await anchorToBlockchain(
+                    fileHash,
+                    publicId,
+                    projectType,
+                    privateKey,
+                    rpcUrl
+                );
+            } else {
+                // Simulation mode
+                console.log(`[Creation] No POLYGON_PRIVATE_KEY - using simulation mode`);
+                blockchainResult = await simulateAnchor(fileHash, publicId, projectType);
+            }
+
+            // Determine status and chain info
+            status = blockchainResult.success ? 'confirmed' : 'pending';
+            chain = blockchainResult.simulated ? 'polygon_mainnet_simulated' : 'polygon_mainnet';
+        }
 
         // Insert creation with all fields
         const result = await sql`
