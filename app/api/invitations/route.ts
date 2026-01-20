@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import { neon } from '@neondatabase/serverless';
-import { randomBytes } from 'crypto';
 
 // ============================================
 // PROOFY - Co-signature Invitations API
@@ -25,9 +24,11 @@ async function verifyToken(request: NextRequest) {
     }
 }
 
-// Generate secure token for invitation link
+// Generate secure token for invitation link using Web Crypto API (Edge compatible)
 function generateInvitationToken(): string {
-    return randomBytes(32).toString('hex'); // 64 chars
+    const bytes = new Uint8Array(32);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join(''); // 64 chars
 }
 
 // GET /api/invitations - List invitations for a creation or user

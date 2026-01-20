@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
@@ -19,7 +19,8 @@ interface Creation {
     txHash?: string;
 }
 
-export default function DashboardPage() {
+// Wrapper component to handle Suspense for useSearchParams
+function DashboardContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const t = useTranslations('dashboard');
@@ -424,5 +425,23 @@ export default function DashboardPage() {
                 </div>
             </main>
         </div>
+    );
+}
+
+// Main export with Suspense boundary for useSearchParams
+export default function DashboardPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="aurora-bg">
+                    <div className="aurora-stars"></div>
+                    <div className="aurora-layer"></div>
+                    <div className="aurora-layer aurora-layer-2"></div>
+                </div>
+                <div className="loader"></div>
+            </div>
+        }>
+            <DashboardContent />
+        </Suspense>
     );
 }

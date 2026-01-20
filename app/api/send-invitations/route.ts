@@ -5,12 +5,12 @@
 // ===========================================
 
 import { neon } from '@neondatabase/serverless';
-import crypto from 'crypto';
+import { jwtVerify } from 'jose';
 
 export const runtime = 'edge';
 
-// Verify JWT token
-function verifyToken(request: Request): { userId: string; email: string } | null {
+// Verify JWT token using jose (Edge compatible)
+async function verifyToken(request: Request): Promise<{ userId: string; email: string } | null> {
   try {
     const authHeader = request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -18,32 +18,17 @@ function verifyToken(request: Request): { userId: string; email: string } | null
     }
 
     const token = authHeader.substring(7);
-    const [header, payload, signature] = token.split('.');
-    
-    const secret = process.env.JWT_SECRET || 'proofy-prod-secret-artys-2024';
-    const expectedSignature = Buffer.from(
-      crypto.createHmac('sha256', secret)
-        .update(`${header}.${payload}`)
-        .digest('base64url')
-    ).toString();
+    const jwtSecret = process.env.JWT_SECRET || 'proofy-prod-secret-artys-2024';
+    const secretKey = new TextEncoder().encode(jwtSecret);
 
-    if (signature !== expectedSignature) {
-      return null;
-    }
-
-    const decoded = JSON.parse(Buffer.from(payload, 'base64url').toString());
-    
-    if (decoded.exp && decoded.exp < Date.now() / 1000) {
-      return null;
-    }
-
-    return { userId: decoded.userId, email: decoded.email };
+    const { payload } = await jwtVerify(token, secretKey);
+    return { userId: payload.userId as string, email: payload.email as string };
   } catch (error) {
     return null;
   }
 }
 
-// Generate secure token for invitation
+// Generate secure token for invitation using Web Crypto API (Edge compatible)
 function generateInvitationToken(): string {
   const bytes = new Uint8Array(32);
   crypto.getRandomValues(bytes);
@@ -174,7 +159,7 @@ async function sendInvitationEmail(params: {
 
 export async function POST(request: Request) {
   try {
-    const user = verifyToken(request);
+    const user = await verifyToken(request);
     if (!user) {
       return Response.json({ error: 'Non autorisé' }, { status: 401 });
     }
