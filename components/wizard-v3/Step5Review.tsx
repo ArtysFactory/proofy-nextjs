@@ -178,11 +178,62 @@ export default function Step5Review() {
         throw new Error(data.error || 'Erreur lors du dépôt');
       }
 
-      // Success! Store result and redirect
+      // Success! Store result
       dispatch({ type: 'SET_CREATION_RESULT', creationId: data.id, publicId: data.publicId });
       
-      // Redirect to proof page
-      router.push(`/proof/${data.publicId}`);
+      // If co-signature required, send invitations and redirect to dashboard
+      if (hasMultipleCosignatories) {
+        // Prepare invitations data
+        const invitations = Array.from(cosignatoryEmails).map(email => {
+          // Find the holder info for this email
+          const allHolders = [
+            ...state.copyrightRights.authors.map(h => ({ ...h, rightsType: 'copyright', roleType: 'Auteur' })),
+            ...state.copyrightRights.composers.map(h => ({ ...h, rightsType: 'copyright', roleType: 'Compositeur' })),
+            ...state.copyrightRights.publishers.map(h => ({ ...h, rightsType: 'copyright', roleType: 'Éditeur' })),
+            ...(state.neighboringRights.enabled ? [
+              ...state.neighboringRights.producers.map(h => ({ ...h, rightsType: 'neighboring', roleType: 'Producteur' })),
+              ...state.neighboringRights.performers.map(h => ({ ...h, rightsType: 'neighboring', roleType: 'Interprète' })),
+              ...state.neighboringRights.labels.map(h => ({ ...h, rightsType: 'neighboring', roleType: 'Label' })),
+              ...state.neighboringRights.others.map(h => ({ ...h, rightsType: 'neighboring', roleType: h.role || 'Autre' })),
+            ] : []),
+          ];
+          
+          const holder = allHolders.find(h => h.email?.toLowerCase() === email);
+          return {
+            email,
+            role: holder?.roleType || 'Ayant droit',
+            percentage: holder?.percentage || 0,
+            rightsType: holder?.rightsType || 'copyright',
+          };
+        });
+
+        // Send invitations
+        try {
+          const invResponse = await fetch('/api/send-invitations', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              creationId: data.id,
+              invitations,
+            }),
+          });
+
+          if (!invResponse.ok) {
+            console.error('Failed to send invitations');
+          }
+        } catch (invError) {
+          console.error('Error sending invitations:', invError);
+        }
+
+        // Redirect to dashboard with success message
+        router.push('/dashboard?cosign=sent&title=' + encodeURIComponent(state.workTitle));
+      } else {
+        // No co-signature needed, redirect to proof page
+        router.push(`/proof/${data.publicId}`);
+      }
     } catch (error: any) {
       console.error('Submit error:', error);
       setSubmitError(error.message || 'Une erreur est survenue');

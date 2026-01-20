@@ -376,6 +376,7 @@
     "stats": {
       "total": "Total creations",
       "confirmed": "Confirmed",
+      "pendingSignatures": "Awaiting signatures",
       "pending": "Pending"
     },
     "empty": {
@@ -387,6 +388,7 @@
       "viewProof": "View proof",
       "manageRights": "Manage rights",
       "confirmed": "Confirmed",
+      "pendingSignatures": "Awaiting signatures",
       "pending": "Pending",
       "failed": "Failed"
     }

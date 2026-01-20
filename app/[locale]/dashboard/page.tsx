@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import LocaleLink from '@/components/LocaleLink';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -21,6 +21,7 @@ interface Creation {
 
 export default function DashboardPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const t = useTranslations('dashboard');
     const tNav = useTranslations('nav');
     const locale = useLocale();
@@ -29,6 +30,22 @@ export default function DashboardPage() {
     const [creations, setCreations] = useState<Creation[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isMounted, setIsMounted] = useState(false);
+    const [showCosignSuccess, setShowCosignSuccess] = useState(false);
+    const [cosignTitle, setCosignTitle] = useState('');
+
+    // Check for cosign success message
+    useEffect(() => {
+        if (searchParams.get('cosign') === 'sent') {
+            setShowCosignSuccess(true);
+            setCosignTitle(searchParams.get('title') || '');
+            // Clear URL params after showing message
+            setTimeout(() => {
+                router.replace(`/${locale}/dashboard`, { scroll: false });
+            }, 100);
+            // Auto-hide after 10 seconds
+            setTimeout(() => setShowCosignSuccess(false), 10000);
+        }
+    }, [searchParams, router, locale]);
 
     useEffect(() => {
         setIsMounted(true);
@@ -174,6 +191,42 @@ export default function DashboardPage() {
 
             <main className="relative z-10 pt-24 pb-12 px-4">
                 <div className="max-w-7xl mx-auto">
+                    {/* Co-signature Success Banner */}
+                    <AnimatePresence>
+                        {showCosignSuccess && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                className="mb-6 bg-[#bff227]/10 border border-[#bff227]/30 rounded-2xl p-6"
+                            >
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 bg-[#bff227]/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <i className="fas fa-paper-plane text-[#bff227] text-xl"></i>
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="text-white font-semibold text-lg mb-1">
+                                            Invitations envoyées !
+                                        </h3>
+                                        <p className="text-gray-300">
+                                            Les co-signataires de <strong className="text-[#bff227]">"{cosignTitle}"</strong> ont reçu un email d'invitation.
+                                        </p>
+                                        <p className="text-gray-400 text-sm mt-2">
+                                            <i className="fas fa-clock mr-2"></i>
+                                            Ils ont 7 jours pour valider. Le dépôt sera enregistré sur la blockchain une fois toutes les signatures collectées.
+                                        </p>
+                                    </div>
+                                    <button
+                                        onClick={() => setShowCosignSuccess(false)}
+                                        className="text-gray-400 hover:text-white p-2"
+                                    >
+                                        <i className="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
                     <AnimatePresence mode="wait">
                         <motion.div
                             key="dashboard-content"
@@ -192,7 +245,7 @@ export default function DashboardPage() {
                             </motion.div>
 
                             {/* Stats Cards */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
                                 <motion.div
                                     className="glass-card rounded-2xl p-6"
                                     variants={itemVariants}
@@ -216,6 +269,19 @@ export default function DashboardPage() {
                                     </div>
                                     <div className="font-display text-3xl font-bold text-white">
                                         {creations.filter((c) => c.status === 'confirmed').length}
+                                    </div>
+                                </motion.div>
+
+                                <motion.div
+                                    className="glass-card rounded-2xl p-6"
+                                    variants={itemVariants}
+                                >
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-gray-400">{t('stats.pendingSignatures') || 'En attente de signatures'}</span>
+                                        <i className="fas fa-users text-blue-400"></i>
+                                    </div>
+                                    <div className="font-display text-3xl font-bold text-white">
+                                        {creations.filter((c) => c.status === 'pending_signatures').length}
                                     </div>
                                 </motion.div>
 
@@ -295,18 +361,28 @@ export default function DashboardPage() {
                                                     </div>
                                                     <div className="ml-4">
                                                         <span
-                                                            className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${creation.status === 'confirmed'
+                                                            className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${
+                                                                creation.status === 'confirmed'
                                                                     ? 'status-confirmed'
-                                                                    : creation.status === 'pending'
-                                                                        ? 'status-pending'
-                                                                        : 'status-failed'
-                                                                }`}
+                                                                    : creation.status === 'pending_signatures'
+                                                                        ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                                                                        : creation.status === 'pending'
+                                                                            ? 'status-pending'
+                                                                            : 'status-failed'
+                                                            }`}
                                                         >
                                                             {creation.status === 'confirmed'
                                                                 ? t('creation.confirmed')
-                                                                : creation.status === 'pending'
-                                                                    ? t('creation.pending')
-                                                                    : 'Error'}
+                                                                : creation.status === 'pending_signatures'
+                                                                    ? (
+                                                                        <span className="flex items-center gap-2">
+                                                                            <i className="fas fa-users"></i>
+                                                                            {t('creation.pendingSignatures') || 'En attente de signatures'}
+                                                                        </span>
+                                                                    )
+                                                                    : creation.status === 'pending'
+                                                                        ? t('creation.pending')
+                                                                        : 'Error'}
                                                         </span>
                                                     </div>
                                                 </div>
