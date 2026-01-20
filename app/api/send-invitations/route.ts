@@ -35,7 +35,7 @@ function generateInvitationToken(): string {
   return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Send email via Resend (or placeholder for now)
+// Send email via MailerSend
 async function sendInvitationEmail(params: {
   to: string;
   depositorName: string;
@@ -45,10 +45,10 @@ async function sendInvitationEmail(params: {
   signUrl: string;
   expiresAt: Date;
 }): Promise<boolean> {
-  const resendApiKey = process.env.RESEND_API_KEY;
+  const mailersendApiKey = process.env.MAILERSEND_API_KEY;
   
-  if (!resendApiKey) {
-    console.log('📧 Email would be sent to:', params.to);
+  if (!mailersendApiKey) {
+    console.log('📧 [DEV MODE] Email would be sent to:', params.to);
     console.log('   Subject: Invitation à co-signer un dépôt sur UnlmtdProof');
     console.log('   Content: You have been invited by', params.depositorName, 'to sign', params.creationTitle);
     console.log('   Sign URL:', params.signUrl);
@@ -56,15 +56,18 @@ async function sendInvitationEmail(params: {
   }
 
   try {
-    const response = await fetch('https://api.resend.com/emails', {
+    const response = await fetch('https://api.mailersend.com/v1/email', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${resendApiKey}`,
+        'Authorization': `Bearer ${mailersendApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'UnlmtdProof <noreply@unlmtdproof.com>',
-        to: [params.to],
+        from: {
+          email: 'noreply@unlmtdproof.com',
+          name: 'UnlmtdProof'
+        },
+        to: [{ email: params.to }],
         subject: `Invitation à co-signer "${params.creationTitle}" sur UnlmtdProof`,
         html: `
           <!DOCTYPE html>
@@ -150,9 +153,16 @@ async function sendInvitationEmail(params: {
       }),
     });
 
-    return response.ok;
+    if (response.ok) {
+      console.log('📧 Email sent successfully to:', params.to);
+      return true;
+    } else {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('📧 MailerSend error:', response.status, errorData);
+      return false;
+    }
   } catch (error) {
-    console.error('Failed to send email:', error);
+    console.error('📧 Failed to send email:', error);
     return false;
   }
 }
