@@ -59,8 +59,8 @@ export default function Step5Review() {
     state.neighboringRights.labels.reduce((sum, h) => sum + h.percentage, 0) +
     state.neighboringRights.others.reduce((sum, h) => sum + h.percentage, 0) : 0;
 
-  // Count unique co-signatories (people with emails)
-  const getCosignatories = () => {
+  // Count unique people declared on the deposit (with emails for co-signature)
+  const getUniqueHolders = () => {
     const emails = new Set<string>();
     
     // Copyright holders with emails
@@ -76,12 +76,18 @@ export default function Step5Review() {
     return emails;
   };
 
-  const cosignatoryEmails = getCosignatories();
-  const cosignatoryCount = cosignatoryEmails.size;
-  const hasMultipleCosignatories = cosignatoryCount > 0;
+  const uniqueHolderEmails = getUniqueHolders();
+  const uniqueHolderCount = uniqueHolderEmails.size;
+  
+  // Co-signature required only if more than 1 unique person
+  const hasMultipleCosignatories = uniqueHolderCount > 1;
+  const cosignatoryEmails = uniqueHolderEmails;
+  const cosignatoryCount = uniqueHolderCount;
 
-  // Calculate deposit cost (1 deposit per co-signatory)
-  const depositCost = hasMultipleCosignatories ? cosignatoryCount + 1 : 1; // +1 for the main depositor
+  // Calculate deposit cost: 1 deposit per unique person declared
+  // If only 1 person (déposant = seul ayant droit), cost = 1
+  // If 2 persons declared, cost = 2 (not 3!)
+  const depositCost = Math.max(1, uniqueHolderCount);
 
   // Validation checks
   const validations = {
@@ -575,23 +581,22 @@ export default function Step5Review() {
                 </button>
               </h3>
               <p className="text-gray-400 text-sm mb-4">
-                {cosignatoryCount} ayant(s) droit devront valider ce dépôt avant l'enregistrement blockchain.
+                {cosignatoryCount} personne(s) déclarée(s). Chacun devra valider avant l'enregistrement blockchain.
               </p>
               
               {/* Cost breakdown */}
               <div className="bg-white/5 rounded-lg p-4 space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Déposant principal</span>
-                  <span className="text-white">1 dépôt</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Co-signataires ({cosignatoryCount})</span>
-                  <span className="text-white">{cosignatoryCount} dépôt(s)</span>
+                  <span className="text-gray-400">Personnes déclarées sur ce dépôt</span>
+                  <span className="text-white">{cosignatoryCount}</span>
                 </div>
                 <div className="border-t border-white/10 pt-2 flex items-center justify-between">
-                  <span className="text-white font-medium">Total consommé</span>
+                  <span className="text-white font-medium">Crédits consommés</span>
                   <span className="text-[#bff227] font-bold text-lg">{depositCost} dépôt(s)</span>
                 </div>
+                <p className="text-gray-500 text-xs">
+                  1 dépôt = 1 création protégée, peu importe le nombre d'ayants droit
+                </p>
               </div>
               
               {/* Email list */}
@@ -845,12 +850,12 @@ export default function Step5Review() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <CreditCard className="w-5 h-5 text-[#bff227]" />
-                      <span className="text-white">Coût total</span>
+                      <span className="text-white">Crédits consommés</span>
                     </div>
                     <span className="text-[#bff227] font-bold text-lg">{depositCost} dépôt(s)</span>
                   </div>
                   <p className="text-gray-400 text-xs mt-2">
-                    1 dépôt par personne (vous + {cosignatoryCount} co-signataire{cosignatoryCount > 1 ? 's' : ''})
+                    {cosignatoryCount} personne{cosignatoryCount > 1 ? 's' : ''} déclarée{cosignatoryCount > 1 ? 's' : ''} = {depositCost} crédit{depositCost > 1 ? 's' : ''}
                   </p>
                 </div>
               </div>
