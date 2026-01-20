@@ -7,7 +7,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWizard } from './WizardContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import {
   FileText,
   PenLine,
@@ -38,6 +38,8 @@ import {
 
 export default function Step5Review() {
   const router = useRouter();
+  const params = useParams();
+  const locale = params?.locale || 'fr';
   const { state, prevStep, goToStep, dispatch } = useWizard();
   const [expandedSection, setExpandedSection] = useState<string | null>('file');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -233,10 +235,10 @@ export default function Step5Review() {
         }
 
         // Redirect to dashboard with success message
-        router.push('/dashboard?cosign=sent&title=' + encodeURIComponent(state.workTitle));
+        router.push(`/${locale}/dashboard?cosign=sent&title=` + encodeURIComponent(state.workTitle));
       } else {
         // No co-signature needed, redirect to proof page
-        router.push(`/proof/${data.publicId}`);
+        router.push(`/${locale}/proof/${data.publicId}`);
       }
     } catch (error: any) {
       console.error('Submit error:', error);

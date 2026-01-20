@@ -134,7 +134,11 @@ export async function POST(request: NextRequest) {
         let status: string;
         let chain: string;
 
+        // Debug log
+        console.log(`[Creation] requiresCosignature: ${requiresCosignature}, cosignatoryEmails: ${JSON.stringify(cosignatoryEmails)}, count: ${cosignatoryEmails?.length || 0}`);
+
         // If co-signature required, don't anchor yet - wait for all signatures
+        // Note: > 1 because we need at least 2 different people for co-signature
         if (requiresCosignature && cosignatoryEmails && cosignatoryEmails.length > 1) {
             console.log(`[Creation] Co-signature required for ${cosignatoryEmails.length} people - deferring blockchain anchoring`);
             blockchainResult = {
