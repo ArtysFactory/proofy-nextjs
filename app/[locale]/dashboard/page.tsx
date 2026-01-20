@@ -286,9 +286,25 @@ function DashboardContent() {
                                         <span className="text-gray-400">{t('stats.pendingSignatures') || 'En attente de signatures'}</span>
                                         <i className="fas fa-users text-blue-400"></i>
                                     </div>
-                                    <div className="font-display text-3xl font-bold text-white">
+                                    <div className="font-display text-3xl font-bold text-white mb-2">
                                         {creations.filter((c) => c.status === 'pending_signatures').length}
                                     </div>
+                                    {/* Liste des projets en attente de signatures */}
+                                    {creations.filter((c) => c.status === 'pending_signatures').length > 0 && (
+                                        <div className="border-t border-white/10 pt-2 mt-2 space-y-1 max-h-24 overflow-y-auto">
+                                            {creations.filter((c) => c.status === 'pending_signatures').slice(0, 3).map((c) => (
+                                                <div key={c.id} className="text-xs text-blue-300 truncate flex items-center gap-1">
+                                                    <i className="fas fa-music text-[10px]"></i>
+                                                    {c.title}
+                                                </div>
+                                            ))}
+                                            {creations.filter((c) => c.status === 'pending_signatures').length > 3 && (
+                                                <div className="text-xs text-gray-500">
+                                                    +{creations.filter((c) => c.status === 'pending_signatures').length - 3} autres...
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </motion.div>
 
                                 <motion.div
@@ -299,9 +315,25 @@ function DashboardContent() {
                                         <span className="text-gray-400">{t('stats.pending')}</span>
                                         <i className="fas fa-clock text-amber-400"></i>
                                     </div>
-                                    <div className="font-display text-3xl font-bold text-white">
+                                    <div className="font-display text-3xl font-bold text-white mb-2">
                                         {creations.filter((c) => c.status === 'pending').length}
                                     </div>
+                                    {/* Liste des projets en attente blockchain */}
+                                    {creations.filter((c) => c.status === 'pending').length > 0 && (
+                                        <div className="border-t border-white/10 pt-2 mt-2 space-y-1 max-h-24 overflow-y-auto">
+                                            {creations.filter((c) => c.status === 'pending').slice(0, 3).map((c) => (
+                                                <div key={c.id} className="text-xs text-amber-300 truncate flex items-center gap-1">
+                                                    <i className="fas fa-music text-[10px]"></i>
+                                                    {c.title}
+                                                </div>
+                                            ))}
+                                            {creations.filter((c) => c.status === 'pending').length > 3 && (
+                                                <div className="text-xs text-gray-500">
+                                                    +{creations.filter((c) => c.status === 'pending').length - 3} autres...
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </motion.div>
                             </div>
 
