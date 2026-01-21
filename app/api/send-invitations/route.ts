@@ -6,7 +6,7 @@
 
 import { neon } from '@neondatabase/serverless';
 import { jwtVerify } from 'jose';
-import { generateInvitationEmailHTML, InvitationEmailParams } from '@/lib/email/templates/invitation';
+import { generateInvitationEmail, getInvitationEmailSubject, InvitationEmailParams, SupportedLocale } from '@/lib/email/templates';
 
 export const runtime = 'edge';
 
@@ -37,11 +37,13 @@ function generateInvitationToken(): string {
 }
 
 // Send email via MailerSend with professional template
-async function sendInvitationEmail(params: InvitationEmailParams & { projectType?: string }): Promise<boolean> {
+async function sendInvitationEmail(params: InvitationEmailParams & { projectType?: string; locale?: SupportedLocale }): Promise<boolean> {
   const mailersendApiKey = process.env.MAILERSEND_API_KEY;
+  const locale = params.locale || 'fr';
   
-  // Generate the HTML email using the professional template
-  const htmlContent = generateInvitationEmailHTML(params);
+  // Generate the HTML email using the professional template (with locale)
+  const htmlContent = generateInvitationEmail(params, locale);
+  const subject = getInvitationEmailSubject(params.creationTitle, locale);
   
   if (!mailersendApiKey) {
     console.log('📧 [DEV MODE] Email would be sent to:', params.to);
@@ -66,7 +68,7 @@ async function sendInvitationEmail(params: InvitationEmailParams & { projectType
           name: 'UnlmtdProof'
         },
         to: [{ email: params.to }],
-        subject: `✉️ Invitation à co-signer "${params.creationTitle}" sur UnlmtdProof`,
+        subject: subject,
         html: htmlContent,
       }),
     });
