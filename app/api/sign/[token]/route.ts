@@ -124,13 +124,36 @@ export async function GET(
         const timeRemaining = expiresAt.getTime() - now.getTime();
         const daysRemaining = Math.max(0, Math.ceil(timeRemaining / (1000 * 60 * 60 * 24)));
 
+        // Get all signatories for this creation
+        let allSignatories: any[] = [];
+        if (inv.creation_id) {
+            const signatories = await sql`
+                SELECT 
+                    invitee_email,
+                    role_label,
+                    role_type,
+                    percentage,
+                    status,
+                    signed_at
+                FROM deposit_invitations
+                WHERE creation_id = ${inv.creation_id}
+                ORDER BY created_at ASC
+            `;
+            allSignatories = signatories.map((s: any) => ({
+                email: s.invitee_email,
+                role: s.role_label || s.role_type,
+                percentage: s.percentage,
+                status: s.status === 'accepted' ? 'signed' : s.status,
+                signedAt: s.signed_at,
+            }));
+        }
+
         return NextResponse.json({
             invitation: {
                 id: inv.id,
                 email: inv.invitee_email,
-                roleType: inv.role_type,
-                roleLabel: inv.role_label,
-                percentage: inv.percentage,
+                role: inv.role_label || inv.role_type,
+                percentage: parseFloat(inv.percentage),
                 status: inv.status,
                 createdAt: inv.created_at,
                 expiresAt: inv.expires_at,
@@ -146,11 +169,12 @@ export async function GET(
                 madeBy: inv.made_by,
                 createdAt: inv.creation_date,
             } : null,
-            inviter: {
-                name: `${inv.inviter_first_name} ${inv.inviter_last_name}`,
+            depositor: {
+                name: `${inv.inviter_first_name || ''} ${inv.inviter_last_name || ''}`.trim() || inv.inviter_email,
                 email: inv.inviter_email,
             },
-            requiresAccount: true, // User must create account to sign
+            allSignatories,
+            requiresAccount: true,
         });
 
     } catch (error: any) {
@@ -181,10 +205,12 @@ export async function POST(
         }
 
         const body = await request.json();
-        const { action, rejectionReason } = body; // action: 'accept' or 'reject'
+        const { action, reason: rejectionReason } = body; // action: 'sign' or 'reject'
 
-        if (!action || !['accept', 'reject'].includes(action)) {
-            return NextResponse.json({ error: 'Action invalide (accept/reject)' }, { status: 400 });
+        // Support both 'sign'/'accept' and 'reject'
+        const normalizedAction = action === 'sign' ? 'accept' : action;
+        if (!normalizedAction || !['accept', 'reject'].includes(normalizedAction)) {
+            return NextResponse.json({ error: 'Action invalide (sign/reject)' }, { status: 400 });
         }
 
         const databaseUrl = process.env.DATABASE_URL;
@@ -231,7 +257,7 @@ export async function POST(
             );
         }
 
-        const newStatus = action === 'accept' ? 'accepted' : 'rejected';
+        const newStatus = normalizedAction === 'accept' ? 'accepted' : 'rejected';
 
         // Update invitation
         await sql`
@@ -240,7 +266,7 @@ export async function POST(
                 status = ${newStatus},
                 invitee_user_id = ${payload.userId},
                 signed_at = NOW(),
-                rejection_reason = ${action === 'reject' ? rejectionReason : null}
+                rejection_reason = ${normalizedAction === 'reject' ? rejectionReason : null}
             WHERE token = ${token}
         `;
 
@@ -263,14 +289,14 @@ export async function POST(
                 ${user[0].email},
                 ${request.headers.get('x-forwarded-for') || 'unknown'},
                 ${request.headers.get('user-agent') || 'unknown'},
-                ${action === 'reject' ? JSON.stringify({ reason: rejectionReason }) : null},
+                ${normalizedAction === 'reject' ? JSON.stringify({ reason: rejectionReason }) : null},
                 NOW()
             )
         `;
 
         // Update creation signature count if accepted
         if (inv.creation_id) {
-            if (action === 'accept') {
+            if (normalizedAction === 'accept') {
                 const updated = await sql`
                     UPDATE creations
                     SET cosignature_signed_count = cosignature_signed_count + 1,
@@ -302,7 +328,7 @@ export async function POST(
         return NextResponse.json({
             success: true,
             action: newStatus,
-            message: action === 'accept' 
+            message: normalizedAction === 'accept' 
                 ? 'Vous avez accepté l\'invitation. Merci pour votre signature !'
                 : 'Vous avez refusé l\'invitation. L\'initiateur sera notifié.',
         });

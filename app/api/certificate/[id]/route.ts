@@ -12,45 +12,11 @@ import { CertificateData, formatDepositDate, formatSignatureDate } from '@/lib/c
 
 const JWT_SECRET = process.env.JWT_SECRET || 'proofy-prod-secret-artys-2024';
 
-// Logo PROOF en base64 (version simplifiée SVG)
-const LOGO_BASE64 = `data:image/svg+xml;base64,${Buffer.from(`
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100">
-  <!-- Background pill -->
-  <rect x="0" y="0" width="400" height="100" rx="50" fill="#000"/>
-  
-  <!-- Owl circle -->
-  <circle cx="50" cy="50" r="40" fill="#A4D233" stroke="#000" stroke-width="2"/>
-  
-  <!-- Owl face -->
-  <circle cx="38" cy="42" r="8" fill="#000"/>
-  <circle cx="62" cy="42" r="8" fill="#000"/>
-  <circle cx="40" cy="40" r="3" fill="#fff"/>
-  <circle cx="64" cy="40" r="3" fill="#fff"/>
-  <path d="M45 58 Q50 65 55 58" stroke="#000" stroke-width="3" fill="none"/>
-  
-  <!-- Circuit lines -->
-  <line x1="25" y1="70" x2="25" y2="80" stroke="#000" stroke-width="2"/>
-  <line x1="35" y1="75" x2="35" y2="85" stroke="#000" stroke-width="2"/>
-  <line x1="65" y1="75" x2="65" y2="85" stroke="#000" stroke-width="2"/>
-  <line x1="75" y1="70" x2="75" y2="80" stroke="#000" stroke-width="2"/>
-  
-  <!-- PROOF text -->
-  <text x="110" y="65" font-family="Arial Black, sans-serif" font-size="50" font-weight="900" fill="#fff">PR</text>
-  <text x="185" y="65" font-family="Arial Black, sans-serif" font-size="50" font-weight="900" fill="#A4D233">OO</text>
-  <text x="275" y="65" font-family="Arial Black, sans-serif" font-size="50" font-weight="900" fill="#fff">F</text>
-  
-  <!-- Unlmtd Guilds label -->
-  <text x="320" y="35" font-family="Arial, sans-serif" font-size="10" fill="#A4D233" transform="rotate(90, 320, 35)">Unlmtd</text>
-  <text x="335" y="35" font-family="Arial, sans-serif" font-size="10" fill="#A4D233" transform="rotate(90, 335, 35)">Guilds</text>
-</svg>
-`).toString('base64')}`;
+// Logo PROOF - URL publique
+const LOGO_URL = 'https://i.imgur.com/HgjX8Uh.png';
 
-// Signature Owlister en base64 (version simplifiée SVG)
-const SIGNATURE_BASE64 = `data:image/svg+xml;base64,${Buffer.from(`
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 80">
-  <text x="10" y="55" font-family="Brush Script MT, cursive, Georgia" font-size="45" fill="#A4D233" font-style="italic">Owlister</text>
-</svg>
-`).toString('base64')}`;
+// Signature Owlister - URL publique
+const SIGNATURE_URL = 'https://i.imgur.com/R4Vtz8T.png';
 
 async function verifyToken(token: string): Promise<{ userId: number; email: string } | null> {
   try {
@@ -168,8 +134,8 @@ export async function GET(
     const html = generateCertificateHTML(
       certificateData,
       qrCodeDataUrl,
-      LOGO_BASE64,
-      SIGNATURE_BASE64
+      LOGO_URL,
+      SIGNATURE_URL
     );
 
     // Check if PDF format is requested
