@@ -81,8 +81,15 @@ export default function Step5Review() {
   const uniqueHolderEmails = getUniqueHolders();
   const uniqueHolderCount = uniqueHolderEmails.size;
   
+  // DEBUG: Log holder detection
+  console.log('[Step5] DEBUG - Copyright authors:', state.copyrightRights.authors);
+  console.log('[Step5] DEBUG - Copyright composers:', state.copyrightRights.composers);
+  console.log('[Step5] DEBUG - Unique emails found:', Array.from(uniqueHolderEmails));
+  console.log('[Step5] DEBUG - Unique holder count:', uniqueHolderCount);
+  
   // Co-signature required only if more than 1 unique person
   const hasMultipleCosignatories = uniqueHolderCount > 1;
+  console.log('[Step5] DEBUG - hasMultipleCosignatories:', hasMultipleCosignatories);
   const cosignatoryEmails = uniqueHolderEmails;
   const cosignatoryCount = uniqueHolderCount;
 
