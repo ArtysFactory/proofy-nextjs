@@ -189,6 +189,10 @@ export default function Step5Review() {
       
       // If co-signature required, send invitations and redirect to dashboard
       if (hasMultipleCosignatories) {
+        console.log('[Step5] Co-signature required, preparing invitations...');
+        console.log('[Step5] Cosignatory emails:', Array.from(cosignatoryEmails));
+        console.log('[Step5] Creation ID:', data.id);
+        
         // Prepare invitations data
         const invitations = Array.from(cosignatoryEmails).map(email => {
           // Find the holder info for this email
@@ -214,6 +218,8 @@ export default function Step5Review() {
         });
 
         // Send invitations
+        console.log('[Step5] Sending invitations:', invitations);
+        
         try {
           const invResponse = await fetch('/api/send-invitations', {
             method: 'POST',
@@ -227,11 +233,16 @@ export default function Step5Review() {
             }),
           });
 
+          const invResult = await invResponse.json();
+          console.log('[Step5] Invitations API response:', invResult);
+
           if (!invResponse.ok) {
-            console.error('Failed to send invitations');
+            console.error('[Step5] Failed to send invitations:', invResult);
+          } else {
+            console.log('[Step5] Invitations sent successfully!');
           }
         } catch (invError) {
-          console.error('Error sending invitations:', invError);
+          console.error('[Step5] Error sending invitations:', invError);
         }
 
         // Redirect to dashboard with success message

@@ -168,16 +168,24 @@ async function sendInvitationEmail(params: {
 }
 
 export async function POST(request: Request) {
+  console.log('[Send Invitations API] POST request received');
+  
   try {
     const user = await verifyToken(request);
+    console.log('[Send Invitations API] User verified:', user?.userId || 'null');
+    
     if (!user) {
+      console.log('[Send Invitations API] Unauthorized - no valid token');
       return Response.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
     const body = await request.json();
     const { creationId, invitations } = body;
+    
+    console.log('[Send Invitations API] Received data:', { creationId, invitationsCount: invitations?.length });
 
     if (!creationId || !invitations || !Array.isArray(invitations) || invitations.length === 0) {
+      console.log('[Send Invitations API] Invalid data:', { creationId, invitations });
       return Response.json({ error: 'Données invalides' }, { status: 400 });
     }
 
