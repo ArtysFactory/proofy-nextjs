@@ -6,6 +6,7 @@
 
 import { neon } from '@neondatabase/serverless';
 import { jwtVerify } from 'jose';
+import { generateInvitationEmailHTML, InvitationEmailParams } from '@/lib/email/templates/invitation';
 
 export const runtime = 'edge';
 
@@ -35,17 +36,12 @@ function generateInvitationToken(): string {
   return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Send email via MailerSend
-async function sendInvitationEmail(params: {
-  to: string;
-  depositorName: string;
-  creationTitle: string;
-  role: string;
-  percentage: number;
-  signUrl: string;
-  expiresAt: Date;
-}): Promise<boolean> {
+// Send email via MailerSend with professional template
+async function sendInvitationEmail(params: InvitationEmailParams & { projectType?: string }): Promise<boolean> {
   const mailersendApiKey = process.env.MAILERSEND_API_KEY;
+  
+  // Generate the HTML email using the professional template
+  const htmlContent = generateInvitationEmailHTML(params);
   
   if (!mailersendApiKey) {
     console.log('📧 [DEV MODE] Email would be sent to:', params.to);
@@ -56,6 +52,8 @@ async function sendInvitationEmail(params: {
   }
 
   try {
+    console.log('📧 [MailerSend] Sending email to:', params.to);
+    
     const response = await fetch('https://api.mailersend.com/v1/email', {
       method: 'POST',
       headers: {
@@ -68,101 +66,21 @@ async function sendInvitationEmail(params: {
           name: 'UnlmtdProof'
         },
         to: [{ email: params.to }],
-        subject: `Invitation à co-signer "${params.creationTitle}" sur UnlmtdProof`,
-        html: `
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Invitation à co-signer</title>
-          </head>
-          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background-color: #0a0a0a;">
-            <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-              <!-- Logo -->
-              <div style="text-align: center; margin-bottom: 40px;">
-                <h1 style="color: #bff227; font-size: 28px; margin: 0;">UnlmtdProof</h1>
-                <p style="color: #666; font-size: 14px; margin: 8px 0 0 0;">Preuve d'antériorité blockchain</p>
-              </div>
-              
-              <!-- Main Card -->
-              <div style="background-color: #1a1a1a; border-radius: 16px; padding: 32px; border: 1px solid #333;">
-                <h2 style="color: #fff; font-size: 22px; margin: 0 0 16px 0;">
-                  Vous êtes invité(e) à co-signer un dépôt
-                </h2>
-                
-                <p style="color: #999; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0;">
-                  <strong style="color: #fff;">${params.depositorName}</strong> vous invite à valider votre participation 
-                  en tant que co-auteur/ayant droit sur l'œuvre suivante :
-                </p>
-                
-                <!-- Creation Info -->
-                <div style="background-color: #252525; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-                  <p style="color: #bff227; font-size: 18px; font-weight: bold; margin: 0 0 12px 0;">
-                    ${params.creationTitle}
-                  </p>
-                  <div style="display: flex; gap: 20px;">
-                    <div>
-                      <p style="color: #666; font-size: 12px; margin: 0;">Votre rôle</p>
-                      <p style="color: #fff; font-size: 14px; margin: 4px 0 0 0;">${params.role}</p>
-                    </div>
-                    <div>
-                      <p style="color: #666; font-size: 12px; margin: 0;">Votre part</p>
-                      <p style="color: #bff227; font-size: 14px; font-weight: bold; margin: 4px 0 0 0;">${params.percentage}%</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- Warning -->
-                <div style="background-color: rgba(255, 165, 0, 0.1); border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
-                  <p style="color: #ffa500; font-size: 14px; margin: 0;">
-                    ⏰ <strong>Attention :</strong> Cette invitation expire dans 7 jours 
-                    (${params.expiresAt.toLocaleDateString('fr-FR')}). Passé ce délai, le dépôt sera annulé.
-                  </p>
-                </div>
-                
-                <!-- CTA Button -->
-                <div style="text-align: center; margin: 32px 0;">
-                  <a href="${params.signUrl}" 
-                     style="display: inline-block; background: linear-gradient(to right, #bff227, #9dd11e); 
-                            color: #0a0a0a; font-size: 16px; font-weight: bold; text-decoration: none; 
-                            padding: 16px 32px; border-radius: 12px;">
-                    Valider ma participation
-                  </a>
-                </div>
-                
-                <p style="color: #666; font-size: 12px; text-align: center; margin: 0;">
-                  Ou copiez ce lien dans votre navigateur :<br>
-                  <a href="${params.signUrl}" style="color: #bff227; word-break: break-all;">${params.signUrl}</a>
-                </p>
-              </div>
-              
-              <!-- Footer -->
-              <div style="text-align: center; margin-top: 32px;">
-                <p style="color: #666; font-size: 12px; margin: 0;">
-                  Cet email a été envoyé par UnlmtdProof, membre d'Artys Network.
-                </p>
-                <p style="color: #666; font-size: 12px; margin: 8px 0 0 0;">
-                  Si vous n'avez pas demandé cet email, vous pouvez l'ignorer.
-                </p>
-              </div>
-            </div>
-          </body>
-          </html>
-        `,
+        subject: `✉️ Invitation à co-signer "${params.creationTitle}" sur UnlmtdProof`,
+        html: htmlContent,
       }),
     });
 
     if (response.ok) {
-      console.log('📧 Email sent successfully to:', params.to);
+      console.log('📧 [MailerSend] Email sent successfully to:', params.to);
       return true;
     } else {
       const errorData = await response.json().catch(() => ({}));
-      console.error('📧 MailerSend error:', response.status, errorData);
+      console.error('📧 [MailerSend] Error:', response.status, errorData);
       return false;
     }
   } catch (error) {
-    console.error('📧 Failed to send email:', error);
+    console.error('📧 [MailerSend] Failed to send email:', error);
     return false;
   }
 }
