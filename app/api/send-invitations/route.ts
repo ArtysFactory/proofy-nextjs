@@ -41,16 +41,22 @@ async function sendInvitationEmail(params: InvitationEmailParams & { projectType
   const mailersendApiKey = process.env.MAILERSEND_API_KEY;
   const locale = params.locale || 'fr';
   
+  console.log('[MailerSend] Preparing email for:', params.to);
+  console.log('[MailerSend] API Key configured:', !!mailersendApiKey, mailersendApiKey ? `(${mailersendApiKey.substring(0, 10)}...)` : '');
+  
   // Generate the HTML email using the professional template (with locale)
   const htmlContent = generateInvitationEmail(params, locale);
   const subject = getInvitationEmailSubject(params.creationTitle, locale);
   
+  console.log('[MailerSend] Subject:', subject);
+  
   if (!mailersendApiKey) {
-    // DEV MODE - No MailerSend API key configured
+    console.log('[MailerSend] DEV MODE - No API key, skipping actual send');
     return true;
   }
 
   try {
+    console.log('[MailerSend] Sending via API...');
     
     const response = await fetch('https://api.mailersend.com/v1/email', {
       method: 'POST',
@@ -69,30 +75,39 @@ async function sendInvitationEmail(params: InvitationEmailParams & { projectType
       }),
     });
 
+    console.log('[MailerSend] Response status:', response.status);
+    
     if (response.ok) {
+      console.log('[MailerSend] Email sent successfully to:', params.to);
       return true;
     } else {
       const errorData = await response.json().catch(() => ({}));
-      console.error('📧 [MailerSend] Error:', response.status, errorData);
+      console.error('[MailerSend] Error:', response.status, JSON.stringify(errorData));
       return false;
     }
   } catch (error) {
-    console.error('📧 [MailerSend] Failed to send email:', error);
+    console.error('[MailerSend] Failed to send email:', error);
     return false;
   }
 }
 
 export async function POST(request: Request) {
+  console.log('[Send Invitations] POST request received');
+  
   try {
     const user = await verifyToken(request);
     if (!user) {
+      console.log('[Send Invitations] Unauthorized - no valid token');
       return Response.json({ error: 'Non autorisé' }, { status: 401 });
     }
+    console.log('[Send Invitations] User verified:', user.userId, user.email);
 
     const body = await request.json();
     const { creationId, invitations } = body;
+    console.log('[Send Invitations] Request data:', { creationId, invitationsCount: invitations?.length, invitations });
 
     if (!creationId || !invitations || !Array.isArray(invitations) || invitations.length === 0) {
+      console.log('[Send Invitations] Invalid data - missing creationId or invitations');
       return Response.json({ error: 'Données invalides' }, { status: 400 });
     }
 
@@ -120,6 +135,13 @@ export async function POST(request: Request) {
     const creationData = creation[0];
     const depositorEmail = creationData.depositor_email?.toLowerCase();
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://unlmtdproof.com';
+    
+    console.log('[Send Invitations] Creation found:', { 
+      id: creationData.id, 
+      title: creationData.title, 
+      depositorEmail,
+      baseUrl 
+    });
 
     // Create invitations and send emails
     const results = [];
@@ -136,9 +158,12 @@ export async function POST(request: Request) {
 
       // Skip the depositor - they don't need to sign their own deposit
       if (email.toLowerCase() === depositorEmail) {
+        console.log('[Send Invitations] Skipping depositor:', email);
         results.push({ email, success: true, skipped: true, reason: 'Déposant (pas besoin de signature)' });
         continue;
       }
+      
+      console.log('[Send Invitations] Processing invitation for:', email, role, percentage);
 
       const token = generateInvitationToken();
 
@@ -155,6 +180,8 @@ export async function POST(request: Request) {
 
         // Send email
         const signUrl = `${baseUrl}/sign/${token}`;
+        console.log('[Send Invitations] Sending email to:', email, 'signUrl:', signUrl);
+        
         const emailSent = await sendInvitationEmail({
           to: email,
           depositorName: creationData.depositor_name || creationData.depositor_email,
@@ -164,7 +191,8 @@ export async function POST(request: Request) {
           signUrl,
           expiresAt,
         });
-
+        
+        console.log('[Send Invitations] Email result for', email, ':', emailSent);
         results.push({ email, success: true, emailSent });
       } catch (dbError: any) {
         console.error('DB error for', email, dbError);
