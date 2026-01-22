@@ -226,6 +226,19 @@ export default function Step5Review() {
 
         // Send invitations
         console.log('[Step5] Sending invitations:', invitations);
+        console.log('[Step5] Creation ID for invitations:', data.id);
+        console.log('[Step5] Invitations array length:', invitations.length);
+        
+        // Skip if no invitations to send
+        if (invitations.length === 0) {
+          console.warn('[Step5] No invitations to send - emails may be missing from holders');
+        }
+        
+        const requestBody = {
+          creationId: data.id,
+          invitations,
+        };
+        console.log('[Step5] Request body:', JSON.stringify(requestBody, null, 2));
         
         try {
           const invResponse = await fetch('/api/send-invitations', {
@@ -234,10 +247,7 @@ export default function Step5Review() {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({
-              creationId: data.id,
-              invitations,
-            }),
+            body: JSON.stringify(requestBody),
           });
 
           const invResult = await invResponse.json();
