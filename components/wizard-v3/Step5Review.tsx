@@ -81,15 +81,8 @@ export default function Step5Review() {
   const uniqueHolderEmails = getUniqueHolders();
   const uniqueHolderCount = uniqueHolderEmails.size;
   
-  // DEBUG: Log holder detection
-  console.log('[Step5] DEBUG - Copyright authors:', state.copyrightRights.authors);
-  console.log('[Step5] DEBUG - Copyright composers:', state.copyrightRights.composers);
-  console.log('[Step5] DEBUG - Unique emails found:', Array.from(uniqueHolderEmails));
-  console.log('[Step5] DEBUG - Unique holder count:', uniqueHolderCount);
-  
   // Co-signature required only if more than 1 unique person
   const hasMultipleCosignatories = uniqueHolderCount > 1;
-  console.log('[Step5] DEBUG - hasMultipleCosignatories:', hasMultipleCosignatories);
   const cosignatoryEmails = uniqueHolderEmails;
   const cosignatoryCount = uniqueHolderCount;
 
@@ -196,9 +189,6 @@ export default function Step5Review() {
       
       // If co-signature required, send invitations and redirect to dashboard
       if (hasMultipleCosignatories) {
-        console.log('[Step5] Co-signature required, preparing invitations...');
-        console.log('[Step5] Cosignatory emails:', Array.from(cosignatoryEmails));
-        console.log('[Step5] Creation ID:', data.id);
         
         // Prepare invitations data
         const invitations = Array.from(cosignatoryEmails).map(email => {
@@ -225,20 +215,10 @@ export default function Step5Review() {
         });
 
         // Send invitations
-        console.log('[Step5] Sending invitations:', invitations);
-        console.log('[Step5] Creation ID for invitations:', data.id);
-        console.log('[Step5] Invitations array length:', invitations.length);
-        
-        // Skip if no invitations to send
-        if (invitations.length === 0) {
-          console.warn('[Step5] No invitations to send - emails may be missing from holders');
-        }
-        
         const requestBody = {
           creationId: data.id,
           invitations,
         };
-        console.log('[Step5] Request body:', JSON.stringify(requestBody, null, 2));
         
         try {
           const invResponse = await fetch('/api/send-invitations', {
@@ -251,12 +231,8 @@ export default function Step5Review() {
           });
 
           const invResult = await invResponse.json();
-          console.log('[Step5] Invitations API response:', invResult);
-
           if (!invResponse.ok) {
-            console.error('[Step5] Failed to send invitations:', invResult);
-          } else {
-            console.log('[Step5] Invitations sent successfully!');
+            console.error('Failed to send invitations:', invResult);
           }
         } catch (invError) {
           console.error('[Step5] Error sending invitations:', invError);

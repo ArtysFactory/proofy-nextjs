@@ -46,15 +46,11 @@ async function sendInvitationEmail(params: InvitationEmailParams & { projectType
   const subject = getInvitationEmailSubject(params.creationTitle, locale);
   
   if (!mailersendApiKey) {
-    console.log('📧 [DEV MODE] Email would be sent to:', params.to);
-    console.log('   Subject: Invitation à co-signer un dépôt sur UnlmtdProof');
-    console.log('   Content: You have been invited by', params.depositorName, 'to sign', params.creationTitle);
-    console.log('   Sign URL:', params.signUrl);
-    return true; // Simulate success for development
+    // DEV MODE - No MailerSend API key configured
+    return true;
   }
 
   try {
-    console.log('📧 [MailerSend] Sending email to:', params.to);
     
     const response = await fetch('https://api.mailersend.com/v1/email', {
       method: 'POST',
@@ -74,7 +70,6 @@ async function sendInvitationEmail(params: InvitationEmailParams & { projectType
     });
 
     if (response.ok) {
-      console.log('📧 [MailerSend] Email sent successfully to:', params.to);
       return true;
     } else {
       const errorData = await response.json().catch(() => ({}));
@@ -88,24 +83,16 @@ async function sendInvitationEmail(params: InvitationEmailParams & { projectType
 }
 
 export async function POST(request: Request) {
-  console.log('[Send Invitations API] POST request received');
-  
   try {
     const user = await verifyToken(request);
-    console.log('[Send Invitations API] User verified:', user?.userId || 'null');
-    
     if (!user) {
-      console.log('[Send Invitations API] Unauthorized - no valid token');
       return Response.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
     const body = await request.json();
     const { creationId, invitations } = body;
-    
-    console.log('[Send Invitations API] Received data:', { creationId, invitationsCount: invitations?.length });
 
     if (!creationId || !invitations || !Array.isArray(invitations) || invitations.length === 0) {
-      console.log('[Send Invitations API] Invalid data:', { creationId, invitations });
       return Response.json({ error: 'Données invalides' }, { status: 400 });
     }
 
@@ -158,7 +145,6 @@ export async function POST(request: Request) {
             ${token}, 'pending', ${expiresAt.toISOString()}
           )
         `;
-        console.log('[Send Invitations] Invitation created for:', email, 'token:', token.substring(0, 8) + '...');
 
         // Send email
         const signUrl = `${baseUrl}/sign/${token}`;
