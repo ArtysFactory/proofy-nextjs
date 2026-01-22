@@ -130,12 +130,24 @@ export async function GET(
 
     const inv = invitation[0];
 
-    // Check if expired
-    const now = new Date();
-    const expiresAt = new Date(inv.expires_at);
+    // Check if expired - compare timestamps to avoid timezone issues
+    const now = Date.now();
+    const expiresAt = new Date(inv.expires_at).getTime();
     const isExpired = now > expiresAt;
 
-    if (isExpired && inv.status === 'pending') {
+    // Debug log for expiration issues
+    console.log('[Sign API] Invitation check:', {
+      token: token.substring(0, 8) + '...',
+      status: inv.status,
+      expiresAt: inv.expires_at,
+      expiresAtTimestamp: expiresAt,
+      nowTimestamp: now,
+      isExpired,
+      diffMs: expiresAt - now,
+      diffDays: Math.ceil((expiresAt - now) / (1000 * 60 * 60 * 24))
+    });
+
+    if (isExpired && (inv.status === 'pending' || inv.status === 'viewed')) {
       // Auto-update status to expired
       await sql`
         UPDATE deposit_invitations
@@ -173,7 +185,7 @@ export async function GET(
     }
 
     // Calculate time remaining
-    const timeRemaining = expiresAt.getTime() - now.getTime();
+    const timeRemaining = expiresAt - now;
     const daysRemaining = Math.max(0, Math.ceil(timeRemaining / (1000 * 60 * 60 * 24)));
 
     // Get all signatories for this creation
@@ -200,13 +212,16 @@ export async function GET(
       }));
     }
 
+    // Normalize status for frontend (accepted -> signed)
+    const normalizedStatus = inv.status === 'accepted' ? 'signed' : inv.status;
+
     return NextResponse.json({
       invitation: {
         id: inv.id,
         email: inv.invitee_email,
         role: inv.role_label || inv.role_type,
         percentage: parseFloat(inv.percentage),
-        status: inv.status,
+        status: normalizedStatus,
         createdAt: inv.created_at,
         expiresAt: inv.expires_at,
         daysRemaining,

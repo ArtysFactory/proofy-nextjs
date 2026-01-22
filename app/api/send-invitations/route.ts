@@ -118,6 +118,7 @@ export async function POST(request: Request) {
     }
 
     const creationData = creation[0];
+    const depositorEmail = creationData.depositor_email?.toLowerCase();
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://unlmtdproof.com';
 
     // Create invitations and send emails
@@ -130,6 +131,12 @@ export async function POST(request: Request) {
       
       if (!email || !role || percentage === undefined) {
         results.push({ email, success: false, error: 'Données manquantes' });
+        continue;
+      }
+
+      // Skip the depositor - they don't need to sign their own deposit
+      if (email.toLowerCase() === depositorEmail) {
+        results.push({ email, success: true, skipped: true, reason: 'Déposant (pas besoin de signature)' });
         continue;
       }
 

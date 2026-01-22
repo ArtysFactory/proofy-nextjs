@@ -266,8 +266,15 @@ export default function SignPage() {
     );
   }
 
-  // Already processed
-  if (data?.invitation.status !== 'pending') {
+  // Already processed - handle signed, accepted (legacy), rejected, expired, viewed statuses
+  const isPending = data?.invitation.status === 'pending' || data?.invitation.status === 'viewed';
+  
+  if (data && !isPending) {
+    const status = data.invitation.status;
+    const isSigned = status === 'signed' || status === 'accepted';
+    const isRejected = status === 'rejected';
+    // If not signed and not rejected, it's expired
+    
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
         <motion.div 
@@ -275,13 +282,13 @@ export default function SignPage() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-[#1a1a1a] rounded-2xl p-8 max-w-md w-full text-center border border-gray-700"
         >
-          {data.invitation.status === 'signed' ? (
+          {isSigned ? (
             <>
               <CheckCircle2 className="w-16 h-16 text-[#bff227] mx-auto mb-4" />
               <h1 className="text-2xl font-bold text-white mb-2">{t('alreadySigned.title')}</h1>
               <p className="text-gray-400">{t('alreadySigned.message')}</p>
             </>
-          ) : data.invitation.status === 'rejected' ? (
+          ) : isRejected ? (
             <>
               <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
               <h1 className="text-2xl font-bold text-white mb-2">{t('alreadyRejected.title')}</h1>
