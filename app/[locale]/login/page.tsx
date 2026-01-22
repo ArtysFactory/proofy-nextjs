@@ -50,8 +50,13 @@ function LoginContent() {
                     console.error('Failed to parse user cookie:', e);
                 }
             }
-            // Redirect to dashboard
-            router.push(`/${locale}/dashboard`);
+            // Redirect to original page or dashboard
+            const redirectUrl = searchParams.get('redirect');
+            if (redirectUrl) {
+                router.push(`/${locale}${redirectUrl}`);
+            } else {
+                router.push(`/${locale}/dashboard`);
+            }
             return;
         }
         
@@ -113,8 +118,13 @@ function LoginContent() {
                 localStorage.removeItem('proofy_remembered_email');
             }
 
-            // Redirect to dashboard with locale
-            router.push(`/${locale}/dashboard`);
+            // Redirect to original page or dashboard
+            const redirectUrl = searchParams.get('redirect');
+            if (redirectUrl) {
+                router.push(`/${locale}${redirectUrl}`);
+            } else {
+                router.push(`/${locale}/dashboard`);
+            }
         } catch (err: any) {
             setError(err.message);
         } finally {

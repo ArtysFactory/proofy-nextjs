@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import LocaleLink from '@/components/LocaleLink';
 import Logo from '@/components/ui/Logo';
 import { Eye, EyeOff, RefreshCw, Check, X } from 'lucide-react';
 
-export default function SignupPage() {
+function SignupContent() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const t = useTranslations('auth.signup');
     const tErrors = useTranslations('auth.errors');
     const tCommon = useTranslations('common');
@@ -131,8 +132,13 @@ export default function SignupPage() {
                 localStorage.setItem('token', loginData.token);
                 localStorage.setItem('user', JSON.stringify(loginData.user));
                 
-                // Redirect to dashboard
-                router.push(`/${locale}/dashboard`);
+                // Redirect to original page or dashboard
+                const redirectUrl = searchParams.get('redirect');
+                if (redirectUrl) {
+                    router.push(`/${locale}${redirectUrl}`);
+                } else {
+                    router.push(`/${locale}/dashboard`);
+                }
             } else {
                 // Fallback to login page if auto-login fails
                 router.push(`/${locale}/login?message=account-created`);
@@ -432,5 +438,22 @@ export default function SignupPage() {
             </motion.div>
             </AnimatePresence>
         </div>
+    );
+}
+
+export default function SignupPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="aurora-bg">
+                    <div className="aurora-stars"></div>
+                    <div className="aurora-layer"></div>
+                    <div className="aurora-layer aurora-layer-2"></div>
+                </div>
+                <div className="loader"></div>
+            </div>
+        }>
+            <SignupContent />
+        </Suspense>
     );
 }
