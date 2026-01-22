@@ -293,9 +293,13 @@ export async function POST(request: NextRequest) {
             }
         }
 
+        // Get the creation ID from the insert result
+        const creationIdFromInsert = result[0]?.id;
+        
         return NextResponse.json(
             {
                 success: true,
+                id: creationIdFromInsert,  // Add numeric ID for send-invitations API
                 publicId,
                 txHash: blockchainResult.txHash,
                 blockNumber: blockchainResult.blockNumber,
