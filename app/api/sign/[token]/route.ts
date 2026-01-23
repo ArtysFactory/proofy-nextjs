@@ -383,6 +383,9 @@ export async function POST(
     // Update creation signature count
     if (inv.creation_id) {
       if (normalizedAction === 'accept') {
+        console.log(`[Sign API] Updating signature count for creation ${inv.creation_id}`);
+        console.log(`[Sign API] Current counts from invitation: cosignature_count=${inv.cosignature_count}, cosignature_signed_count=${inv.cosignature_signed_count}`);
+        
         const updated = await sql`
           UPDATE creations
           SET cosignature_signed_count = cosignature_signed_count + 1,
@@ -392,11 +395,15 @@ export async function POST(
               END,
               updated_at = NOW()
           WHERE id = ${inv.creation_id}
-          RETURNING cosignature_count, cosignature_signed_count, cosignature_status, file_hash, public_id, project_type
+          RETURNING cosignature_count, cosignature_signed_count, cosignature_status, file_hash, public_id, project_type, status
         `;
 
+        console.log(`[Sign API] Updated creation:`, JSON.stringify(updated[0]));
+        
         const totalSigners = parseInt(inv.cosignature_count) || 1;
         const signedCount = (parseInt(inv.cosignature_signed_count) || 0) + 1;
+        
+        console.log(`[Sign API] totalSigners=${totalSigners}, signedCount=${signedCount}, cosignature_status=${updated[0]?.cosignature_status}`);
 
         // Send notification to depositor
         const notificationParams: SignatureNotificationParams = {
