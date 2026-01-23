@@ -201,13 +201,16 @@ export async function POST(request: Request) {
     }
 
     // Update creation status and co-signature tracking
-    const successCount = results.filter(r => r.success).length;
+    // Only count invitations that were actually sent (not skipped depositor)
+    const actualInvitationsSent = results.filter(r => r.success && !r.skipped).length;
+    console.log('[Send Invitations] Results:', JSON.stringify(results));
+    console.log('[Send Invitations] Actual invitations sent (excluding depositor):', actualInvitationsSent);
     await sql`
       UPDATE creations 
       SET 
         status = 'pending_signatures', 
         cosignature_required = true,
-        cosignature_count = ${successCount},
+        cosignature_count = ${actualInvitationsSent},
         cosignature_signed_count = 0,
         cosignature_expires_at = ${expiresAt.toISOString()},
         updated_at = NOW()
