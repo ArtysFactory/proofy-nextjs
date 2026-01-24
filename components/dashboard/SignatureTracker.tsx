@@ -17,7 +17,9 @@ import {
     ChevronDown, 
     ChevronUp,
     AlertTriangle,
-    RefreshCw
+    RefreshCw,
+    Rocket,
+    Loader2
 } from 'lucide-react';
 
 interface Invitation {
@@ -62,6 +64,8 @@ export default function SignatureTracker({
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+    const [isFinalizing, setIsFinalizing] = useState(false);
+    const [finalizeResult, setFinalizeResult] = useState<{ success: boolean; message: string; txHash?: string } | null>(null);
 
     const loadSignatures = async () => {
         setIsLoading(true);
@@ -156,8 +160,48 @@ export default function SignatureTracker({
 
     // Progress calculation
     const progress = stats ? Math.round((stats.accepted / stats.total) * 100) : 0;
-    const allSigned = stats ? stats.accepted === stats.total : false;
+    const allSigned = stats ? stats.accepted === stats.total && stats.total > 0 : false;
     const hasRejection = stats ? stats.rejected > 0 : false;
+
+    // Finalize deposit (trigger blockchain anchoring)
+    const handleFinalize = async () => {
+        setIsFinalizing(true);
+        setFinalizeResult(null);
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`/api/creations/${creationId}/finalize`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Erreur lors de la finalisation');
+            }
+
+            setFinalizeResult({
+                success: true,
+                message: data.message,
+                txHash: data.txHash
+            });
+
+            // Reload page after 2 seconds to show updated status
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        } catch (err: any) {
+            setFinalizeResult({
+                success: false,
+                message: err.message
+            });
+        } finally {
+            setIsFinalizing(false);
+        }
+    };
 
     return (
         <div className="mt-4 border-t border-white/10 pt-4">
@@ -315,6 +359,89 @@ export default function SignatureTracker({
                                 <div className="text-center py-4 text-gray-400 text-sm">
                                     Aucune invitation envoyée pour le moment.
                                 </div>
+                            )}
+
+                            {/* Finalize Button - Show when all signed */}
+                            {allSigned && !finalizeResult?.success && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="bg-gradient-to-r from-[#bff227]/20 to-emerald-500/20 border border-[#bff227]/50 rounded-lg p-4"
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h4 className="text-sm font-semibold text-[#bff227] flex items-center gap-2">
+                                                <CheckCircle2 className="w-4 h-4" />
+                                                Toutes les signatures reçues !
+                                            </h4>
+                                            <p className="text-xs text-gray-300 mt-1">
+                                                Cliquez pour ancrer votre dépôt sur la blockchain Polygon.
+                                            </p>
+                                        </div>
+                                        <button
+                                            onClick={handleFinalize}
+                                            disabled={isFinalizing}
+                                            className="px-4 py-2 bg-[#bff227] hover:bg-[#a8d620] disabled:bg-gray-600 
+                                                     text-black font-semibold rounded-lg transition-colors
+                                                     flex items-center gap-2"
+                                        >
+                                            {isFinalizing ? (
+                                                <>
+                                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                                    Ancrage...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Rocket className="w-4 h-4" />
+                                                    Finaliser le dépôt
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
+
+                            {/* Finalize Result */}
+                            {finalizeResult && (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className={`rounded-lg p-4 ${
+                                        finalizeResult.success 
+                                            ? 'bg-emerald-500/20 border border-emerald-500/50' 
+                                            : 'bg-red-500/20 border border-red-500/50'
+                                    }`}
+                                >
+                                    <div className="flex items-start gap-3">
+                                        {finalizeResult.success ? (
+                                            <CheckCircle2 className="w-5 h-5 text-emerald-400 mt-0.5" />
+                                        ) : (
+                                            <XCircle className="w-5 h-5 text-red-400 mt-0.5" />
+                                        )}
+                                        <div>
+                                            <p className={`text-sm font-medium ${
+                                                finalizeResult.success ? 'text-emerald-400' : 'text-red-400'
+                                            }`}>
+                                                {finalizeResult.message}
+                                            </p>
+                                            {finalizeResult.txHash && (
+                                                <a
+                                                    href={`https://polygonscan.com/tx/${finalizeResult.txHash}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-xs text-[#bff227] hover:underline mt-1 inline-block"
+                                                >
+                                                    Voir sur Polygonscan →
+                                                </a>
+                                            )}
+                                            {finalizeResult.success && (
+                                                <p className="text-xs text-gray-400 mt-2">
+                                                    Rechargement de la page dans 2 secondes...
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </motion.div>
                             )}
 
                             {/* Refresh Button */}
